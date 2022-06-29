@@ -1,4 +1,4 @@
-package com.javainternship.reportservice.controller;
+package com.greedobank.reports.controller;
 
 import static org.junit.jupiter.api.Assertions.*;
 
