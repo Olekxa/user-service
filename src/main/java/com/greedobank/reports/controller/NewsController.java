@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class NewsController {
     @GetMapping("/api/v1/news")
-    public String index() {
+    public String getAllNews() {
         return "GreedoBank completed Migration to Cloud!";
     }
 }
