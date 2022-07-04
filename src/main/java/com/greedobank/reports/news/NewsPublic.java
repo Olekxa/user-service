@@ -22,23 +22,4 @@ public class NewsPublic {
             newsPublic.add(news);
         } else throw new NewsException("Such news already exist");
     }
-
-    public String getNews(int id) {
-        if (newsPublic.isEmpty() || newsPublic.size() < id) {
-            return "News not found";
-        } else return String.valueOf(newsPublic.get(id));
-    }
-
-    public String getAllNews() {
-        if (newsPublic.isEmpty()) {
-            return "No news yet";
-        } else {
-            StringBuilder sb = new StringBuilder();
-            for (News news : newsPublic) {
-                sb.append(news.toString());
-                sb.append("\n");
-            }
-            return sb.toString();
-        }
-    }
 }

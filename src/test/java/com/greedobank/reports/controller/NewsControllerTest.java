@@ -38,8 +38,7 @@ class NewsControllerTest {
 
 //    @Test
 //    public void shouldReturn200WhenSendingNewNews(String news) throws Exception {
-//        String info = "{\"displayOnSite\": \"true\",\"sendByEmail\": \"true\",\"title\": \"Good news\", \"content\": \"content\", \"active\": \"true\"}";
-//        given(this.newsController.getNews(1))
-//                .willReturn(String.valueOf(new News(true, true, "Good news", "win", true )));
+//        {"displayOnSite":"true", "sendByEmail": "true", "content": {"title":"title", "content":"content"} "publicationDate": "22-10-11",  "active": "true"}'
+//
 //    }
 }
