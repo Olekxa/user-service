@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import nonapi.io.github.classgraph.json.Id;
 
 import java.time.LocalDateTime;
 
@@ -14,34 +15,29 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class News {
+    private static int counter = 1;
+
+    @Id
+    private long id = counter++;
     private boolean displayOnSite;
     private boolean sendByEmail;
     private Content content;
     private boolean active;
     private String publicationDate;
-    private String createdAt;
-    private String updatedAt;
-
-    public News(boolean displayOnSite, boolean sendByEmail, Content content, String publicationDate, boolean active) {
-        this.displayOnSite = displayOnSite;
-        this.sendByEmail = sendByEmail;
-        this.content = content;
-        this.active = active;
-        this.publicationDate = publicationDate;
-        this.createdAt = LocalDateTime.now().toString();
-        this.updatedAt = this.createdAt;
-    }
+    private String createdAt = LocalDateTime.now().withNano(0).toString();
+    private String updatedAt = this.createdAt;
 
     @Override
     public String toString() {
-        return "{" +
-                "displayOnSite=" + displayOnSite +
-                ", sendByEmail=" + sendByEmail +
-                ", content={" + content +
-                ", active=" + active +
-                ", publicationDate='" + publicationDate + '\'' +
-                ", createdAt='" + createdAt + '\'' +
-                ", updatedAt='" + updatedAt + '\'' +
-                '}';
+        return "{\n" +
+                "id: " + id +
+                "displayOnSite: " + displayOnSite + "\n," +
+                "sendByEmail: " + sendByEmail + "\n," +
+                content + "\n" +
+                "active: " + active + "\n," +
+                "publicationDate: " + publicationDate + "\n," +
+                "createdAt: " + createdAt + "\n," +
+                "updatedAt: " + updatedAt + "\n," +
+                "}";
     }
 }

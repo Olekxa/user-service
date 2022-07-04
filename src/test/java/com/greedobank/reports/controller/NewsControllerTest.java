@@ -39,7 +39,7 @@ class NewsControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-
+                //.andExpect(content("{\"id\":1,\"displayOnSite\":true,\"sendByEmail\":true,\"content\":{\"title\":\"title\",\"content\":\"some new content\"},\"active\":true,\"publicationDate\":\"22-10-11\",\"createdAt\":\"2022-07-04T16:51:47\",\"updatedAt\":\"2022-07-04T16:51:47\"}"));
 
     }
 }

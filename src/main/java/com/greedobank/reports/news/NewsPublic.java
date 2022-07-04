@@ -14,12 +14,13 @@ import java.util.List;
 public class NewsPublic {
     private List<News> newsPublic = new ArrayList<>();
 
-    public void postNews(News news) {
+    public News postNews(News news) {
         if (news.getContent().getContent() == null || news.getContent().getTitle() == null) {
-            throw new NewsException("content & null cannot be empty");
+            throw new NewsException("content & title can't be empty");
         }
-        if (newsPublic.stream().noneMatch(x -> x.equals(news) || x.getContent().equals(news.getContent()))) {
+        if (newsPublic.stream().noneMatch(x -> x.getContent().equals(news.getContent()))) {
             newsPublic.add(news);
+            return news;
         } else throw new NewsException("Such news already exist");
     }
 }

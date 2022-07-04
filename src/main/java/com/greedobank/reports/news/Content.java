@@ -1,20 +1,26 @@
 package com.greedobank.reports.news;
 
+import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
-@ToString
 @EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 public class Content {
     private String title;
     private String content;
 
-    public Content(String title, String content) {
-        this.title = title;
-        this.content = content;
+    @Override
+    public String toString() {
+        return "content: {" +
+                title + ",\n" +
+                content + ",\n" +
+                '}';
     }
 }
