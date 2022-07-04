@@ -32,14 +32,14 @@ class NewsControllerTest {
                 .andExpect(content().string(equalTo("")));
     }
 
-//    @Test
-//    public void shouldReturn200WhenSendingNewNews(String news) throws Exception {
-//        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
-//                        .content("\"displayOnSite\":\"true\", \"sendByEmail\": \"true\", \"content\": {\"title\":\"title\", \"content\":\"content\"}, \"publicationDate\": \"22-10-11\",  \"active\": \"true\"")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().is5xxServerError());
-//
-//
-//    }
+    @Test
+    public void shouldReturn200WhenSendingNewNews() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
+                        .content("{\"displayOnSite\": \"true\", \"sendByEmail\": \"true\", \"content\": {\"title\":\"title\", \"content\":\"content\"}, \"publicationDate\": \"22-10-11\",  \"active\": \"true\"}")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+
+    }
 }
