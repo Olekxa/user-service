@@ -3,10 +3,10 @@ package com.greedobank.reports.controller;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -21,9 +21,6 @@ class NewsControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private NewsController newsController;
-
     @Test
     public void shouldReturn400WhenSendingRequestToController() throws Exception {
         mockMvc.perform(get("/api/v1/news"))
@@ -35,11 +32,23 @@ class NewsControllerTest {
     @Test
     public void shouldReturn200WhenSendingNewNews() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
-                        .content("{\"displayOnSite\": \"true\", \"sendByEmail\": \"true\", \"content\": {\"title\":\"title\", \"content\":\"content\"}, \"publicationDate\": \"22-10-11\",  \"active\": \"true\"}")
+                        .content("{\"id\":0,\"displayOnSite\":true,\"sendByEmail\":true,\"content\":{\"title\":\"title\",\"description\":\"last after fail\"},\"active\":true,\"publicationDate\":\"22-10-11\",\"createdAt\":\"2022-07-04T18:58:44Z\",\"updatedAt\":\"2022-07-04T18:58:44Z\"}")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-                //.andExpect(content("{\"id\":1,\"displayOnSite\":true,\"sendByEmail\":true,\"content\":{\"title\":\"title\",\"content\":\"some new content\"},\"active\":true,\"publicationDate\":\"22-10-11\",\"createdAt\":\"2022-07-04T16:51:47\",\"updatedAt\":\"2022-07-04T16:51:47\"}"));
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(0))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.displayOnSite").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.sendByEmail").value(true))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.active").value(true));
+    }
 
+    @Test
+    public void shouldReturn400withNullField() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
+                        .content("{\"id\":3,\"displayOnSite\":true,\"sendByEmail\":true,\"content\":{\"title\":\"title\",\"description\":},\"active\":true,\"publicationDate\":\"22-10-11\",\"createdAt\":\"2022-07-04T21:58:44+03:00\",\"updatedAt\":\"2022-07-04T21:58:44+03:00\"}")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().is4xxClientError());
     }
 }
