@@ -1,34 +1,31 @@
 package com.greedobank.reports.news;
 
-import com.greedobank.reports.exeptions.NewsException;
 import lombok.Getter;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Service
 public class NewsPublic {
-    private List<News> newsPublic = new ArrayList<>();
+    private final List<NewsDTO> newsDTOPublic = new ArrayList<>();
 
     @ResponseBody
-    public News postNews(News news) {
-        if (news.content().description() == null || news.content().title() == null) {
-            throw new NewsException("description & title can't be empty");
+    public NewsDTO postNews(NewsDTO newsDTO) {
+        if (newsDTO.content().description() == null || newsDTO.content().title() == null) {
+            throw new RuntimeException("description & title can't be empty");
         }
-        if (newsPublic.stream().noneMatch(x -> x.content().equals(news.content()))) {
-            News newsToPost = new News(newsPublic.size(),
-                    news.displayOnSite(),
-                    news.sendByEmail(),
-                    new Content(news.content().title(), news.content().description()),
-                    news.active(),
-                    news.publicationDate(),
-                    news.createdAt().withNano(0),
-                    news.createdAt().withNano(0));
-            newsPublic.add(newsToPost);
-            return newsToPost;
-        } else throw new NewsException("Such news already exist");
+        if (newsDTOPublic.stream().noneMatch(x -> x.content().equals(newsDTO.content()))) {
+            NewsDTO newsDTOToPost = new NewsDTO(newsDTOPublic.size(),
+                    newsDTO.displayOnSite(),
+                    newsDTO.sendByEmail(),
+                    new Content(newsDTO.content().title(), newsDTO.content().description()),
+                    newsDTO.active(),
+                    newsDTO.publicationDate(),
+                    newsDTO.createdAt().withNano(0),
+                    newsDTO.createdAt().withNano(0));
+            newsDTOPublic.add(newsDTOToPost);
+            return newsDTOToPost;
+        } else throw new RuntimeException("Such news already exist");
     }
 }

@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest(NewsController.class)
-class NewsControllerTest {
+class NewsDTOControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

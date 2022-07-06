@@ -1,7 +1,8 @@
 package com.greedobank.reports.controller;
 
-import com.greedobank.reports.news.News;
+import com.greedobank.reports.news.NewsDTO;
 import com.greedobank.reports.news.NewsPublic;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,7 +18,13 @@ public class NewsController {
 
     @PostMapping("/api/v1/news")
     @ResponseBody
-    public News newNews(@RequestBody News news) {
-        return newsPublic.postNews(news);
+    public NewsDTO newNews(@RequestBody NewsDTO newsDTO) {
+        return newsPublic.postNews(newsDTO);
+    }
+
+    @GetMapping("/api/v1/news")
+    public String getAllNews() {
+        return "GreedoBank completed Migration to Cloud!";
     }
 }
+
