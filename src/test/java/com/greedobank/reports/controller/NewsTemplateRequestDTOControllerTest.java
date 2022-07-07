@@ -16,17 +16,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest(NewsController.class)
-class NewsDTOControllerTest {
+class NewsTemplateRequestDTOControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    public void shouldReturn400WhenSendingRequestToController() throws Exception {
+    public void shouldReturn200WhenSendingRequestToController() throws Exception {
         mockMvc.perform(get("/api/v1/news"))
                 .andDo(print())
-                .andExpect(status().is4xxClientError())
-                .andExpect(content().string(equalTo("")));
+                .andExpect(status().is2xxSuccessful())
+                .andExpect(content().string(equalTo("GreedoBank completed Migration to Cloud!")));
     }
 
     @Test
