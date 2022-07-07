@@ -17,18 +17,23 @@ public class NewsPublic {
             throw new RuntimeException("description & title can't be empty");
         }
         if (newsStorage.stream().noneMatch(x -> x.content().equals(request.getContent()))) {
-            OffsetDateTime timeCreate = OffsetDateTime.now();
-            NewsTemplateResponseDTO newsResponse = new NewsTemplateResponseDTO(
-                    newsStorage.size(),
-                    request.isDisplayOnSite(),
-                    request.isSendByEmail(),
-                    request.getContent(),
-                    request.getPublicationDate(),
-                    request.isActive(),
-                    timeCreate,
-                    timeCreate);
-            newsStorage.add(newsResponse);
+            NewsTemplateResponseDTO newsResponse = mapRequestToResponse(request);
             return newsResponse;
         } else throw new RuntimeException("Such news already exist");
+    }
+
+    private NewsTemplateResponseDTO mapRequestToResponse(NewsTemplateRequestDTO request) {
+        OffsetDateTime timeCreate = OffsetDateTime.now();
+        NewsTemplateResponseDTO newsResponse = new NewsTemplateResponseDTO(
+                newsStorage.size(),
+                request.isDisplayOnSite(),
+                request.isSendByEmail(),
+                request.getContent(),
+                request.getPublicationDate(),
+                request.isActive(),
+                timeCreate,
+                timeCreate);
+        newsStorage.add(newsResponse);
+        return newsResponse;
     }
 }
