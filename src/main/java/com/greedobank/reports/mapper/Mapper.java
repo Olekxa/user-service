@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
 public class Mapper {
 
     public static News mapToResponse(NewsTemplateRequestDTO requestDTO, int id) {
-        OffsetDateTime timeCreate = OffsetDateTime.now();
+        String timeCreate = String.valueOf(OffsetDateTime.now());
         return new News(
                 id,
                 requestDTO.isDisplayOnSite(),

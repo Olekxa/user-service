@@ -19,7 +19,7 @@ public class NewsController {
 
     @PostMapping("/api/v1/news")
     @ResponseBody
-    public News newNews(@RequestBody NewsTemplateRequestDTO newsTemplateRequestDTO) {
+    public News createNews(@RequestBody NewsTemplateRequestDTO newsTemplateRequestDTO) {
         return newsPublic.postNews(newsTemplateRequestDTO);
     }
 
