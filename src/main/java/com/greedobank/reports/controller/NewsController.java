@@ -2,7 +2,7 @@ package com.greedobank.reports.controller;
 
 import com.greedobank.reports.news.NewsTemplateRequestDTO;
 import com.greedobank.reports.news.NewsPublic;
-import com.greedobank.reports.news.NewsTemplateResponseDTO;
+import com.greedobank.reports.news.News;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,7 +19,7 @@ public class NewsController {
 
     @PostMapping("/api/v1/news")
     @ResponseBody
-    public NewsTemplateResponseDTO newNews(@RequestBody NewsTemplateRequestDTO newsTemplateRequestDTO) {
+    public News newNews(@RequestBody NewsTemplateRequestDTO newsTemplateRequestDTO) {
         return newsPublic.postNews(newsTemplateRequestDTO);
     }
 

@@ -2,14 +2,14 @@ package com.greedobank.reports.news;
 
 import java.time.OffsetDateTime;
 
-public record NewsTemplateResponseDTO(long id,
-                                      boolean displayOnSite,
-                                      boolean sendByEmail,
-                                      Content content,
-                                      String publicationDate,
-                                      boolean active,
-                                      OffsetDateTime createdAt,
-                                      OffsetDateTime updatedAt) {
+public record News(long id,
+                   boolean displayOnSite,
+                   boolean sendByEmail,
+                   Content content,
+                   String publicationDate,
+                   boolean active,
+                   OffsetDateTime createdAt,
+                   OffsetDateTime updatedAt) {
 
     @Override
     public String toString() {
