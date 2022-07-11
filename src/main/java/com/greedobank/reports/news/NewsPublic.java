@@ -8,13 +8,13 @@ import static com.greedobank.reports.mapper.Mapper.mapToResponse;
 
 @Getter
 public class NewsPublic {
-    private static long id = 0;
+    private long id = 0;
 
     @ResponseBody
     public NewsDTO postNews(NewsRequestDTO request) {
-//        if (request.getContentDTO().description() == null || request.getContentDTO().title() == null) {
-//            throw new RuntimeException("description & title can't be empty");
-//        }
+        if (request.content().description() == null || request.content().title() == null) {
+            throw new RuntimeException("description & title can't be empty");
+        }
         return mapToResponse(request, id++);
     }
 }
