@@ -28,4 +28,8 @@ Add additional notes about how to deploy this on a production system.
 
 ## Resources
 
-Add links to external resources for this project, such as CI server, bug tracker, etc.
+Add links to external resources for this project, such as CI server, bug tracker, etc.\
+
+##Documentation
+
+It's available within http://localhost:8080/swagger-ui/index.html
