@@ -1,8 +1,6 @@
 package com.greedobank.reports.dto;
 
-
 import java.time.OffsetDateTime;
-
 
 public record NewsRequestDTO(
         boolean displayOnSite,

@@ -28,20 +28,20 @@ public class NewsControllerTestPost {
                 "description":"last after fail"
                 },
                 "active":true,
-                "publicationDate":"2022-07-04T21:58:44+03:00",
+                "publicationDate":"2022-07-04T21:58:44+03:00"
                 }
                 """;
         String response = """
                  {
-                 "id":0, 
+                 "id":1, 
                  "displayOnSite": true, 
                  "sendByEmail": true, 
-                 "contentRequestDTO":
+                 "content":
                 {
                  "title":"title", 
                  "description":"last after fail"
                  }, 
-                 "publicationDate":"2022-07-04T21:58:44+03:00", 
+                 "publicationDate":"2022-07-04T18:58:44Z", 
                  "active":true, 
                  "createdAt":"2022-07-10T23:34:50.657873+03:00", 
                  "updatedAt":"2022-07-10T23:34:50.657873+03:00"
@@ -69,8 +69,8 @@ public class NewsControllerTestPost {
                 },
                 "active":true,
                 "publicationDate":"22-10-11",
-                "createdAt":"2022-07-04T21:58:44+03:00",
-                "updatedAt":"2022-07-04T21:58:44+03:00"
+                "createdAt":"2022-07-10T23:34:50.657873+03:00",
+                "updatedAt":"2022-07-10T23:34:50.657873+03:00"
                 }
                 """;
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")

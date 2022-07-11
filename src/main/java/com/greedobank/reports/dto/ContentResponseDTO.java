@@ -1,6 +1,6 @@
 package com.greedobank.reports.dto;
 
-public record ContentRequestDTO(
+public record ContentResponseDTO(
         String title,
         String description) {
 }
