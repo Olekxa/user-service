@@ -6,7 +6,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -28,6 +27,7 @@ class NewsControllerTest {
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().string(equalTo("GreedoBank completed Migration to Cloud!")));
     }
+
     @Test
     public void shouldReturn200WhenSendingNewNews() throws Exception {
         String request = """
@@ -45,17 +45,17 @@ class NewsControllerTest {
                 """;
         String response = """
                  {
-                 "id":1, 
-                 "displayOnSite": true, 
-                 "sendByEmail": true, 
+                 "id":1,
+                 "displayOnSite": true,
+                 "sendByEmail": true,
                  "content":
                 {
-                 "title":"title", 
+                 "title":"title",
                  "description":"last after fail"
-                 }, 
-                 "publicationDate":"2022-07-04T18:58:44Z", 
-                 "active":true, 
-                 "createdAt":"2022-07-10T23:34:50.657873+03:00", 
+                 },
+                 "publicationDate":"2022-07-04T18:58:44Z",
+                 "active":true,
+                 "createdAt":"2022-07-10T23:34:50.657873+03:00",
                  "updatedAt":"2022-07-10T23:34:50.657873+03:00"
                  }
                                 """;
@@ -68,7 +68,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturn400withNullField() throws Exception {
+    public void shouldReturn400WhenSendNewsWithNullField() throws Exception {
         String request = """
                 {
                 "id":3,
@@ -90,5 +90,30 @@ class NewsControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void shouldReturnStatus200AndNewsById() throws Exception {
+        String response = """
+                 {
+                 "id":1,
+                 "displayOnSite": true,
+                 "sendByEmail": true,
+                 "content":
+                {
+                 "title":"title",
+                 "description":"description"
+                 },
+                 "publicationDate":"2022-07-04T18:58:44Z",
+                 "active":true,
+                 "createdAt":"2022-07-10T23:34:50.657873+03:00",
+                 "updatedAt":"2022-07-10T23:34:50.657873+03:00"
+                 }
+                                """;
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 1)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(response));
     }
 }
