@@ -19,7 +19,7 @@ public class NewsController {
 
     @PostMapping("/api/v1/news")
     @ResponseBody
-    @Operation(summary = "Create a news", description = "Create news on news source")
+    @Operation(summary = "Create news", description = "Create news")
     public NewsResponseDTO createNews(@RequestBody NewsRequestDTO request) {
         OffsetDateTime timeCreate = OffsetDateTime.parse("2022-07-10T23:34:50.657873+03:00");
         return new NewsResponseDTO(1,
