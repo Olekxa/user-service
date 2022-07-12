@@ -3,12 +3,17 @@ package com.greedobank.reports.controller;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.StatusResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Objects;
+
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -120,10 +125,11 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturn400AndNewsById() throws Exception {
+    public void shouldReturn404AndNewsById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 2)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is4xxClientError())
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResponseStatusException));
+                .andExpect(status().is(HttpStatus.NOT_FOUND.value()))
+                .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResponseStatusException))
+                .andExpect(result -> assertEquals(new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news").getMessage(), Objects.requireNonNull(result.getResolvedException()).getMessage()));
     }
 }
