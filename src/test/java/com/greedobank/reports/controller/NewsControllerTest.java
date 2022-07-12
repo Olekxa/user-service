@@ -103,20 +103,18 @@ class NewsControllerTest {
     public void shouldReturn200AndNewsById() throws Exception {
         String response = """
                  {
-                 "id":1,
-                 "displayOnSite": true,
-                 "sendByEmail": true,
-                 "content":
-                {
-                 "title":"title",
-                 "description":"description"
-                 },
-                 "publicationDate":"2022-07-04T18:58:44Z",
-                 "active":true,
-                 "createdAt":"2022-07-10T23:34:50.657873+03:00",
-                 "updatedAt":"2022-07-10T23:34:50.657873+03:00"
-                 }
-                                """;
+                    "id":1,
+                    "displayOnSite": true,
+                    "sendByEmail": true,
+                    "content":{
+                        "title":"title",
+                        "description":"description"
+                    },
+                    "publicationDate":"2022-07-04T18:58:44Z",
+                    "active":true,
+                    "createdAt":"2022-07-10T23:34:50.657873+03:00",
+                    "updatedAt":"2022-07-10T23:34:50.657873+03:00"
+                 }""";
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 1)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
