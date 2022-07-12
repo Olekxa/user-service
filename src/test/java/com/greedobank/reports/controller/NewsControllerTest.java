@@ -95,7 +95,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturnStatus200AndNewsById() throws Exception {
+    public void shouldReturn200AndNewsById() throws Exception {
         String response = """
                  {
                  "id":1,
@@ -120,7 +120,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturnStatus400AndNewsById() throws Exception {
+    public void shouldReturn400AndNewsById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 2)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError())
