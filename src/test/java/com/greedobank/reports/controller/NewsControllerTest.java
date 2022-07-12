@@ -126,10 +126,12 @@ class NewsControllerTest {
 
     @Test
     public void shouldReturn404AndNewsById() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 2)
+        mockMvc.perform(MockMvcRequestBuilders.get(
+                                "/api/v1/news/{id}", 2)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(HttpStatus.NOT_FOUND.value()))
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResponseStatusException))
-                .andExpect(result -> assertEquals(new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news").getMessage(), Objects.requireNonNull(result.getResolvedException()).getMessage()));
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertEquals(
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news").getMessage(),
+                        Objects.requireNonNull(result.getResolvedException()).getMessage()));
     }
 }
