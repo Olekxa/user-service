@@ -7,14 +7,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.StatusResultMatchers;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Objects;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -39,33 +37,31 @@ class NewsControllerTest {
     public void shouldReturn200WhenSendingNewNews() throws Exception {
         String request = """
                 {
-                "displayOnSite":true,
-                "sendByEmail":true,
-                "content":
-                {
-                "title":"title",
-                "description":"last after fail"
-                },
-                "active":true,
-                "publicationDate":"2022-07-04T21:58:44+03:00"
+                    "displayOnSite":true,
+                    "sendByEmail":true,
+                    "content":{
+                        "title":"title",
+                        "description":"last after fail"
+                    },
+                    "active":true,
+                    "publicationDate":"2022-07-04T21:58:44+03:00"
                 }
                 """;
         String response = """
-                 {
-                 "id":1,
-                 "displayOnSite": true,
-                 "sendByEmail": true,
-                 "content":
                 {
-                 "title":"title",
-                 "description":"last after fail"
-                 },
-                 "publicationDate":"2022-07-04T18:58:44Z",
-                 "active":true,
-                 "createdAt":"2022-07-10T23:34:50.657873+03:00",
-                 "updatedAt":"2022-07-10T23:34:50.657873+03:00"
-                 }
-                                """;
+                    "id":1,
+                    "displayOnSite": true,
+                    "sendByEmail": true,
+                    "content":{
+                        "title":"title",
+                        "description":"last after fail"
+                    },
+                    "publicationDate":"2022-07-04T18:58:44Z",
+                    "active":true,
+                    "createdAt":"2022-07-10T23:34:50.657873+03:00",
+                    "updatedAt":"2022-07-10T23:34:50.657873+03:00"
+                }
+                               """;
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -78,18 +74,17 @@ class NewsControllerTest {
     public void shouldReturn400WhenSendNewsWithNullField() throws Exception {
         String request = """
                 {
-                "id":3,
-                "displayOnSite":true,
-                "sendByEmail":true,
-                "content":
-                {
-                "title":"title",
-                "description":
-                },
-                "active":true,
-                "publicationDate":"22-10-11",
-                "createdAt":"2022-07-10T23:34:50.657873+03:00",
-                "updatedAt":"2022-07-10T23:34:50.657873+03:00"
+                    "id":3,
+                    "displayOnSite":true,
+                    "sendByEmail":true,
+                    "content":{
+                        "title":"title",
+                        "description":
+                    },
+                    "active":true,
+                    "publicationDate":"22-10-11",
+                    "createdAt":"2022-07-10T23:34:50.657873+03:00",
+                    "updatedAt":"2022-07-10T23:34:50.657873+03:00"
                 }
                 """;
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
@@ -102,19 +97,19 @@ class NewsControllerTest {
     @Test
     public void shouldReturn200AndNewsById() throws Exception {
         String response = """
-                 {
-                    "id":1,
-                    "displayOnSite": true,
-                    "sendByEmail": true,
-                    "content":{
-                        "title":"title",
-                        "description":"description"
-                    },
-                    "publicationDate":"2022-07-04T18:58:44Z",
-                    "active":true,
-                    "createdAt":"2022-07-10T23:34:50.657873+03:00",
-                    "updatedAt":"2022-07-10T23:34:50.657873+03:00"
-                 }""";
+                {
+                   "id":1,
+                   "displayOnSite": true,
+                   "sendByEmail": true,
+                   "content":{
+                       "title":"title",
+                       "description":"description"
+                   },
+                   "publicationDate":"2022-07-04T18:58:44Z",
+                   "active":true,
+                   "createdAt":"2022-07-10T23:34:50.657873+03:00",
+                   "updatedAt":"2022-07-10T23:34:50.657873+03:00"
+                }""";
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 1)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -124,8 +119,7 @@ class NewsControllerTest {
 
     @Test
     public void shouldReturn404AndNewsById() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get(
-                                "/api/v1/news/{id}", 2)
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 2)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(result -> assertEquals(
