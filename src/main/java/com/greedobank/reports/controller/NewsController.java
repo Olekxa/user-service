@@ -4,12 +4,15 @@ import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.OffsetDateTime;
 
@@ -36,7 +39,7 @@ public class NewsController {
     @GetMapping(value = "/api/v1/news/{id}")
     @ResponseBody
     @Operation(summary = "Getting news", description = "get news by id")
-    public NewsResponseDTO getNewsById(@PathVariable int id) {
+    public NewsResponseDTO getNewsById(@PathVariable long id) {
         OffsetDateTime timeCreate = OffsetDateTime.parse("2022-07-10T23:34:50.657873+03:00");
         NewsResponseDTO newsResponseDTO = new NewsResponseDTO(1,
                 true,
@@ -51,7 +54,7 @@ public class NewsController {
         if (id == newsResponseDTO.id()) {
             return newsResponseDTO;
         } else {
-            throw new RuntimeException("Not found news");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news");
         }
     }
 
