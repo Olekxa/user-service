@@ -3,6 +3,7 @@ package com.greedobank.reports.controller;
 import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
+import com.greedobank.reports.dto.NewsUpdateDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,21 +63,23 @@ public class NewsController {
     @Operation(summary = "Patch news", description = "patch news by id if present")
     public NewsResponseDTO patchNewsById(
             @PathVariable(value = "id") long id,
-            @RequestBody NewsResponseDTO newsRequestDTO) {
+            @RequestBody NewsUpdateDTO newsUpdateDTO) {
         OffsetDateTime timeCreate = OffsetDateTime.parse("2022-07-10T23:34:50.657873+03:00");
+        OffsetDateTime timeUpdate = OffsetDateTime.parse("2022-07-12T23:34:50.657873+00:11");
         NewsResponseDTO newsResponseDTO = new NewsResponseDTO(1,
-                true,
-                true,
+                newsUpdateDTO.displayOnSite(),
+                newsUpdateDTO.sendByEmail(),
                 new ContentResponseDTO(
-                        "title",
-                        "description"),
+                        newsUpdateDTO.content().title(),
+                        newsUpdateDTO.content().description()),
                 OffsetDateTime.parse("2022-07-04T18:58:44Z"),
                 true,
                 timeCreate,
-                timeCreate);
+                timeUpdate);
         if (id == newsResponseDTO.id()) {
             return newsResponseDTO;
-        } else {
+        }
+        else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news");
         }
     }
