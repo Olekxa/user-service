@@ -126,4 +126,23 @@ class NewsControllerTest {
                         new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news").getMessage(),
                         Objects.requireNonNull(result.getResolvedException()).getMessage()));
     }
+
+    @Test
+    public void shouldReturn204WhenDeleteNews() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 1)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void shouldReturn404WhenDeleteNewsNotFoundById() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 2)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertEquals(
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news").getMessage(),
+                        Objects.requireNonNull(result.getResolvedException()).getMessage()));
+    }
 }
