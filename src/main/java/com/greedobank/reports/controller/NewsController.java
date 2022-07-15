@@ -62,7 +62,7 @@ public class NewsController {
     @DeleteMapping(value = "/api/v1/news/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete news", description = "delete news by id")
-    public void deleteNewsById(@PathVariable long id) {
+    public void delete(@PathVariable long id) {
         if (id != 1) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news");
         }
