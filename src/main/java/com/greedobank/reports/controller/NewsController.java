@@ -23,7 +23,7 @@ public class NewsController {
     @PostMapping("/api/v1/news")
     @ResponseBody
     @Operation(summary = "Create news", description = "Create news")
-    public NewsResponseDTO createNews(@RequestBody NewsRequestDTO request) {
+    public NewsResponseDTO create(@RequestBody NewsRequestDTO request) {
         OffsetDateTime timeCreate = OffsetDateTime.parse("2022-07-10T23:34:50.657873+03:00");
         return new NewsResponseDTO(1,
                 request.displayOnSite(),
@@ -40,7 +40,7 @@ public class NewsController {
     @GetMapping(value = "/api/v1/news/{id}")
     @ResponseBody
     @Operation(summary = "Getting news", description = "get news by id")
-    public NewsResponseDTO getNewsById(@PathVariable long id) {
+    public NewsResponseDTO get(@PathVariable long id) {
         OffsetDateTime timeCreate = OffsetDateTime.parse("2022-07-10T23:34:50.657873+03:00");
         NewsResponseDTO newsResponseDTO = new NewsResponseDTO(1,
                 true,
