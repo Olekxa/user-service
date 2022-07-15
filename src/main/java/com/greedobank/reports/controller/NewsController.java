@@ -62,7 +62,7 @@ public class NewsController {
     @PatchMapping(value = "/api/v1/news/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Update news", description = "update news by id if present")
-    public void patchNewsById(
+    public void patch(
             @PathVariable(value = "id") long id,
             @RequestBody NewsRequestDTO updateDTO) {
         if (id != 1) {
