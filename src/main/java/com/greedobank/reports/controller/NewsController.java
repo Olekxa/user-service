@@ -5,6 +5,7 @@ import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,6 +55,15 @@ public class NewsController {
         if (id == newsResponseDTO.id()) {
             return newsResponseDTO;
         } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news");
+        }
+    }
+
+    @DeleteMapping(value = "/api/v1/news/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete news", description = "delete news by id")
+    public void deleteNewsById(@PathVariable long id) {
+        if (id != 1) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news");
         }
     }
