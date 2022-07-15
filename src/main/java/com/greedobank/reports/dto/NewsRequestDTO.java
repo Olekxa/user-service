@@ -3,9 +3,9 @@ package com.greedobank.reports.dto;
 import java.time.OffsetDateTime;
 
 public record NewsRequestDTO(
-        boolean displayOnSite,
-        boolean sendByEmail,
+        Boolean displayOnSite,
+        Boolean sendByEmail,
         ContentRequestDTO content,
         OffsetDateTime publicationDate,
-        boolean active) {
+        Boolean active) {
 }

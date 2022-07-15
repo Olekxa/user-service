@@ -129,21 +129,7 @@ class NewsControllerTest {
 
     @Test
     public void shouldReturn200WhenUpdateNews() throws Exception {
-        String response = """
-                {
-                    "id":1,
-                    "displayOnSite": true,
-                    "sendByEmail": false,
-                    "content":{
-                        "title":"new title",
-                        "description":"new description"
-                    },
-                    "publicationDate":"2022-07-04T18:58:44Z",
-                    "active":true,
-                    "createdAt":"2022-07-10T23:34:50.657873+03:00",
-                    "updatedAt":"2022-07-12T23:34:50.657873+00:11"
-                }
-                """;
+
         String updateRequest = """
                 {
                   "displayOnSite": true,
@@ -158,8 +144,7 @@ class NewsControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(updateRequest))
-                .andExpect(status().isOk())
-                .andExpect(content().json(response));
+                .andExpect(status().isNoContent());
     }
 
     @Test

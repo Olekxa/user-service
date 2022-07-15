@@ -3,7 +3,6 @@ package com.greedobank.reports.controller;
 import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
-import com.greedobank.reports.dto.NewsUpdateDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -60,26 +60,12 @@ public class NewsController {
     }
 
     @PatchMapping(value = "/api/v1/news/{id}")
-    @Operation(summary = "Patch news", description = "patch news by id if present")
-    public NewsResponseDTO patchNewsById(
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Update news", description = "update news by id if present")
+    public void patchNewsById(
             @PathVariable(value = "id") long id,
-            @RequestBody NewsUpdateDTO newsUpdateDTO) {
-        OffsetDateTime timeCreate = OffsetDateTime.parse("2022-07-10T23:34:50.657873+03:00");
-        OffsetDateTime timeUpdate = OffsetDateTime.parse("2022-07-12T23:34:50.657873+00:11");
-        NewsResponseDTO newsResponseDTO = new NewsResponseDTO(1,
-                newsUpdateDTO.displayOnSite(),
-                newsUpdateDTO.sendByEmail(),
-                new ContentResponseDTO(
-                        newsUpdateDTO.content().title(),
-                        newsUpdateDTO.content().description()),
-                OffsetDateTime.parse("2022-07-04T18:58:44Z"),
-                true,
-                timeCreate,
-                timeUpdate);
-        if (id == newsResponseDTO.id()) {
-            return newsResponseDTO;
-        }
-        else {
+            @RequestBody NewsRequestDTO updateDTO) {
+        if (id != 1) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news");
         }
     }
