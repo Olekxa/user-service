@@ -129,7 +129,6 @@ class NewsControllerTest {
 
     @Test
     public void shouldReturn200WhenUpdateNews() throws Exception {
-
         String updateRequest = """
                 {
                   "displayOnSite": true,
