@@ -118,9 +118,50 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturn404AndNewsById() throws Exception {
+    public void shouldReturn404WhenNewsNotFoundById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 2)
                         .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertEquals(
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news").getMessage(),
+                        Objects.requireNonNull(result.getResolvedException()).getMessage()));
+    }
+
+    @Test
+    public void shouldReturn200WhenUpdateNews() throws Exception {
+        String updateRequest = """
+                {
+                  "displayOnSite": true,
+                  "sendByEmail": false,
+                  "content": {
+                    "title": "new title",
+                    "description": "new description"
+                  }
+                }
+                """;
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 1)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(updateRequest))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    public void shouldReturn404WhenUpdateNewsNotFoundById() throws Exception {
+        String updateRequest = """
+                {
+                  "displayOnSite": true,
+                  "sendByEmail": false,
+                  "content": {
+                    "title": "new title",
+                    "description": "new description"
+                  }
+                }
+                """;
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 2)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(updateRequest))
                 .andExpect(status().isNotFound())
                 .andExpect(result -> assertEquals(
                         new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news").getMessage(),
