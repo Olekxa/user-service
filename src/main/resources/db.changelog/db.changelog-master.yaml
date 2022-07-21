@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: changelog/news/create_table.sql
+      relativeToChangelogFile: true
