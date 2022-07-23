@@ -1,7 +1,7 @@
 --liquibase formatted sql
 --changeset greedobank:create-tables
 
-CREATE TABLE
+CREATE TABLE news
 (
     news_id INT PRIMARY KEY,
     displayOnSite BOOLEAN,
