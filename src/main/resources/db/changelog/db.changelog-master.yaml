@@ -1,4 +1,4 @@
 databaseChangeLog:
   - include:
-      file: db/changelog/news/create_table.sql
+      file: db/changelog/news/000001_create_table.sql
       relativeToChangelogFile: true
