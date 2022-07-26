@@ -3,7 +3,7 @@
 
 CREATE TABLE news
 (
-    news_id INT PRIMARY KEY(),
+    news_id INT PRIMARY KEY,
     display_on_site BOOLEAN,
     send_by_email BOOLEAN,
     title VARCHAR NOT NULL,
