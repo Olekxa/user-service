@@ -8,8 +8,8 @@ CREATE TABLE news
     send_by_email BOOLEAN,
     title VARCHAR(NOT NULL),
     description VARCHAR(NOT NULL),
-    OffsetDateTime TIMESTAMP WITH TIME ZONE(NOT NULL),
+    offset_date_time TIMESTAMP WITH TIME ZONE(NOT NULL),
     active BOOLEAN,
-    createdAt TIMESTAMP WITH TIME ZONE,
-    updatedAt TIMESTAMP WITH TIME ZONE
+    created_at TIMESTAMP WITH TIME ZONE,
+    updated_at TIMESTAMP WITH TIME ZONE
 );
