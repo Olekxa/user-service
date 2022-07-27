@@ -10,6 +10,6 @@ CREATE TABLE news
     description VARCHAR NOT NULL,
     offset_date_time TIMESTAMP WITH TIME ZONE NOT NULL,
     active BOOLEAN NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE,
-    updated_at TIMESTAMP WITH TIME ZONE
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
 );
