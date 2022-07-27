@@ -1,10 +1,12 @@
 package com.greedobank.reports.controller;
 
-import com.greedobank.reports.dto.ContentResponseDTO;
-import com.greedobank.reports.dto.NewsRequestDTO;
-import com.greedobank.reports.dto.NewsResponseDTO;
+import com.greedobank.reports.dto.response.ContentResponseDTO;
+import com.greedobank.reports.dto.request.NewsRequestDTO;
+import com.greedobank.reports.dto.response.NewsResponseDTO;
+import com.greedobank.reports.service.ServiceNews;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -19,23 +21,15 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.OffsetDateTime;
 
 @RestController
+@Validated
 public class NewsController {
+    private ServiceNews serviceNews;
 
     @PostMapping("/api/v1/news")
     @ResponseBody
     @Operation(summary = "Create news", description = "Create news")
     public NewsResponseDTO create(@RequestBody NewsRequestDTO request) {
-        OffsetDateTime timeCreate = OffsetDateTime.parse("2022-07-10T23:34:50.657873+03:00");
-        return new NewsResponseDTO(1,
-                request.displayOnSite(),
-                request.displayOnSite(),
-                new ContentResponseDTO(
-                        request.content().title(),
-                        request.content().description()),
-                request.publicationDate(),
-                request.active(),
-                timeCreate,
-                timeCreate);
+        return serviceNews.create(request);
     }
 
     @GetMapping(value = "/api/v1/news/{id}")
