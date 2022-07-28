@@ -1,8 +1,8 @@
 package com.greedobank.reports.mapper;
 
-import com.greedobank.reports.dto.request.ContentRequestDTO;
-import com.greedobank.reports.dto.request.NewsRequestDTO;
-import com.greedobank.reports.dto.response.NewsResponseDTO;
+import com.greedobank.reports.dto.ContentRequestDTO;
+import com.greedobank.reports.dto.NewsRequestDTO;
+import com.greedobank.reports.dto.NewsResponseDTO;
 
 public class MapResponseToRequest {
     public NewsRequestDTO mapResponseToRequest(NewsResponseDTO response) {

@@ -1,9 +1,8 @@
 package com.greedobank.reports.controller;
 
-import com.greedobank.reports.dto.request.NewsRequestDTO;
-import com.greedobank.reports.dto.response.ContentResponseDTO;
-import com.greedobank.reports.dto.response.NewsResponseDTO;
-import com.greedobank.reports.mapper.MapResponseToRequest;
+import com.greedobank.reports.dto.NewsRequestDTO;
+import com.greedobank.reports.dto.ContentResponseDTO;
+import com.greedobank.reports.dto.NewsResponseDTO;
 import com.greedobank.reports.service.ServiceNews;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -77,7 +76,7 @@ class NewsControllerTest {
                         "title":"title",
                         "description":"last after fail"
                     },
-                    "publicationDate":"2022-07-04T18:58:44Z",
+                    "publicationDate":"2022-07-04T21:58:44+03:00",
                     "active":true,
                     "createdAt":"2022-07-10T23:34:50.657873+03:00",
                     "updatedAt":"2022-07-10T23:34:50.657873+03:00"

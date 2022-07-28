@@ -1,7 +1,7 @@
 package com.greedobank.reports.mapper;
 
-import com.greedobank.reports.dto.response.ContentResponseDTO;
-import com.greedobank.reports.dto.response.NewsResponseDTO;
+import com.greedobank.reports.dto.ContentResponseDTO;
+import com.greedobank.reports.dto.NewsResponseDTO;
 import com.greedobank.reports.model.Model;
 
 public class MapModelToResponse {
@@ -11,8 +11,8 @@ public class MapModelToResponse {
                 request.isDisplayOnSite(),
                 request.isSendByEmail(),
                 new ContentResponseDTO(
-                        request.getContent().getTitle(),
-                        request.getContent().getDescription()),
+                        request.getTitle(),
+                        request.getDescription()),
                 request.getPublicationDate(),
                 request.isActive(),
                 request.getCreatedAt(),

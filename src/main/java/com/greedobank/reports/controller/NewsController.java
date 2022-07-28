@@ -1,10 +1,11 @@
 package com.greedobank.reports.controller;
 
-import com.greedobank.reports.dto.response.ContentResponseDTO;
-import com.greedobank.reports.dto.request.NewsRequestDTO;
-import com.greedobank.reports.dto.response.NewsResponseDTO;
+import com.greedobank.reports.dto.ContentResponseDTO;
+import com.greedobank.reports.dto.NewsRequestDTO;
+import com.greedobank.reports.dto.NewsResponseDTO;
 import com.greedobank.reports.service.ServiceNews;
 import io.swagger.v3.oas.annotations.Operation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,7 +24,12 @@ import java.time.OffsetDateTime;
 @RestController
 @Validated
 public class NewsController {
-    private ServiceNews serviceNews;
+    private final ServiceNews serviceNews;
+
+    @Autowired
+    public NewsController(ServiceNews serviceNews) {
+        this.serviceNews = serviceNews;
+    }
 
     @PostMapping("/api/v1/news")
     @ResponseBody

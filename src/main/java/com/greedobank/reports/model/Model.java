@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import java.time.OffsetDateTime;
 
 @Entity
@@ -32,8 +33,13 @@ public class Model {
     @Column(name = "send_by_id", nullable = false)
     private boolean sendByEmail;
 
-    @OneToOne
-    private ModelContent content;
+    @NotBlank
+    @Column(name = "title", nullable = false)
+    String title;
+
+    @NotBlank
+    @Column(name = "description", nullable = false)
+    String description;
 
     @Column(name = "publication_date", nullable = false)
     private OffsetDateTime publicationDate;

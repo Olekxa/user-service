@@ -1,4 +1,4 @@
-package com.greedobank.reports.dto.request;
+package com.greedobank.reports.dto;
 
 import java.time.OffsetDateTime;
 

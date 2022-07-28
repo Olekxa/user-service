@@ -1,4 +1,4 @@
-package com.greedobank.reports.dto.request;
+package com.greedobank.reports.dto;
 
 public record ContentRequestDTO(
         String title,
