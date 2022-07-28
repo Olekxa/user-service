@@ -3,6 +3,7 @@ package com.greedobank.reports.controller;
 import com.greedobank.reports.dto.request.NewsRequestDTO;
 import com.greedobank.reports.dto.response.ContentResponseDTO;
 import com.greedobank.reports.dto.response.NewsResponseDTO;
+import com.greedobank.reports.mapper.MapResponseToRequest;
 import com.greedobank.reports.service.ServiceNews;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -83,7 +84,6 @@ class NewsControllerTest {
                 }
                                """;
         Mockito.when(serviceNews.create(Mockito.any(NewsRequestDTO.class))).thenReturn(responseDTO);
-
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
