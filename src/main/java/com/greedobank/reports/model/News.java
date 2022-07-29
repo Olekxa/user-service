@@ -22,8 +22,8 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 public class News {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "news_id")
     private long id;
 
     @Column(name = "display_on_site", nullable = false)

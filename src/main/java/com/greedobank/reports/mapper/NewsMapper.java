@@ -14,6 +14,7 @@ public class NewsMapper {
         news.setSendByEmail(request.sendByEmail());
         news.setTitle(request.content().title());
         news.setDescription(request.content().description());
+        news.setPublicationDate(request.publicationDate());
         news.setActive(request.active());
         return news;
     }
