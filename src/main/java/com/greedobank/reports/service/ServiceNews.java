@@ -3,36 +3,33 @@ package com.greedobank.reports.service;
 import com.greedobank.reports.dao.NewsDAO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
-import com.greedobank.reports.mapper.MapModelToResponse;
-import com.greedobank.reports.model.Model;
+import com.greedobank.reports.mapper.NewsRequestToNewsMapper;
+import com.greedobank.reports.mapper.NewsToNewsResponseMapper;
+import com.greedobank.reports.model.News;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 
 @Service
-public class ServiceNews implements INewsService {
+public class ServiceNews {
     private final NewsDAO newsDAO;
+    private final NewsToNewsResponseMapper newsToNewsResponseMapper;
+    private final NewsRequestToNewsMapper newsRequestToNewsMapper;
 
     @Autowired
-    public ServiceNews(NewsDAO newsDAO) {
+    public ServiceNews(NewsDAO newsDAO, NewsToNewsResponseMapper newsToNewsResponseMapper, NewsRequestToNewsMapper newsRequestToNewsMapper) {
         this.newsDAO = newsDAO;
+        this.newsToNewsResponseMapper = newsToNewsResponseMapper;
+        this.newsRequestToNewsMapper = newsRequestToNewsMapper;
     }
 
-    @Override
     public NewsResponseDTO create(NewsRequestDTO request) {
-        MapModelToResponse mapper = new MapModelToResponse();
         OffsetDateTime timeStamp = OffsetDateTime.now();
-        Model model = new Model();
-        model.setDisplayOnSite(request.displayOnSite());
-        model.setSendByEmail(request.sendByEmail());
-        model.setTitle(request.content().title());
-        model.setDescription(request.content().description());
-        model.setActive(request.active());
-        model.setCreatedAt(timeStamp);
-        model.setUpdatedAt(timeStamp);
-        newsDAO.save(model);
-        mapper.mapModelToResponse(model);
-        return mapper.mapModelToResponse(model);
+        News news = newsRequestToNewsMapper.toNewsFromRequest(request);
+        news.setCreatedAt(timeStamp);
+        news.setUpdatedAt(timeStamp);
+        newsDAO.save(news);
+        return newsToNewsResponseMapper.toResponseFromNews(news);
     }
 }

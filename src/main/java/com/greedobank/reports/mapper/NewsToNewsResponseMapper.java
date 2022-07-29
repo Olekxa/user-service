@@ -2,10 +2,12 @@ package com.greedobank.reports.mapper;
 
 import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
-import com.greedobank.reports.model.Model;
+import com.greedobank.reports.model.News;
+import org.springframework.stereotype.Component;
 
-public class MapModelToResponse {
-    public NewsResponseDTO mapModelToResponse(Model request) {
+@Component
+public class NewsToNewsResponseMapper {
+    public NewsResponseDTO toResponseFromNews(News request) {
         return new NewsResponseDTO(
                 request.getId(),
                 request.isDisplayOnSite(),
