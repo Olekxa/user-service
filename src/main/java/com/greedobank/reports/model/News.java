@@ -34,11 +34,11 @@ public class News {
 
     @NotBlank
     @Column(name = "title", nullable = false)
-    String title;
+    private String title;
 
     @NotBlank
     @Column(name = "description", nullable = false)
-    String description;
+    private String description;
 
     @Column(name = "publication_date", nullable = false)
     private OffsetDateTime publicationDate;
@@ -50,5 +50,5 @@ public class News {
     private OffsetDateTime createdAt;
 
     @Column(name = "updated_at", nullable = false)
-    OffsetDateTime updatedAt;
+    private OffsetDateTime updatedAt;
 }
