@@ -19,7 +19,7 @@ public class NewsMapper {
         return news;
     }
 
-    public NewsResponseDTO toNewsResponseDTO(News request) {
+    public NewsResponseDTO toResponseFromNews(News request) {
         return new NewsResponseDTO(
                 request.getId(),
                 request.isDisplayOnSite(),
