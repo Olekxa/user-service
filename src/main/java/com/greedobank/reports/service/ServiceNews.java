@@ -1,23 +1,27 @@
 package com.greedobank.reports.service;
 
-import com.greedobank.reports.dao.NewsDAO;
+import com.greedobank.reports.dao.NewsDao;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
 import com.greedobank.reports.mapper.NewsMapper;
 import com.greedobank.reports.model.News;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 
 @Service
+@Configuration
 public class ServiceNews {
-    private final NewsDAO newsDAO;
+
+    @Autowired
+    private final NewsDao newsDao;
     private final NewsMapper newsMapper;
 
     @Autowired
-    public ServiceNews(NewsDAO newsDAO, NewsMapper newsMapper) {
-        this.newsDAO = newsDAO;
+    public ServiceNews(NewsDao newsDao, NewsMapper newsMapper) {
+        this.newsDao = newsDao;
         this.newsMapper = newsMapper;
     }
 
@@ -26,7 +30,7 @@ public class ServiceNews {
         News news = newsMapper.toNewsFromRequest(request);
         news.setCreatedAt(timeStamp);
         news.setUpdatedAt(timeStamp);
-        newsDAO.save(news);
+        newsDao.save(news);
         return newsMapper.toResponseFromNews(news);
     }
 }
