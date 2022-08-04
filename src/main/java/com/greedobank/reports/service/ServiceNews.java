@@ -27,6 +27,6 @@ public class ServiceNews {
         news.setCreatedAt(timeStamp);
         news.setUpdatedAt(timeStamp);
         newsDAO.save(news);
-        return newsMapper.toResponseFromNews(news);
+        return newsMapper.toNewsResponseDTO(news);
     }
 }

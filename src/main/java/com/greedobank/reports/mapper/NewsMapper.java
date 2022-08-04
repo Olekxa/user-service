@@ -19,17 +19,17 @@ public class NewsMapper {
         return news;
     }
 
-    public NewsResponseDTO toResponseFromNews(News request) {
+    public NewsResponseDTO toNewsResponseDTO(News news) {
         return new NewsResponseDTO(
-                request.getId(),
-                request.isDisplayOnSite(),
-                request.isSendByEmail(),
+                news.getId(),
+                news.isDisplayOnSite(),
+                news.isSendByEmail(),
                 new ContentResponseDTO(
-                        request.getTitle(),
-                        request.getDescription()),
-                request.getPublicationDate(),
-                request.isActive(),
-                request.getCreatedAt(),
-                request.getUpdatedAt());
+                        news.getTitle(),
+                        news.getDescription()),
+                news.getPublicationDate(),
+                news.isActive(),
+                news.getCreatedAt(),
+                news.getUpdatedAt());
     }
 }
