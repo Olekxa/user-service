@@ -16,7 +16,6 @@ import javax.validation.constraints.NotBlank;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,11 +31,9 @@ public class News {
     @Column(name = "send_by_id", nullable = false)
     private boolean sendByEmail;
 
-    @NotBlank
     @Column(name = "title", nullable = false)
     private String title;
 
-    @NotBlank
     @Column(name = "description", nullable = false)
     private String description;
 
