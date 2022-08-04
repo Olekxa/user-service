@@ -23,7 +23,7 @@ public class ServiceNews {
 
     public NewsResponseDTO create(NewsRequestDTO request) {
         OffsetDateTime timeStamp = OffsetDateTime.now();
-        News news = newsMapper.toNewsFromRequest(request);
+        News news = newsMapper.toNews(request);
         news.setCreatedAt(timeStamp);
         news.setUpdatedAt(timeStamp);
         newsDAO.save(news);

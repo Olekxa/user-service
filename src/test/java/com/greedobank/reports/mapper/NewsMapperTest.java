@@ -43,7 +43,7 @@ class NewsMapperTest {
                 true,
                 null,
                 null);
-        News newsActual = mapper.toNewsFromRequest(request);
+        News newsActual = mapper.toNews(request);
         assertTrue(new ReflectionEquals(newsExpected).matches(newsActual));
     }
 

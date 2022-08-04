@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class NewsMapper {
-    public News toNewsFromRequest(NewsRequestDTO request) {
+    public News toNews(NewsRequestDTO request) {
         News news = new News();
         news.setDisplayOnSite(request.displayOnSite());
         news.setSendByEmail(request.sendByEmail());

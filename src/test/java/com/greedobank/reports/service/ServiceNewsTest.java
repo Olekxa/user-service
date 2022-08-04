@@ -68,7 +68,7 @@ class ServiceNewsTest {
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
 
-        when(mapper.toNewsFromRequest(request)).thenReturn(news);
+        when(mapper.toNews(request)).thenReturn(news);
         when(mapper.toNewsResponseDTO(news)).thenReturn(response);
         NewsResponseDTO responseDTO = serviceNews.create(request);
         verify(newsDAO, times(1)).save(news);
