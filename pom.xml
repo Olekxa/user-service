@@ -99,7 +99,6 @@
                         </excludes>
                     </configuration>
                 </plugin>
-
             </plugins>
         </pluginManagement>
 
@@ -109,6 +108,7 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+
     </build>
 
 </project>
