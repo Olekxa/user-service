@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 
 @RestController
@@ -33,6 +35,7 @@ public class NewsController {
 
     @PostMapping("/api/v1/news")
     @ResponseBody
+    @NotNull
     @Operation(summary = "Create news", description = "Create news")
     public NewsResponseDTO create(@RequestBody NewsRequestDTO request) {
         return serviceNews.create(request);
