@@ -34,7 +34,6 @@ public class NewsController {
 
     @PostMapping("/api/v1/news")
     @ResponseBody
-    @NotNull
     @Operation(summary = "Create news", description = "Create news")
     public NewsResponseDTO create(@RequestBody NewsRequestDTO request) {
         return serviceNews.create(request);
