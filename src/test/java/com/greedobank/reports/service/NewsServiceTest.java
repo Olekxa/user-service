@@ -20,19 +20,19 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class ServiceNewsTest {
+class NewsServiceTest {
 
     @Mock
     private NewsDAO newsDAO;
     @Mock
     private NewsMapper mapper;
 
-    private ServiceNews serviceNews;
+    private NewsService newsService;
 
     @BeforeEach
     private void setUp() {
         MockitoAnnotations.openMocks(this);
-        serviceNews = new ServiceNews(newsDAO, mapper);
+        newsService = new NewsService(newsDAO, mapper);
     }
 
     @Test
@@ -70,7 +70,7 @@ class ServiceNewsTest {
 
         when(mapper.toNews(request)).thenReturn(news);
         when(mapper.toNewsResponseDTO(news)).thenReturn(response);
-        NewsResponseDTO responseDTO = serviceNews.create(request);
+        NewsResponseDTO responseDTO = newsService.create(request);
         verify(newsDAO, times(1)).save(news);
         assertEquals(response, responseDTO);
     }
