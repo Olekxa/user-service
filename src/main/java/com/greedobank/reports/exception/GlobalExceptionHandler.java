@@ -10,7 +10,7 @@ import java.io.IOException;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(NewsCreateException.class)
+    @ExceptionHandler(NewsIncorrectRequestException.class)
     public void handleCreate(HttpServletResponse response) throws IOException {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
