@@ -22,9 +22,6 @@ public class ServiceNews {
     }
 
     public NewsResponseDTO create(NewsRequestDTO request) {
-        if (request == null) {
-
-        }
         OffsetDateTime timeStamp = OffsetDateTime.now();
         News news = newsMapper.toNews(request);
         news.setCreatedAt(timeStamp);
