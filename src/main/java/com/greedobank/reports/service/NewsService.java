@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 import java.time.OffsetDateTime;
 
 @Service
-public class ServiceNews {
+public class NewsService {
     private final NewsDAO newsDAO;
     private final NewsMapper newsMapper;
 
     @Autowired
-    public ServiceNews(NewsDAO newsDAO, NewsMapper newsMapper) {
+    public NewsService(NewsDAO newsDAO, NewsMapper newsMapper) {
         this.newsDAO = newsDAO;
         this.newsMapper = newsMapper;
     }
