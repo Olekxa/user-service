@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @ControllerAdvice
@@ -20,26 +18,32 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public @ResponseBody
-    NewsErrorResponse<String>
+    NewsErrorResponse
     handleInvalidRequest(MethodArgumentNotValidException ex) {
-        List<String> error = ex.getBindingResult()
+        String error = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .filter(Objects::nonNull)
-                .toList();
-        return new NewsErrorResponse<>("Incorrect request", error);
+                .findFirst()
+                .orElse("Unknown parameter");
+        return new NewsErrorResponse(new ErrorResponse("Incorrect request", error));
     }
 
     @ExceptionHandler(HttpServerErrorException.InternalServerError.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public @ResponseBody
-    NewsErrorResponse<String>
+    NewsErrorResponse
     handleServiceFall(HttpServerErrorException.InternalServerError ex) {
-        List<String> error = new ArrayList<>();
-        error.add(ex.getMessage());
-        error.add(ex.getMessage());
-        return new NewsErrorResponse<>("Unknown error occurred", error);
+        return new NewsErrorResponse(new ErrorResponse("Unknown error occurred", ex.getMessage()));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public @ResponseBody
+    NewsErrorResponse
+    handleIllegalArgument(IllegalArgumentException ex) {
+        return new NewsErrorResponse(new ErrorResponse("Unknown error occurred", ex.getMessage()));
     }
 }
 
