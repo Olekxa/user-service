@@ -29,4 +29,8 @@ public class NewsService {
         newsDAO.save(news);
         return newsMapper.toNewsResponseDTO(news);
     }
+
+    public NewsResponseDTO get(Long id) {
+        return newsMapper.toNewsResponseDTO(newsDAO.getReferenceById(id));
+    }
 }

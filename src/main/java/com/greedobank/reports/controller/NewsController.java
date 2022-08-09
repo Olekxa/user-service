@@ -42,22 +42,7 @@ public class NewsController {
     @ResponseBody
     @Operation(summary = "Getting news", description = "get news by id")
     public NewsResponseDTO get(@PathVariable long id) {
-        OffsetDateTime timeCreate = OffsetDateTime.parse("2022-07-10T23:34:50.657873+03:00");
-        NewsResponseDTO newsResponseDTO = new NewsResponseDTO(1,
-                true,
-                true,
-                new ContentResponseDTO(
-                        "title",
-                        "description"),
-                OffsetDateTime.parse("2022-07-04T18:58:44Z"),
-                true,
-                timeCreate,
-                timeCreate);
-        if (id == newsResponseDTO.id()) {
-            return newsResponseDTO;
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news");
-        }
+        return newsService.get(id);
     }
 
     @PatchMapping(value = "/api/v1/news/{id}")
