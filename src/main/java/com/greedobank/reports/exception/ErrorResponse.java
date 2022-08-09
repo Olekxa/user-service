@@ -15,4 +15,12 @@ public class ErrorResponse {
     private String reason;
     @NotNull
     private List<String> details;
+
+    @Override
+    public String toString() {
+        return "Error{" +
+                    "reason='" + reason + '\'' +
+                    ", details=" + details +
+                '}';
+    }
 }

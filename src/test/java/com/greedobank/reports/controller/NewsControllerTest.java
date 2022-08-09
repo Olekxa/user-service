@@ -207,4 +207,204 @@ class NewsControllerTest {
                         new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news").getMessage(),
                         Objects.requireNonNull(result.getResolvedException()).getMessage()));
     }
+
+    @Test
+    public void shouldReturnStatus400whenPostRequestWithInvalidFieldDisplayOnSite() throws Exception {
+        String request = """
+                {
+                  "sendByEmail": true,
+                  "content": {
+                    "title": "string",
+                    "description": "string"
+                  },
+                  "publicationDate": "2022-08-09T15:41:11.774Z",
+                  "active": true
+                }
+                """;
+        String error = """
+                {
+                    "reason": "Incorrect request",
+                    "details": [
+                      "display_on_site can't be null"
+                    ]
+                }
+                """;
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(error));
+    }
+
+    @Test
+    public void shouldReturnStatus400whenPostRequestWithInvalidFieldSendByEmail() throws Exception {
+        String request = """
+                {
+                  "displayOnSite": true,
+                  "content": {
+                    "title": "string",
+                    "description": "string"
+                  },
+                  "publicationDate": "2022-08-09T17:20:36.174Z",
+                  "active": true
+                }
+                """;
+        String error = """
+                {
+                    "reason": "Incorrect request",
+                    "details": [
+                      "send_by_email can't be null"
+                    ]
+                }
+                """;
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(error));
+    }
+
+    @Test
+    public void shouldReturnStatus400whenPostRequestWithInvalidContent() throws Exception {
+        String request = """
+                {
+                  "displayOnSite": true,
+                  "sendByEmail": true,
+                  "publicationDate": "2022-08-09T17:25:40.890Z",
+                  "active": true
+                }
+                """;
+        String error = """
+                {
+                    "reason": "Incorrect request",
+                    "details": [
+                      "content can't be null"
+                    ]
+                }
+                """;
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(error));
+    }
+
+    @Test
+    public void shouldReturnStatus400whenPostRequestWithInvalidTitle() throws Exception {
+        String request = """
+                {
+                  "displayOnSite": true,
+                  "sendByEmail": true,
+                  "content": {
+                    "description": "string"
+                  },
+                  "publicationDate": "2022-08-09T17:30:06.560Z",
+                  "active": true
+                }
+                """;
+        String error = """
+                {
+                    "reason": "Incorrect request",
+                    "details": [
+                      "title can't be empty or null"
+                    ]
+                }
+                """;
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(error));
+    }
+
+    @Test
+    public void shouldReturnStatus400whenPostRequestWithInvalidDescription() throws Exception {
+        String request = """
+                {
+                  "displayOnSite": true,
+                  "sendByEmail": true,
+                  "content": {
+                    "title": "string"
+                  },
+                  "publicationDate": "2022-08-09T17:31:59.675Z",
+                  "active": true
+                }
+                """;
+        String error = """
+                {
+                    "reason": "Incorrect request",
+                    "details": [
+                      "description can't be empty or null"
+                    ]
+                }
+                """;
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(error));
+    }
+
+    @Test
+    public void shouldReturnStatus400whenPostRequestWithInvalidPublicationDate() throws Exception {
+        String request = """
+                {
+                  "displayOnSite": true,
+                  "sendByEmail": true,
+                  "content": {
+                    "title": "string",
+                    "description": "string"
+                  },
+                  "active": true
+                }
+                """;
+        String error = """
+                {
+                    "reason": "Incorrect request",
+                    "details": [
+                      "publication_date can't be null"
+                    ]
+                }
+                """;
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(error));
+    }
+
+    @Test
+    public void shouldReturnStatus400whenPostRequestWithInvalidActive() throws Exception {
+        String request = """
+                {
+                  "displayOnSite": true,
+                  "sendByEmail": true,
+                  "content": {
+                    "title": "string",
+                    "description": "string"
+                  },
+                  "publicationDate": "2022-08-09T17:37:06.875Z"
+                }
+                """;
+        String error = """
+                {
+                    "reason": "Incorrect request",
+                    "details": [
+                      "active can't be null"
+                    ]
+                }
+                """;
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(error));
+    }
 }
