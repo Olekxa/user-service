@@ -1,14 +1,11 @@
 package com.greedobank.reports.dto;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 public record ContentRequestDTO(
-        @NotNull
-        @NotBlank
+        @NotBlank(message = "title can't be empty or null")
         String title,
 
-        @NotNull
-        @NotBlank
+        @NotBlank(message = "description can't be empty or null")
         String description) {
 }
