@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,5 +14,5 @@ public class ErrorResponse {
     @NotNull
     private String reason;
     @NotNull
-    private String details;
+    private List<String> details;
 }
