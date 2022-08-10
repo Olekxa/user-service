@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
@@ -137,30 +138,18 @@ class NewsControllerTest {
                 true,
                 new ContentResponseDTO("title",
                         "last after fail"),
-                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                OffsetDateTime.parse("2022-07-04T18:58:44Z"),
                 true,
                 timeCreate,
                 timeCreate);
-//        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 1)
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andExpect(content().json(response));
         Mockito.when(newsService.get(1L)).thenReturn(responseDTO);
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 1))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 1)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(response));
     }
 
-//    @Test
-//    public void shouldReturn404WhenNewsNotFoundById() throws Exception {
-//        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 2)
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isNotFound())
-//                .andExpect(result -> assertEquals(
-//                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news").getMessage(),
-//                        Objects.requireNonNull(result.getResolvedException()).getMessage()));
-//    }
 
     @Test
     public void shouldReturn200WhenUpdateNews() throws Exception {
@@ -419,6 +408,22 @@ class NewsControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
+                .andExpect(content().json(error));
+    }
+
+    @Test
+    public void shouldReturnStatus400whenNewsWithIdDoesNotExist() throws Exception {
+        String error = """
+                {
+                  "reason": "No such news",
+                  "details": [
+                    "Unable to find com.greedobank.reports.model.News with id 1"
+                  ]
+                }
+                """;
+        Mockito.when(newsService.get(2L)).thenThrow(EntityNotFoundException.class);
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news/{id}", 1L))
+                .andExpect(status().isNotFound())
                 .andExpect(content().json(error));
     }
 }
