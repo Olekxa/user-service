@@ -31,10 +31,10 @@ public class GlobalExceptionHandler {
         return new ErrorResponse("Incorrect request", error);
     }
 
-    @ExceptionHandler(HttpServerErrorException.InternalServerError.class)
+    @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public ErrorResponse handleServiceFall(HttpServerErrorException.InternalServerError ex) {
+    public ErrorResponse handleServiceFall(Exception ex) {
         return new ErrorResponse("There was an error. Please try again later.", Collections.singletonList(ex.getMessage()));
     }
 
