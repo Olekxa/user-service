@@ -19,9 +19,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public @ResponseBody
-    ErrorResponse
-    handleArgumentNotValid(MethodArgumentNotValidException ex) {
+    @ResponseBody
+    public ErrorResponse handleArgumentNotValid(MethodArgumentNotValidException ex) {
         List<String> error = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -33,9 +32,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpServerErrorException.InternalServerError.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public @ResponseBody
-    ErrorResponse
-    handleServiceFall(HttpServerErrorException.InternalServerError ex) {
+    @ResponseBody
+    public ErrorResponse handleServiceFall(HttpServerErrorException.InternalServerError ex) {
         return new ErrorResponse("Unknown error occurred", Collections.singletonList(ex.getMessage()));
     }
 }

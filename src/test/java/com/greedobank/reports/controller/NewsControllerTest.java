@@ -225,7 +225,7 @@ class NewsControllerTest {
                 {
                     "reason": "Incorrect request",
                     "details": [
-                      "display_on_site can't be null"
+                      "Display_on_site can't be null"
                     ]
                 }
                 """;
@@ -254,7 +254,7 @@ class NewsControllerTest {
                 {
                     "reason": "Incorrect request",
                     "details": [
-                      "send_by_email can't be null"
+                      "Send_by_email can't be null"
                     ]
                 }
                 """;
@@ -280,7 +280,7 @@ class NewsControllerTest {
                 {
                     "reason": "Incorrect request",
                     "details": [
-                      "content can't be null"
+                      "Content can't be null"
                     ]
                 }
                 """;
@@ -309,7 +309,7 @@ class NewsControllerTest {
                 {
                     "reason": "Incorrect request",
                     "details": [
-                      "title can't be empty or null"
+                      "Title can't be empty or null"
                     ]
                 }
                 """;
@@ -338,7 +338,7 @@ class NewsControllerTest {
                 {
                     "reason": "Incorrect request",
                     "details": [
-                      "description can't be empty or null"
+                      "Description can't be empty or null"
                     ]
                 }
                 """;
@@ -367,7 +367,7 @@ class NewsControllerTest {
                 {
                     "reason": "Incorrect request",
                     "details": [
-                      "publication_date can't be null"
+                      "Publication_date can't be null"
                     ]
                 }
                 """;
@@ -396,7 +396,7 @@ class NewsControllerTest {
                 {
                     "reason": "Incorrect request",
                     "details": [
-                      "active can't be null"
+                      "Active can't be null"
                     ]
                 }
                 """;
