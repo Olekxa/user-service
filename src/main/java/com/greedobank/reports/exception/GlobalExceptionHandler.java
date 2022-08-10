@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +36,13 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ErrorResponse handleServiceFall(HttpServerErrorException.InternalServerError ex) {
         return new ErrorResponse("There was an error. Please try again later.", Collections.singletonList(ex.getMessage()));
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ErrorResponse handleNoHandlerFound(NoHandlerFoundException ex) {
+        return new ErrorResponse("The requested resource is not found.", Collections.singletonList(ex.getMessage()));
     }
 }
 
