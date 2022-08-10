@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 
@@ -212,7 +211,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturnStatus400whenPostRequestWithInvalidFieldDisplayOnSite() throws Exception {
+    public void shouldReturn400whenPostRequestWithInvalidFieldDisplayOnSite() throws Exception {
         String request = """
                 {
                   "sendByEmail": true,
@@ -241,7 +240,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturnStatus400whenPostRequestWithInvalidFieldSendByEmail() throws Exception {
+    public void shouldReturn400whenPostRequestWithInvalidFieldSendByEmail() throws Exception {
         String request = """
                 {
                   "displayOnSite": true,
@@ -270,7 +269,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturnStatus400whenPostRequestWithInvalidContent() throws Exception {
+    public void shouldReturn400whenPostRequestWithInvalidContent() throws Exception {
         String request = """
                 {
                   "displayOnSite": true,
@@ -296,7 +295,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturnStatus400whenPostRequestWithInvalidTitle() throws Exception {
+    public void shouldReturn400whenPostRequestWithInvalidTitle() throws Exception {
         String request = """
                 {
                   "displayOnSite": true,
@@ -325,7 +324,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturnStatus400whenPostRequestWithInvalidDescription() throws Exception {
+    public void shouldReturn400whenPostRequestWithInvalidDescription() throws Exception {
         String request = """
                 {
                   "displayOnSite": true,
@@ -354,7 +353,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturnStatus400whenPostRequestWithInvalidPublicationDate() throws Exception {
+    public void shouldReturn400whenPostRequestWithInvalidPublicationDate() throws Exception {
         String request = """
                 {
                   "displayOnSite": true,
@@ -383,7 +382,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturnStatus400whenPostRequestWithInvalidActive() throws Exception {
+    public void shouldReturn400whenPostRequestWithInvalidActive() throws Exception {
         String request = """
                 {
                   "displayOnSite": true,
@@ -408,22 +407,6 @@ class NewsControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
-                .andExpect(content().json(error));
-    }
-
-    @Test
-    public void shouldReturnStatus400whenNewsWithIdDoesNotExist() throws Exception {
-        String error = """
-                {
-                  "reason": "No such news",
-                  "details": [
-                    "Unable to find com.greedobank.reports.model.News with id 1"
-                  ]
-                }
-                """;
-        Mockito.when(newsService.get(2L)).thenThrow(EntityNotFoundException.class);
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news/{id}", 1L))
-                .andExpect(status().isNotFound())
                 .andExpect(content().json(error));
     }
 }
