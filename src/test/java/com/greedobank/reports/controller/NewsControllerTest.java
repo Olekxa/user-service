@@ -209,7 +209,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturnStatus400whenPostRequestWithInvalidFieldDisplayOnSite() throws Exception {
+    public void shouldReturn400whenPostRequestWithInvalidFieldDisplayOnSite() throws Exception {
         String request = """
                 {
                   "sendByEmail": true,
@@ -225,7 +225,7 @@ class NewsControllerTest {
                 {
                     "reason": "Incorrect request",
                     "details": [
-                      "Display_on_site can't be null"
+                      "DisplayOnSite can't be null"
                     ]
                 }
                 """;
@@ -238,7 +238,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturnStatus400whenPostRequestWithInvalidFieldSendByEmail() throws Exception {
+    public void shouldReturn400whenPostRequestWithInvalidFieldSendByEmail() throws Exception {
         String request = """
                 {
                   "displayOnSite": true,
@@ -254,7 +254,7 @@ class NewsControllerTest {
                 {
                     "reason": "Incorrect request",
                     "details": [
-                      "Send_by_email can't be null"
+                      "SendByEmail can't be null"
                     ]
                 }
                 """;
@@ -267,7 +267,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturnStatus400whenPostRequestWithInvalidContent() throws Exception {
+    public void shouldReturn400whenPostRequestWithInvalidContent() throws Exception {
         String request = """
                 {
                   "displayOnSite": true,
@@ -293,7 +293,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturnStatus400whenPostRequestWithInvalidTitle() throws Exception {
+    public void shouldReturn400whenPostRequestWithInvalidTitle() throws Exception {
         String request = """
                 {
                   "displayOnSite": true,
@@ -322,7 +322,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturnStatus400whenPostRequestWithInvalidDescription() throws Exception {
+    public void shouldReturn400whenPostRequestWithInvalidDescription() throws Exception {
         String request = """
                 {
                   "displayOnSite": true,
@@ -351,7 +351,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturnStatus400whenPostRequestWithInvalidPublicationDate() throws Exception {
+    public void shouldReturn400whenPostRequestWithInvalidPublicationDate() throws Exception {
         String request = """
                 {
                   "displayOnSite": true,
@@ -367,7 +367,7 @@ class NewsControllerTest {
                 {
                     "reason": "Incorrect request",
                     "details": [
-                      "Publication_date can't be null"
+                      "PublicationDate can't be null"
                     ]
                 }
                 """;
@@ -380,7 +380,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturnStatus400whenPostRequestWithInvalidActive() throws Exception {
+    public void shouldReturn400whenPostRequestWithInvalidActive() throws Exception {
         String request = """
                 {
                   "displayOnSite": true,

@@ -35,7 +35,7 @@ public class NewsController {
     @PostMapping("/api/v1/news")
     @ResponseBody
     @Operation(summary = "Create news", description = "Create news")
-    public NewsResponseDTO  create(@Valid @RequestBody NewsRequestDTO request) {
+    public NewsResponseDTO create(@Valid @RequestBody NewsRequestDTO request) {
         return newsService.create(request);
     }
 

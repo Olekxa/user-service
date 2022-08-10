@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public ErrorResponse handleServiceFall(HttpServerErrorException.InternalServerError ex) {
-        return new ErrorResponse("Unknown error occurred", Collections.singletonList(ex.getMessage()));
+        return new ErrorResponse("There was an error. Please try again later.", Collections.singletonList(ex.getMessage()));
     }
 }
 
