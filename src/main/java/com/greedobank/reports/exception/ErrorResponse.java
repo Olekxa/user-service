@@ -13,3 +13,4 @@ public class ErrorResponse {
     private String reason;
     private List<String> details;
 }
+
