@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
@@ -20,9 +21,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public @ResponseBody
-    ErrorResponse
-    handleArgumentNotValid(MethodArgumentNotValidException ex) {
+    @ResponseBody
+    public ErrorResponse handleArgumentNotValid(MethodArgumentNotValidException ex) {
         List<String> error = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -34,10 +34,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    public @ResponseBody
-    ErrorResponse
-    handleServiceFall(HttpServerErrorException.InternalServerError ex) {
-        return new ErrorResponse("Unknown error occurred", Collections.singletonList(ex.getMessage()));
+    @ResponseBody
+    public ErrorResponse handleServiceFall(Exception ex) {
+        return new ErrorResponse("There was an error. Please try again later.", Collections.singletonList(ex.getMessage()));
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ErrorResponse handleNoHandlerFound(NoHandlerFoundException ex) {
+        return new ErrorResponse("The requested resource is not found.", Collections.singletonList(ex.getMessage()));
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
