@@ -407,4 +407,21 @@ class NewsControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(content().json(error));
     }
+
+    @Test
+    public void shouldReturn404whenSendIncorrectPath() throws Exception {
+        String request = """
+             {
+                    "reason": "Incorrect request",
+                    "details": [
+                      "Active can't be null"
+                    ]
+                }
+                """;
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news/get/path")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
+    }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 @Data
 public class ErrorResponse {
     private String reason;
+
     private List<String> details;
 }
 
