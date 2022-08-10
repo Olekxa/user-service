@@ -55,7 +55,6 @@ class NewsServiceTest {
                 true,
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
-
         val response = new NewsResponseDTO(
                 1,
                 true,
@@ -72,6 +71,37 @@ class NewsServiceTest {
         when(mapper.toNewsResponseDTO(news)).thenReturn(response);
         NewsResponseDTO responseDTO = newsService.create(request);
         verify(newsDAO, times(1)).save(news);
+        assertEquals(response, responseDTO);
+    }
+
+    @Test
+    public void getNewsReturnResponse() {
+        val response = new NewsResponseDTO(
+                1,
+                true,
+                true,
+                new ContentResponseDTO(
+                        "title",
+                        "some text"),
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                true,
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
+        val news = new News(
+                1,
+                true,
+                true,
+                "title",
+                "some text",
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                true,
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
+
+        when(newsDAO.getReferenceById(1L)).thenReturn(news);
+        when(mapper.toNewsResponseDTO(news)).thenReturn(response);
+        NewsResponseDTO responseDTO = newsService.get(1L);
+        verify(newsDAO, times(1)).getReferenceById(1L);
         assertEquals(response, responseDTO);
     }
 }
