@@ -225,7 +225,7 @@ class NewsControllerTest {
                 {
                     "reason": "Incorrect request",
                     "details": [
-                      "DisplayOnSite can't be null"
+                      "displayOnSite can't be null"
                     ]
                 }
                 """;
@@ -254,7 +254,7 @@ class NewsControllerTest {
                 {
                     "reason": "Incorrect request",
                     "details": [
-                      "SendByEmail can't be null"
+                      "sendByEmail can't be null"
                     ]
                 }
                 """;
@@ -367,7 +367,7 @@ class NewsControllerTest {
                 {
                     "reason": "Incorrect request",
                     "details": [
-                      "PublicationDate can't be null"
+                      "publicationDate can't be null"
                     ]
                 }
                 """;
