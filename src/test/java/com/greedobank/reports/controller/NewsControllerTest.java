@@ -150,7 +150,7 @@ class NewsControllerTest {
                   }
                 }
                 """;
-        mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 1)
+       mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 1, updateRequest)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(updateRequest))
