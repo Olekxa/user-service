@@ -92,30 +92,6 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturn400WhenSendNewsWithNullField() throws Exception {
-        String request = """
-                {
-                    "id":3,
-                    "displayOnSite":true,
-                    "sendByEmail":true,
-                    "content":{
-                        "title":"title",
-                        "description":
-                    },
-                    "active":true,
-                    "publicationDate":"22-10-11",
-                    "createdAt":"2022-07-10T23:34:50.657873+03:00",
-                    "updatedAt":"2022-07-10T23:34:50.657873+03:00"
-                }
-                """;
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
-                        .content(request)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isInternalServerError());
-    }
-
-    @Test
     public void shouldReturn200AndNewsById() throws Exception {
         String response = """
                 {
