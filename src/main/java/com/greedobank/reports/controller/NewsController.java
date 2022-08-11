@@ -60,10 +60,8 @@ public class NewsController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete news", description = "delete news by id")
     public void delete(@PathVariable long id) {
-        if (id != 1) {
-            throw new NewsNoFoundException("News with id " + id + " not found");
+       newsService.delete(id);
         }
-    }
 
     @GetMapping("/api/v1/news")
     public String getAllNews() {

@@ -37,4 +37,12 @@ public class NewsService {
                 .map(newsMapper::toNewsResponseDTO)
                 .orElseThrow(() -> new NewsNoFoundException("News with id " + id + " not found"));
     }
+
+    public void delete(Long id) {
+        newsDAO
+                .findById(id)
+                .map(newsMapper::toNewsResponseDTO)
+                .orElseThrow(() -> new NewsNoFoundException("News with id " + id + " not found"));
+        newsDAO.deleteById(id);
+    }
 }
