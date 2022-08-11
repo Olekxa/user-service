@@ -185,7 +185,7 @@ class NewsControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(updateRequest))
-                .andExpect(status().isNotFound())
+                .andExpect(status().isInternalServerError())
                 .andExpect(result -> assertEquals(
                         new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news").getMessage(),
                         Objects.requireNonNull(result.getResolvedException()).getMessage()));
@@ -204,7 +204,7 @@ class NewsControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 2)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
+                .andExpect(status().isInternalServerError())
                 .andExpect(result -> assertEquals(
                         new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news").getMessage(),
                         Objects.requireNonNull(result.getResolvedException()).getMessage()));
