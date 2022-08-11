@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -37,11 +39,19 @@ public class GlobalExceptionHandler {
         return new ErrorResponse("There was an error. Please try again later.");
     }
 
-    @ExceptionHandler(NoHandlerFoundException.class)
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public @ResponseBody
+    ErrorResponse
+    handleNoSuchElementFoundException(EntityNotFoundException ex) {
+        return new ErrorResponse("No such news", Collections.singletonList(ex.getMessage()));
+    }
+
+    @ExceptionHandler(NewsNoFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ResponseBody
-    public ErrorResponse handleNoHandlerFound(NoHandlerFoundException ex) {
-        return new ErrorResponse("The requested resource is not found.", Collections.singletonList(ex.getMessage()));
+    public ErrorResponse handleNotFoundException(NewsNoFoundException ex) {
+        return new ErrorResponse("No such news", Collections.singletonList(ex.getMessage()));
     }
 }
 
