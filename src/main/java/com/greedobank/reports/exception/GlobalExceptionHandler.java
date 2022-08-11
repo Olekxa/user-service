@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public ErrorResponse handleServiceFall(Exception ex) {
-        return new ErrorResponse("There was an error. Please try again later.", Collections.singletonList(ex.getMessage()));
+        return new ErrorResponse("There was an error. Please try again later.");
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
