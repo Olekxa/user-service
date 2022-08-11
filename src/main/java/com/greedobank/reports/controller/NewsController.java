@@ -1,5 +1,6 @@
 package com.greedobank.reports.controller;
 
+import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
 import com.greedobank.reports.service.NewsService;

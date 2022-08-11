@@ -100,24 +100,13 @@ class NewsControllerTest {
                    "sendByEmail": true,
                    "content":{
                        "title":"title",
-                       "description":"last after fail"
+                       "description":"description"
                    },
                    "publicationDate":"2022-07-04T18:58:44Z",
                    "active":true,
                    "createdAt":"2022-07-10T23:34:50.657873+03:00",
                    "updatedAt":"2022-07-10T23:34:50.657873+03:00"
                 }""";
-        OffsetDateTime timeCreate = OffsetDateTime.parse("2022-07-10T23:34:50.657873+03:00");
-        NewsResponseDTO responseDTO = new NewsResponseDTO(1,
-                true,
-                true,
-                new ContentResponseDTO("title",
-                        "last after fail"),
-                OffsetDateTime.parse("2022-07-04T18:58:44Z"),
-                true,
-                timeCreate,
-                timeCreate);
-        Mockito.when(newsService.get(1L)).thenReturn(responseDTO);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 1)
                         .accept(MediaType.APPLICATION_JSON))
                 .andDo(print())
@@ -125,6 +114,19 @@ class NewsControllerTest {
                 .andExpect(content().json(response));
     }
 
+    @Test
+    public void shouldReturn404WhenNewsNotFoundById() throws Exception {
+        String response = """
+                {
+                  "reason": "News with id 2 not found"
+                }
+                """;
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 2)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(content().json(response));
+    }
 
     @Test
     public void shouldReturn200WhenUpdateNews() throws Exception {
@@ -161,7 +163,7 @@ class NewsControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(updateRequest))
-                .andExpect(status().isInternalServerError())
+                .andExpect(status().isNotFound())
                 .andExpect(result -> assertEquals(
                         new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news").getMessage(),
                         Objects.requireNonNull(result.getResolvedException()).getMessage()));
@@ -180,7 +182,7 @@ class NewsControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 2)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isInternalServerError())
+                .andExpect(status().isNotFound())
                 .andExpect(result -> assertEquals(
                         new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news").getMessage(),
                         Objects.requireNonNull(result.getResolvedException()).getMessage()));
@@ -389,13 +391,13 @@ class NewsControllerTest {
     @Test
     public void shouldReturn404whenSendIncorrectPath() throws Exception {
         String request = """
-             {
-                    "reason": "Incorrect request",
-                    "details": [
-                      "Active can't be null"
-                    ]
-                }
-                """;
+                {
+                       "reason": "Incorrect request",
+                       "details": [
+                         "Active can't be null"
+                       ]
+                   }
+                   """;
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news/get/path")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)

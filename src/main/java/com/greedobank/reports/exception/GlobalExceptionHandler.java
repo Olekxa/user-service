@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
@@ -36,14 +34,22 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public ErrorResponse handleServiceFall(Exception ex) {
-        return new ErrorResponse("There was an error. Please try again later.", Collections.singletonList(ex.getMessage()));
+        return new ErrorResponse("There was an error. Please try again later.");
     }
 
-    @ExceptionHandler(NoHandlerFoundException.class)
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public @ResponseBody
+    ErrorResponse
+    handleNoSuchElementFoundException(EntityNotFoundException ex) {
+        return new ErrorResponse("No such news", Collections.singletonList(ex.getMessage()));
+    }
+
+    @ExceptionHandler(NewsNoFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ResponseBody
-    public ErrorResponse handleNoHandlerFound(NoHandlerFoundException ex) {
-        return new ErrorResponse("The requested resource is not found.", Collections.singletonList(ex.getMessage()));
+    public ErrorResponse handleNotFoundException(NewsNoFoundException ex) {
+        return new ErrorResponse(ex.getMessage());
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
