@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.OffsetDateTime;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
@@ -98,10 +99,10 @@ class NewsServiceTest {
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
 
-        when(newsDAO.getReferenceById(1L)).thenReturn(news);
+        when(newsDAO.findById(1L)).thenReturn(Optional.of(news));
         when(mapper.toNewsResponseDTO(news)).thenReturn(response);
         NewsResponseDTO responseDTO = newsService.get(1L);
-        verify(newsDAO, times(1)).getReferenceById(1L);
+        verify(newsDAO, times(1)).findById(1L);
         assertEquals(response, responseDTO);
     }
 }

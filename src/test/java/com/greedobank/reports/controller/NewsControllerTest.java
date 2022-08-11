@@ -1,25 +1,26 @@
 package com.greedobank.reports.controller;
 
-import com.greedobank.reports.dto.NewsRequestDTO;
+import com.greedobank.reports.dao.NewsDAO;
 import com.greedobank.reports.dto.ContentResponseDTO;
+import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
+import com.greedobank.reports.exception.NewsNoFoundException;
 import com.greedobank.reports.service.NewsService;
+import lombok.val;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.server.ResponseStatusException;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.OffsetDateTime;
-import java.util.Objects;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -95,21 +96,33 @@ class NewsControllerTest {
     public void shouldReturn200AndNewsById() throws Exception {
         String response = """
                 {
-                   "id":1,
-                   "displayOnSite": true,
-                   "sendByEmail": true,
-                   "content":{
-                       "title":"title",
-                       "description":"description"
-                   },
-                   "publicationDate":"2022-07-04T18:58:44Z",
-                   "active":true,
-                   "createdAt":"2022-07-10T23:34:50.657873+03:00",
-                   "updatedAt":"2022-07-10T23:34:50.657873+03:00"
-                }""";
+                  "id": 1,
+                  "displayOnSite": true,
+                  "sendByEmail": true,
+                  "content": {
+                    "title": "title",
+                    "description": "some text"
+                  },
+                  "publicationDate": "2022-07-04T21:58:44+03:00",
+                  "active": true,
+                  "createdAt": "2022-07-04T21:58:44+03:00",
+                  "updatedAt": "2022-07-04T21:58:44+03:00"
+                }
+                """;
+        val news = new NewsResponseDTO(
+                1,
+                true,
+                true,
+                new ContentResponseDTO(
+                        "title",
+                        "some text"),
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                true,
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
+        Mockito.when(newsService.get(1L)).thenReturn(news);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 1)
                         .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(response));
     }
@@ -121,8 +134,8 @@ class NewsControllerTest {
                   "reason": "News with id 2 not found"
                 }
                 """;
+        Mockito.when(newsService.get(2L)).thenThrow(new NewsNoFoundException("News with id 2 not found"));
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 2)
-                        .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(response));
@@ -149,24 +162,29 @@ class NewsControllerTest {
 
     @Test
     public void shouldReturn404WhenUpdateNewsNotFoundById() throws Exception {
-        String updateRequest = """
+        String request = """
                 {
-                  "displayOnSite": true,
-                  "sendByEmail": false,
-                  "content": {
-                    "title": "new title",
-                    "description": "new description"
-                  }
+                    "displayOnSite":true,
+                    "sendByEmail":true,
+                    "content":{
+                        "title":"title",
+                        "description":"last after fail"
+                    },
+                    "active":true,
+                    "publicationDate":"2022-07-04T21:58:44+03:00"
+                }
+                """;
+        String error = """
+                {
+                  "reason": "News with id 2 not found"
                 }
                 """;
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 2)
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(updateRequest))
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(result -> assertEquals(
-                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news").getMessage(),
-                        Objects.requireNonNull(result.getResolvedException()).getMessage()));
+                .andExpect(content().json(error));
     }
 
     @Test
@@ -175,17 +193,6 @@ class NewsControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
-    }
-
-    @Test
-    public void shouldReturn404WhenDeleteNewsNotFoundById() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 2)
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound())
-                .andExpect(result -> assertEquals(
-                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news").getMessage(),
-                        Objects.requireNonNull(result.getResolvedException()).getMessage()));
     }
 
     @Test

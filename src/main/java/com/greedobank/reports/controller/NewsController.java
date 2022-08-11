@@ -3,6 +3,7 @@ package com.greedobank.reports.controller;
 import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
+import com.greedobank.reports.exception.NewsNoFoundException;
 import com.greedobank.reports.service.NewsService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 
@@ -52,7 +52,7 @@ public class NewsController {
             @PathVariable(value = "id") long id,
             @RequestBody NewsRequestDTO updateDTO) {
         if (id != 1) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news");
+            throw new NewsNoFoundException("News with id " + id + " not found");
         }
     }
 
@@ -61,7 +61,7 @@ public class NewsController {
     @Operation(summary = "Delete news", description = "delete news by id")
     public void delete(@PathVariable long id) {
         if (id != 1) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news");
+            throw new NewsNoFoundException("News with id " + id + " not found");
         }
     }
 

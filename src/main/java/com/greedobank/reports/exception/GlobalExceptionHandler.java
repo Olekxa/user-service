@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -37,14 +36,6 @@ public class GlobalExceptionHandler {
         return new ErrorResponse("There was an error. Please try again later.");
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody
-    ErrorResponse
-    handleNoSuchElementFoundException(EntityNotFoundException ex) {
-        return new ErrorResponse("No such news", Collections.singletonList(ex.getMessage()));
-    }
-
     @ExceptionHandler(NewsNoFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ResponseBody
@@ -54,18 +45,10 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public @ResponseBody
-    ErrorResponse
+    @ResponseBody
+    public ErrorResponse
     handleServiceNotValidParamId(Exception ex) {
         return new ErrorResponse("Field Id must be a numeric value", Collections.singletonList(ex.getMessage()));
-    }
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody
-    ErrorResponse
-    handleNoSuchElementFoundException(EntityNotFoundException ex) {
-        return new ErrorResponse("No such news", Collections.singletonList(ex.getMessage()));
     }
 }
 
