@@ -37,14 +37,6 @@ public class GlobalExceptionHandler {
         return new ErrorResponse("There was an error. Please try again later.");
     }
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public @ResponseBody
-    ErrorResponse
-    handleNoSuchElementFoundException(EntityNotFoundException ex) {
-        return new ErrorResponse("No such news", Collections.singletonList(ex.getMessage()));
-    }
-
     @ExceptionHandler(NewsNoFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ResponseBody
