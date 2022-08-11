@@ -43,11 +43,11 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(ex.getMessage());
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler(NumberFormatException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ResponseBody
     public ErrorResponse
-    handleServiceNotValidParamId(Exception ex) {
+    handleServiceNotValidParamId(NumberFormatException ex) {
         return new ErrorResponse("Field Id must be a numeric value", Collections.singletonList(ex.getMessage()));
     }
 }

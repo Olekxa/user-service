@@ -1,6 +1,5 @@
 package com.greedobank.reports.controller;
 
-import com.greedobank.reports.dao.NewsDAO;
 import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
@@ -8,7 +7,6 @@ import com.greedobank.reports.exception.NewsNoFoundException;
 import com.greedobank.reports.service.NewsService;
 import lombok.val;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -17,7 +15,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import javax.persistence.EntityNotFoundException;
 import java.time.OffsetDateTime;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -396,19 +393,31 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturn404whenSendIncorrectPath() throws Exception {
+    public void shouldReturn400whenSendIncorrectRequest() throws Exception {
         String request = """
                 {
-                       "reason": "Incorrect request",
-                       "details": [
-                         "Active can't be null"
-                       ]
-                   }
+                    "OnSite":true,
+                    "sendByEmail":true,
+                    "content":{
+                        "title":"title",
+                        "description":"last after fail"
+                    },
+                    "active":true,
+                    "publicationDate":"2022-07-04T21:58:44+03:00"
+                }
+                """;
+        String response = """
+                {
+                    "reason": "Incorrect request",
+                    "details": [
+                      "displayOnSite can't be null"
+                    ]
+                }
                    """;
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news/get/path")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news/")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isBadRequest()).andExpect(content().json(response));
     }
 }
