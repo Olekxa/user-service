@@ -116,11 +116,16 @@ class NewsControllerTest {
 
     @Test
     public void shouldReturn404WhenNewsNotFoundById() throws Exception {
+        String response = """
+                {
+                  "reason": "News with id 2 not found"
+                }
+                """;
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 2)
+                        .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(result -> assertEquals(
-                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news").getMessage(),
-                        Objects.requireNonNull(result.getResolvedException()).getMessage()));
+                .andExpect(status().isNotFound())
+                .andExpect(content().json(response));
     }
 
     @Test
@@ -384,13 +389,13 @@ class NewsControllerTest {
     @Test
     public void shouldReturn404whenSendIncorrectPath() throws Exception {
         String request = """
-             {
-                    "reason": "Incorrect request",
-                    "details": [
-                      "Active can't be null"
-                    ]
-                }
-                """;
+                {
+                       "reason": "Incorrect request",
+                       "details": [
+                         "Active can't be null"
+                       ]
+                   }
+                   """;
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news/get/path")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
