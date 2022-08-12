@@ -14,10 +14,14 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.time.OffsetDateTime;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -150,7 +154,8 @@ class NewsControllerTest {
                   }
                 }
                 """;
-        mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 1)
+
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 1, updateRequest)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(updateRequest))
@@ -177,20 +182,35 @@ class NewsControllerTest {
                 }
                 """;
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 2)
-                        .content(request)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(error));
     }
 
     @Test
-    public void shouldReturn204WhenDeleteNews() throws Exception {
+    public void shouldReturn204WhenDeleteNewsById() throws Exception {
+        willDoNothing().given(newsService).delete(1L);
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }
+
+    @Test
+    public void shouldReturn404WhenDeleteNewsById() throws Exception {
+        String error = """
+                {
+                   "reason": "News with id 2 not found"
+                }
+                """;
+        doThrow(new NewsNoFoundException("News with id 2 not found")).when(newsService).delete(2L);
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 2)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(content().json(error));
+    }
+
 
     @Test
     public void shouldReturn400whenPostRequestWithInvalidFieldDisplayOnSite() throws Exception {
@@ -418,6 +438,7 @@ class NewsControllerTest {
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest()).andExpect(content().json(response));
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(response));
     }
 }
