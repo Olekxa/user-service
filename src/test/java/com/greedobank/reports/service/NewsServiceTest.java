@@ -107,18 +107,7 @@ class NewsServiceTest {
     }
 
     @Test
-    public void postNewsSuccess() {
-        val response = new NewsResponseDTO(
-                1,
-                true,
-                true,
-                new ContentResponseDTO(
-                        "title",
-                        "some text"),
-                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
-                true,
-                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
-                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
+    public void postNewsSuccessRequestWithAllFields() {
         val news = new News(
                 1,
                 true,
@@ -137,11 +126,35 @@ class NewsServiceTest {
                         "some text"),
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
                 true);
-
         when(newsDAO.findById(1L)).thenReturn(Optional.of(news));
-
-        NewsResponseDTO responseDTO = newsService.get(1L);
+        newsService.patch(1L, request);
         verify(newsDAO, times(1)).findById(1L);
-        assertEquals(response, responseDTO);
+        verify(newsDAO, times(1)).save(news);
+    }
+
+    @Test
+    public void postNewsSuccessRequestWithNullFields() {
+        val news = new News(
+                1,
+                true,
+                true,
+                "first news",
+                "some text",
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                true,
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
+        NewsRequestDTO request = new NewsRequestDTO(
+                true,
+                null,
+                new ContentRequestDTO(
+                        null,
+                        "some text"),
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                true);
+        when(newsDAO.findById(1L)).thenReturn(Optional.of(news));
+        newsService.patch(1L, request);
+        verify(newsDAO, times(1)).findById(1L);
+        verify(newsDAO, times(1)).save(news);
     }
 }
