@@ -14,14 +14,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.time.OffsetDateTime;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -164,25 +162,25 @@ class NewsControllerTest {
 
     @Test
     public void shouldReturn404WhenUpdateNewsNotFoundById() throws Exception {
-        String request = """
+        String updateRequest = """
                 {
-                    "displayOnSite":true,
-                    "sendByEmail":true,
-                    "content":{
-                        "title":"title",
-                        "description":"last after fail"
-                    },
-                    "active":true,
-                    "publicationDate":"2022-07-04T21:58:44+03:00"
+                  "displayOnSite": true,
+                  "sendByEmail": false,
+                  "content": {
+                    "title": "new title",
+                    "description": "new description"
+                  }
                 }
                 """;
         String error = """
                 {
-                  "reason": "News with id 2 not found"
+                   "reason": "News with id 2 not found"
                 }
                 """;
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 2)
-                        .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(updateRequest))
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(error));
     }
