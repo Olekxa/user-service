@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
-import javax.persistence.EntityNotFoundException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -43,5 +42,13 @@ public class GlobalExceptionHandler {
     public ErrorResponse handleNotFoundException(NewsNoFoundException ex) {
         return new ErrorResponse(ex.getMessage());
     }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(value= HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ErrorResponse requestHandlingNoHandlerFound() {
+        return new ErrorResponse("Incorrect request");
+    }
 }
+
 
