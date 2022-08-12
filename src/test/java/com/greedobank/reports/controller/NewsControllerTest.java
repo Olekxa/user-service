@@ -1,5 +1,6 @@
 package com.greedobank.reports.controller;
 
+import com.greedobank.reports.dto.ContentRequestDTO;
 import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
@@ -18,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.time.OffsetDateTime;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -80,7 +82,7 @@ class NewsControllerTest {
                     "updatedAt":"2022-07-10T23:34:50.657873+03:00"
                 }
                                """;
-        Mockito.when(newsService.create(Mockito.any(NewsRequestDTO.class))).thenReturn(responseDTO);
+        Mockito.when(newsService.create(any(NewsRequestDTO.class))).thenReturn(responseDTO);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -150,7 +152,7 @@ class NewsControllerTest {
                   }
                 }
                 """;
-       mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 1, updateRequest)
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 1, updateRequest)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(updateRequest))
@@ -159,13 +161,21 @@ class NewsControllerTest {
 
     @Test
     public void shouldReturn404WhenUpdateNewsNotFoundById() throws Exception {
-        String request = """
+        NewsRequestDTO request = new NewsRequestDTO(
+                true,
+                true,
+                new ContentRequestDTO(
+                        "title",
+                        "description"),
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                true);
+        String requestJson = """
                 {
                     "displayOnSite":true,
                     "sendByEmail":true,
                     "content":{
                         "title":"title",
-                        "description":"last after fail"
+                        "description":"description"
                     },
                     "active":true,
                     "publicationDate":"2022-07-04T21:58:44+03:00"
@@ -176,8 +186,9 @@ class NewsControllerTest {
                   "reason": "News with id 2 not found"
                 }
                 """;
-        mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 2)
-                        .content(request)
+        Mockito.doThrow(new NewsNoFoundException("News with id 2 not found")).when(newsService).patch(2L, request);
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 2L)
+                        .content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())

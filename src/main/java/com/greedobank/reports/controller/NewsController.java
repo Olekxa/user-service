@@ -1,6 +1,5 @@
 package com.greedobank.reports.controller;
 
-import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
 import com.greedobank.reports.exception.NewsNoFoundException;
@@ -51,9 +50,7 @@ public class NewsController {
     public void patch(
             @PathVariable(value = "id") long id,
             @RequestBody NewsRequestDTO updateDTO) {
-        if (id != 1) {
-            throw new NewsNoFoundException("News with id " + id + " not found");
-        }
+        newsService.patch(id, updateDTO);
     }
 
     @DeleteMapping(value = "/api/v1/news/{id}")

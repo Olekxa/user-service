@@ -37,4 +37,27 @@ public class NewsService {
                 .map(newsMapper::toNewsResponseDTO)
                 .orElseThrow(() -> new NewsNoFoundException("News with id " + id + " not found"));
     }
+
+    public void patch(Long id, NewsRequestDTO request) {
+        News news = newsDAO
+                .findById(id)
+                .orElseThrow(() -> new NewsNoFoundException("News with id " + id + " not found"));
+        if (request.displayOnSite() != null) {
+            news.setDisplayOnSite(request.displayOnSite());
+        }
+        if (request.sendByEmail() != null) {
+            news.setSendByEmail(request.sendByEmail());
+        }
+        if (request.content().title() != null) {
+            news.setTitle(request.content().title());
+        }
+        if (request.content().description() != null) {
+            news.setDescription(request.content().description());
+        }
+        if (request.active() != null) {
+            news.setActive(request.active());
+        }
+        news.setUpdatedAt(OffsetDateTime.now());
+        newsDAO.save(news);
+    }
 }
