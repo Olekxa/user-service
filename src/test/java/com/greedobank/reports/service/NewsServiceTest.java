@@ -105,4 +105,43 @@ class NewsServiceTest {
         verify(newsDAO, times(1)).findById(1L);
         assertEquals(response, responseDTO);
     }
+
+    @Test
+    public void postNewsSuccess() {
+        val response = new NewsResponseDTO(
+                1,
+                true,
+                true,
+                new ContentResponseDTO(
+                        "title",
+                        "some text"),
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                true,
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
+        val news = new News(
+                1,
+                true,
+                true,
+                "first news",
+                "some text",
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                true,
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
+        NewsRequestDTO request = new NewsRequestDTO(
+                true,
+                true,
+                new ContentRequestDTO(
+                        "first news",
+                        "some text"),
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                true);
+
+        when(newsDAO.findById(1L)).thenReturn(Optional.of(news));
+
+        NewsResponseDTO responseDTO = newsService.get(1L);
+        verify(newsDAO, times(1)).findById(1L);
+        assertEquals(response, responseDTO);
+    }
 }
