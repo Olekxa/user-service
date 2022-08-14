@@ -193,6 +193,16 @@ class NewsControllerTest {
     }
 
     @Test
+    public void shouldReturn404WhenDeleteNewsNotFoundById() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 2)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(result -> assertEquals(
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news").getMessage(),
+                        Objects.requireNonNull(result.getResolvedException()).getMessage()));
+    }
+
+    @Test
     public void shouldReturn400whenPostRequestWithInvalidFieldDisplayOnSite() throws Exception {
         String request = """
                 {
@@ -393,31 +403,10 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturn400whenSendIncorrectRequest() throws Exception {
-        String request = """
-                {
-                    "OnSite":true,
-                    "sendByEmail":true,
-                    "content":{
-                        "title":"title",
-                        "description":"last after fail"
-                    },
-                    "active":true,
-                    "publicationDate":"2022-07-04T21:58:44+03:00"
-                }
-                """;
-        String response = """
-                {
-                    "reason": "Incorrect request",
-                    "details": [
-                      "displayOnSite can't be null"
-                    ]
-                }
-                   """;
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news/")
-                        .content(request)
+    public void shouldReturn404whenSendIncorrectPath() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news/get/path")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest()).andExpect(content().json(response));
+                .andExpect(status().isNotFound());
     }
 }
