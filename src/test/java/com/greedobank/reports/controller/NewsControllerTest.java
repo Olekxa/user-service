@@ -387,6 +387,32 @@ class NewsControllerTest {
     }
 
     @Test
+    public void shouldReturn400whenPostRequestWithAllEmptyLines() throws Exception {
+        String request = """
+                {
+                
+                }
+                """;
+        String error = """
+                {
+                   "reason": "Incorrect request",
+                   "details": [
+                     "Content can't be null",
+                     "publicationDate can't be null",
+                     "sendByEmail can't be null",
+                     "displayOnSite can't be null",
+                     "Active can't be null"
+                   ]
+                 }
+                """;
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().json(error));
+    }
+    @Test
     public void shouldReturn404whenSendIncorrectPath() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news/get/path")
                         .contentType(MediaType.APPLICATION_JSON)
