@@ -1,6 +1,6 @@
 package com.greedobank.reports.service;
 
-import com.greedobank.reports.dao.NewsDAO;
+import com.greedobank.reports.dao.NewsDao;
 import com.greedobank.reports.dto.ContentRequestDTO;
 import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsRequestDTO;
@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 class NewsServiceTest {
 
     @Mock
-    private NewsDAO newsDAO;
+    private NewsDao newsDAO;
     @Mock
     private NewsMapper mapper;
 

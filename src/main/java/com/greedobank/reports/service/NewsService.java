@@ -1,6 +1,6 @@
 package com.greedobank.reports.service;
 
-import com.greedobank.reports.dao.NewsDAO;
+import com.greedobank.reports.dao.NewsDao;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
 import com.greedobank.reports.mapper.NewsMapper;
@@ -12,11 +12,11 @@ import java.time.OffsetDateTime;
 
 @Service
 public class NewsService {
-    private final NewsDAO newsDAO;
+    private final NewsDao newsDAO;
     private final NewsMapper newsMapper;
 
     @Autowired
-    public NewsService(NewsDAO newsDAO, NewsMapper newsMapper) {
+    public NewsService(NewsDao newsDAO, NewsMapper newsMapper) {
         this.newsDAO = newsDAO;
         this.newsMapper = newsMapper;
     }
