@@ -3,7 +3,7 @@ package com.greedobank.reports.controller;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
-import com.greedobank.reports.service.ServiceNews;
+import com.greedobank.reports.service.NewsService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ class NewsControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private ServiceNews serviceNews;
+    private NewsService newsService;
 
     @Test
     public void shouldReturn200WhenSendingRequestToController() throws Exception {
@@ -82,7 +82,7 @@ class NewsControllerTest {
                     "updatedAt":"2022-07-10T23:34:50.657873+03:00"
                 }
                                """;
-        Mockito.when(serviceNews.create(Mockito.any(NewsRequestDTO.class))).thenReturn(responseDTO);
+        Mockito.when(newsService.create(Mockito.any(NewsRequestDTO.class))).thenReturn(responseDTO);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)

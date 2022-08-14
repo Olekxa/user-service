@@ -1,23 +1,18 @@
 package com.greedobank.reports.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class News {
@@ -29,14 +24,12 @@ public class News {
     @Column(name = "display_on_site", nullable = false)
     private boolean displayOnSite;
 
-    @Column(name = "send_by_id", nullable = false)
+    @Column(name = "send_by_email", nullable = false)
     private boolean sendByEmail;
 
-    @NotBlank
     @Column(name = "title", nullable = false)
     private String title;
 
-    @NotBlank
     @Column(name = "description", nullable = false)
     private String description;
 
