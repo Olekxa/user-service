@@ -11,11 +11,14 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -150,7 +153,7 @@ class NewsControllerTest {
                   }
                 }
                 """;
-       mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 1, updateRequest)
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 1, updateRequest)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(updateRequest))
@@ -194,12 +197,16 @@ class NewsControllerTest {
 
     @Test
     public void shouldReturn404WhenDeleteNewsNotFoundById() throws Exception {
+        String error = """
+                {
+                  "reason": "News with id 2 not found"
+                }
+                """;
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 2)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(result -> assertEquals(
-                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Not found news").getMessage(),
-                        Objects.requireNonNull(result.getResolvedException()).getMessage()));
+                .andExpect(status().isNotFound())
+                .andExpect(content().json(error));
     }
 
     @Test
