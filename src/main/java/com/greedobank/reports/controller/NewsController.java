@@ -51,7 +51,7 @@ public class NewsController {
             @PathVariable(value = "id") long id,
             @RequestBody NewsRequestDTO updateDTO) {
         if (id != 1) {
-            throw new NewsNoFoundException("News with id " + id + " not found");
+            throw new NotFoundException("News with id " + id + " not found");
         }
     }
 

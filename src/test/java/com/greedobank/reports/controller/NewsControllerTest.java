@@ -3,6 +3,7 @@ package com.greedobank.reports.controller;
 import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
+import com.greedobank.reports.exception.NotFoundException;
 import com.greedobank.reports.service.NewsService;
 import lombok.val;
 import org.junit.jupiter.api.Test;
@@ -135,7 +136,7 @@ class NewsControllerTest {
                   "reason": "News with id 2 not found"
                 }
                 """;
-        Mockito.when(newsService.get(2L)).thenThrow(new NewsNoFoundException("News with id 2 not found"));
+        Mockito.when(newsService.get(2L)).thenThrow(new NotFoundException("News with id 2 not found"));
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 2)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
@@ -441,6 +442,6 @@ class NewsControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news/get/path")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 }
