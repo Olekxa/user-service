@@ -59,10 +59,10 @@ public class NewsController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete news", description = "delete news by id")
     public void delete(@PathVariable long id) {
-       newsService.delete(id);
-        }
+        newsService.delete(id);
+    }
 
-    @GetMapping("/api/v1/news")
+    @GetMapping(value = "/api/v1/news")
     public String getAllNews() {
         return "GreedoBank completed Migration to Cloud!";
     }
