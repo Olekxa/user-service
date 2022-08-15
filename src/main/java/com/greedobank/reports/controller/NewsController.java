@@ -3,7 +3,7 @@ package com.greedobank.reports.controller;
 import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
-import com.greedobank.reports.exception.NewsNoFoundException;
+import com.greedobank.reports.exception.NoFoundException;
 import com.greedobank.reports.service.NewsService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +58,7 @@ public class NewsController {
         if (id == newsResponseDTO.id()) {
             return newsResponseDTO;
         } else {
-            throw new NewsNoFoundException("News with id " + id + " not found");
+            throw new NoFoundException("News with id " + id + " not found");
         }
     }
 
