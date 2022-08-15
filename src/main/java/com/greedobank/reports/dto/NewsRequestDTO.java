@@ -5,10 +5,10 @@ import javax.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 
 public record NewsRequestDTO(
-        @NotNull(message = "displayOnSite can't be null")
+        @NotNull(message = "DisplayOnSite can't be null")
         Boolean displayOnSite,
 
-        @NotNull(message = "sendByEmail can't be null")
+        @NotNull(message = "SendByEmail can't be null")
         Boolean sendByEmail,
 
         @NotNull(message = "Content can't be null")
