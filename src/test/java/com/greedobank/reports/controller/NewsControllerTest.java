@@ -19,6 +19,9 @@ import java.time.OffsetDateTime;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -214,6 +217,8 @@ class NewsControllerTest {
                   "reason": "News with id 2 not found"
                 }
                 """;
+
+        doThrow(new NotFoundException("News with id 2 not found")).when(newsService).delete(2L);
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 2)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)

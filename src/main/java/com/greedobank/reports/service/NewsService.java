@@ -3,6 +3,7 @@ package com.greedobank.reports.service;
 import com.greedobank.reports.dao.NewsDAO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
+import com.greedobank.reports.exception.NotFoundException;
 import com.greedobank.reports.mapper.NewsMapper;
 import com.greedobank.reports.model.News;
 import org.springframework.beans.factory.annotation.Autowired;
