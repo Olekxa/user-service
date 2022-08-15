@@ -36,10 +36,10 @@ public class GlobalExceptionHandler {
         return new ErrorResponse("There was an error. Please try again later.");
     }
 
-    @ExceptionHandler(NoFoundException.class)
+    @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ResponseBody
-    public ErrorResponse handleNotFoundException(NoFoundException ex) {
+    public ErrorResponse handleNotFoundException(NotFoundException ex) {
         return new ErrorResponse(ex.getMessage());
     }
 
