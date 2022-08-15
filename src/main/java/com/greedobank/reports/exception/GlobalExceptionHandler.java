@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -44,19 +43,11 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(ex.getMessage());
     }
 
-    @ExceptionHandler(NoHandlerFoundException.class)
-    @ResponseStatus(value= HttpStatus.NOT_FOUND)
+    @ExceptionHandler({NoHandlerFoundException.class})
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ResponseBody
     public ErrorResponse requestHandlingNoHandlerFound() {
         return new ErrorResponse("Incorrect request");
-    }
-
-    @ExceptionHandler(NumberFormatException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    @ResponseBody
-    public ErrorResponse
-    handleServiceNotValidParamId(NumberFormatException ex) {
-        return new ErrorResponse("Field Id must be a numeric value", Collections.singletonList(ex.getMessage()));
     }
 }
 

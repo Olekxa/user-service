@@ -5,6 +5,7 @@ import com.greedobank.reports.dto.ContentRequestDTO;
 import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
+import com.greedobank.reports.exception.NotFoundException;
 import com.greedobank.reports.mapper.NewsMapper;
 import com.greedobank.reports.model.News;
 import lombok.val;
@@ -14,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.OffsetDateTime;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
@@ -70,6 +70,7 @@ class NewsServiceTest {
 
         when(mapper.toNews(request)).thenReturn(news);
         when(mapper.toNewsResponseDTO(news)).thenReturn(response);
+
         NewsResponseDTO responseDTO = newsService.create(request);
         verify(newsDAO, times(1)).save(news);
         assertEquals(response, responseDTO);
@@ -99,10 +100,17 @@ class NewsServiceTest {
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
 
-        when(newsDAO.findById(1L)).thenReturn(Optional.of(news));
         when(mapper.toNewsResponseDTO(news)).thenReturn(response);
+
         NewsResponseDTO responseDTO = newsService.get(1L);
         verify(newsDAO, times(1)).findById(1L);
         assertEquals(response, responseDTO);
+    }
+
+    @Test
+    public void getNewsReturnError() {
+        NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> newsService.get(1L));
+
+        assertEquals("News with id 1 not found", notFoundException.getMessage());
     }
 }
