@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.OffsetDateTime;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.times;
@@ -100,6 +101,7 @@ class NewsServiceTest {
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
 
+        when(newsDAO.findById(1L)).thenReturn(Optional.of(news));
         when(mapper.toNewsResponseDTO(news)).thenReturn(response);
 
         NewsResponseDTO responseDTO = newsService.get(1L);
@@ -109,8 +111,10 @@ class NewsServiceTest {
 
     @Test
     public void getNewsReturnError() {
+        String error = "News with id 1 not found";
+
         NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> newsService.get(1L));
 
-        assertEquals("News with id 1 not found", notFoundException.getMessage());
+        assertEquals(error, notFoundException.getMessage());
     }
 }

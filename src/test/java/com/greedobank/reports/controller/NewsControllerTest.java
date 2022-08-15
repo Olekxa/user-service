@@ -83,7 +83,9 @@ class NewsControllerTest {
                     "updatedAt":"2022-07-10T23:34:50.657873+03:00"
                 }
                                """;
+
         Mockito.when(newsService.create(Mockito.any(NewsRequestDTO.class))).thenReturn(responseDTO);
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -136,7 +138,9 @@ class NewsControllerTest {
                   "reason": "News with id 2 not found"
                 }
                 """;
+
         Mockito.when(newsService.get(2L)).thenThrow(new NotFoundException("News with id 2 not found"));
+
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 2)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
@@ -155,6 +159,7 @@ class NewsControllerTest {
                   }
                 }
                 """;
+
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 1, updateRequest)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
@@ -181,6 +186,7 @@ class NewsControllerTest {
                   "reason": "News with id 2 not found"
                 }
                 """;
+
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 2)
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -204,6 +210,7 @@ class NewsControllerTest {
                   "reason": "News with id 2 not found"
                 }
                 """;
+
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 2)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON))
@@ -232,6 +239,7 @@ class NewsControllerTest {
                    ]
                  }
                 """;
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -261,6 +269,7 @@ class NewsControllerTest {
                     ]
                 }
                 """;
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -287,6 +296,7 @@ class NewsControllerTest {
                     ]
                 }
                 """;
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -316,6 +326,7 @@ class NewsControllerTest {
                     ]
                 }
                 """;
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -345,6 +356,7 @@ class NewsControllerTest {
                     ]
                 }
                 """;
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -374,6 +386,7 @@ class NewsControllerTest {
                   ]
                 }
                 """;
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request).contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
@@ -402,6 +415,7 @@ class NewsControllerTest {
                   ]
                 }
                 """;
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -429,6 +443,7 @@ class NewsControllerTest {
                    ]
                  }
                 """;
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request).contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
