@@ -15,7 +15,7 @@ public record NewsRequestDTO(
         @Valid
         ContentRequestDTO content,
 
-        @NotNull(message = "publicationDate can't be null")
+        @NotNull(message = "PublicationDate can't be null")
         OffsetDateTime publicationDate,
 
         @NotNull(message = "Active can't be null")

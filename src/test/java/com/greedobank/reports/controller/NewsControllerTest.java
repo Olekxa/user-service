@@ -58,15 +58,18 @@ class NewsControllerTest {
                 }
                 """;
         OffsetDateTime timeCreate = OffsetDateTime.parse("2022-07-10T23:34:50.657873+03:00");
-        NewsResponseDTO responseDTO = new NewsResponseDTO(1,
-                true,
-                true,
-                new ContentResponseDTO("title",
-                        "last after fail"),
-                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
-                true,
-                timeCreate,
-                timeCreate);
+        NewsResponseDTO responseDTO =
+                new NewsResponseDTO(
+                        1,
+                        true,
+                        true,
+                        new ContentResponseDTO(
+                                "title",
+                                "last after fail"),
+                        OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                        true,
+                        timeCreate,
+                        timeCreate);
         String response = """
                 {
                     "id":1,
@@ -200,12 +203,12 @@ class NewsControllerTest {
                 }
                 """;
         String error = """
-                {
-                    "reason": "Incorrect request",
-                    "details": [
-                      "displayOnSite can't be null"
-                    ]
-                }
+                 {
+                   "reason": "Incorrect request",
+                   "details": [
+                     "DisplayOnSite can't be null"
+                   ]
+                 }
                 """;
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
@@ -232,7 +235,7 @@ class NewsControllerTest {
                 {
                     "reason": "Incorrect request",
                     "details": [
-                      "sendByEmail can't be null"
+                      "SendByEmail can't be null"
                     ]
                 }
                 """;
@@ -343,15 +346,14 @@ class NewsControllerTest {
                 """;
         String error = """
                 {
-                    "reason": "Incorrect request",
-                    "details": [
-                      "publicationDate can't be null"
-                    ]
+                  "reason": "Incorrect request",
+                  "details": [
+                    "PublicationDate can't be null"
+                  ]
                 }
                 """;
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
-                        .content(request)
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request).contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().json(error));
@@ -367,15 +369,15 @@ class NewsControllerTest {
                     "title": "string",
                     "description": "string"
                   },
-                  "publicationDate": "2022-08-09T17:37:06.875Z"
+                  "publicationDate": "2022-08-15T07:37:40.159Z"
                 }
                 """;
         String error = """
                 {
-                    "reason": "Incorrect request",
-                    "details": [
-                      "Active can't be null"
-                    ]
+                  "reason": "Incorrect request",
+                  "details": [
+                    "Active can't be null"
+                  ]
                 }
                 """;
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
@@ -390,7 +392,7 @@ class NewsControllerTest {
     public void shouldReturn400whenPostRequestWithAllEmptyLines() throws Exception {
         String request = """
                 {
-                
+                                
                 }
                 """;
         String error = """
@@ -398,20 +400,20 @@ class NewsControllerTest {
                    "reason": "Incorrect request",
                    "details": [
                      "Content can't be null",
-                     "publicationDate can't be null",
-                     "sendByEmail can't be null",
-                     "displayOnSite can't be null",
+                     "PublicationDate can't be null",
+                     "SendByEmail can't be null",
+                     "DisplayOnSite can't be null",
                      "Active can't be null"
                    ]
                  }
                 """;
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
-                        .content(request)
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request).contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().json(error));
     }
+
     @Test
     public void shouldReturn404whenSendIncorrectPath() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news/get/path")
