@@ -19,7 +19,6 @@ import java.time.OffsetDateTime;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.BDDMockito.willDoNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -85,7 +84,9 @@ class NewsControllerTest {
                     "updatedAt":"2022-07-10T23:34:50.657873+03:00"
                 }
                                """;
+
         Mockito.when(newsService.create(Mockito.any(NewsRequestDTO.class))).thenReturn(responseDTO);
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -122,7 +123,9 @@ class NewsControllerTest {
                 true,
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
+
         Mockito.when(newsService.get(1L)).thenReturn(news);
+
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 1)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -136,7 +139,9 @@ class NewsControllerTest {
                   "reason": "News with id 2 not found"
                 }
                 """;
+
         Mockito.when(newsService.get(2L)).thenThrow(new NotFoundException("News with id 2 not found"));
+
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 2)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
@@ -155,7 +160,8 @@ class NewsControllerTest {
                   }
                 }
                 """;
-        mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 1)
+
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 1, updateRequest)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(updateRequest))
@@ -164,25 +170,29 @@ class NewsControllerTest {
 
     @Test
     public void shouldReturn404WhenUpdateNewsNotFoundById() throws Exception {
-        String updateRequest = """
+        String request = """
                 {
-                  "displayOnSite": true,
-                  "sendByEmail": false,
-                  "content": {
-                    "title": "new title",
-                    "description": "new description"
-                  }
+                    "displayOnSite":true,
+                    "sendByEmail":true,
+                    "content":{
+                        "title":"title",
+                        "description":"last after fail"
+                    },
+                    "active":true,
+                    "publicationDate":"2022-07-04T21:58:44+03:00"
                 }
                 """;
         String error = """
                 {
-                   "reason": "News with id 2 not found"
+                  "reason": "News with id 2 not found"
                 }
                 """;
+
+
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 2)
-                        .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(updateRequest))
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(error));
     }
@@ -190,6 +200,7 @@ class NewsControllerTest {
     @Test
     public void shouldReturn204WhenDeleteNewsById() throws Exception {
         willDoNothing().given(newsService).delete(1L);
+
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON))
@@ -197,13 +208,13 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturn404WhenDeleteNewsById() throws Exception {
+    public void shouldReturn404WhenDeleteNewsNotFoundById() throws Exception {
         String error = """
                 {
-                   "reason": "News with id 2 not found"
+                  "reason": "News with id 2 not found"
                 }
                 """;
-        doThrow(new NotFoundException("News with id 2 not found")).when(newsService).delete(2L);
+
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 2)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON))
@@ -232,6 +243,7 @@ class NewsControllerTest {
                    ]
                  }
                 """;
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -261,6 +273,7 @@ class NewsControllerTest {
                     ]
                 }
                 """;
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -287,6 +300,7 @@ class NewsControllerTest {
                     ]
                 }
                 """;
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -316,6 +330,7 @@ class NewsControllerTest {
                     ]
                 }
                 """;
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -345,6 +360,7 @@ class NewsControllerTest {
                     ]
                 }
                 """;
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -374,6 +390,7 @@ class NewsControllerTest {
                   ]
                 }
                 """;
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -403,6 +420,7 @@ class NewsControllerTest {
                   ]
                 }
                 """;
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -430,6 +448,7 @@ class NewsControllerTest {
                    ]
                  }
                 """;
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request).contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))

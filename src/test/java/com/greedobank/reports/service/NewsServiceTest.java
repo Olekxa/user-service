@@ -5,6 +5,7 @@ import com.greedobank.reports.dto.ContentRequestDTO;
 import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
+import com.greedobank.reports.exception.NotFoundException;
 import com.greedobank.reports.mapper.NewsMapper;
 import com.greedobank.reports.model.News;
 import lombok.val;
@@ -70,6 +71,7 @@ class NewsServiceTest {
 
         when(mapper.toNews(request)).thenReturn(news);
         when(mapper.toNewsResponseDTO(news)).thenReturn(response);
+
         NewsResponseDTO responseDTO = newsService.create(request);
         verify(newsDAO, times(1)).save(news);
         assertEquals(response, responseDTO);
@@ -101,8 +103,18 @@ class NewsServiceTest {
 
         when(newsDAO.findById(1L)).thenReturn(Optional.of(news));
         when(mapper.toNewsResponseDTO(news)).thenReturn(response);
+
         NewsResponseDTO responseDTO = newsService.get(1L);
         verify(newsDAO, times(1)).findById(1L);
         assertEquals(response, responseDTO);
+    }
+
+    @Test
+    public void getNewsReturnError() {
+        String error = "News with id 1 not found";
+
+        NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> newsService.get(1L));
+
+        assertEquals(error, notFoundException.getMessage());
     }
 }

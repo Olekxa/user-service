@@ -43,7 +43,9 @@ class NewsMapperTest {
                 true,
                 null,
                 null);
+
         News newsActual = mapper.toNews(request);
+
         assertTrue(new ReflectionEquals(newsExpected).matches(newsActual));
     }
 
@@ -59,7 +61,6 @@ class NewsMapperTest {
                 true,
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
-
         val responseExpected = new NewsResponseDTO(
                 1,
                 true,
@@ -71,7 +72,9 @@ class NewsMapperTest {
                 true,
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
+
         NewsResponseDTO responseActual = mapper.toNewsResponseDTO(news);
+
         assertTrue(new ReflectionEquals(responseExpected).matches(responseActual));
     }
 }
