@@ -18,6 +18,7 @@ import java.time.OffsetDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -116,5 +117,49 @@ class NewsServiceTest {
         NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> newsService.get(1L));
 
         assertEquals(error, notFoundException.getMessage());
+    }
+
+    @Test
+    public void deleteNewsByIdSuccess() {
+        val response = new NewsResponseDTO(
+                1,
+                true,
+                true,
+                new ContentResponseDTO(
+                        "title",
+                        "some text"),
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                true,
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
+        val news = new News(
+                1,
+                true,
+                true,
+                "title",
+                "some text",
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                true,
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
+
+        when(newsDAO.findById(1L)).thenReturn(Optional.of(news));
+        when(mapper.toNewsResponseDTO(news)).thenReturn(response);
+        doNothing().when(newsDAO).deleteById(1L);
+
+        newsService.delete(1L);
+        verify(newsDAO, times(1)).findById(1L);
+        verify(newsDAO, times(1)).deleteById(1L);
+    }
+
+    @Test
+    public void deleteNewsByIdError() {
+        String error = "News with id 1 not found";
+
+        NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> newsService.delete(1L));
+
+        assertEquals(error, notFoundException.getMessage());
+        verify(newsDAO, times(1)).findById(1L);
+        verify(newsDAO, times(0)).deleteById(1L);
     }
 }
