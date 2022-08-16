@@ -153,7 +153,7 @@ class NewsServiceTest {
     }
 
     @Test
-    public void deleteNewsByIdError() {
+    public void deleteNewsByIdReturnError() {
         String error = "News with id 1 not found";
 
         NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> newsService.delete(1L));
