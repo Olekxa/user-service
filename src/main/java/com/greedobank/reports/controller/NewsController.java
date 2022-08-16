@@ -30,6 +30,7 @@ public class NewsController {
     }
 
     @PostMapping("/api/v1/news")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     @Operation(summary = "Create news", description = "Create news")
     public NewsResponseDTO create(@Valid @RequestBody NewsRequestDTO request) {
@@ -37,6 +38,7 @@ public class NewsController {
     }
 
     @GetMapping(value = "/api/v1/news/{id}")
+    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     @Operation(summary = "Getting news", description = "get news by id")
     public NewsResponseDTO get(@PathVariable long id) {
@@ -44,7 +46,7 @@ public class NewsController {
     }
 
     @PatchMapping(value = "/api/v1/news/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Update news", description = "update news by id if present")
     public void patch(
             @PathVariable(value = "id") long id,
@@ -53,7 +55,7 @@ public class NewsController {
     }
 
     @DeleteMapping(value = "/api/v1/news/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Delete news", description = "delete news by id")
     public void delete(@PathVariable long id) {
         newsService.delete(id);

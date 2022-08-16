@@ -166,7 +166,7 @@ class NewsControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(updateRequest))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
     }
 
     @Test  //fix test after Demo
@@ -203,18 +203,18 @@ class NewsControllerTest {
                         .content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
         //fix test after Demo
     }
 
     @Test
-    public void shouldReturn204WhenDeleteNewsById() throws Exception {
+    public void shouldReturn200WhenDeleteNewsById() throws Exception {
         willDoNothing().given(newsService).delete(1L);
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
     }
 
     @Test

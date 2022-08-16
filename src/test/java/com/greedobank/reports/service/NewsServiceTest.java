@@ -147,7 +147,6 @@ class NewsServiceTest {
     public void deleteNewsByIdReturnError() {
         String error = "News with id 1 not found";
 
-
         when(newsDAO.findById(1L)).thenThrow(new NotFoundException("News with id 1 not found"));
 
         NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> newsService.delete(1L));
@@ -157,7 +156,7 @@ class NewsServiceTest {
     }
 
     @Test
-    public void postNewsByIdSuccessRequestWithAllFields() {
+    public void patchNewsByIdSuccessRequestWithAllFields() {
         val news = new News(
                 1,
                 true,
