@@ -2,7 +2,7 @@ package com.greedobank.reports.controller;
 
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
-import com.greedobank.reports.exception.NewsNoFoundException;
+import com.greedobank.reports.exception.NotFoundException;
 import com.greedobank.reports.service.NewsService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,12 +57,10 @@ public class NewsController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete news", description = "delete news by id")
     public void delete(@PathVariable long id) {
-        if (id != 1) {
-            throw new NewsNoFoundException("News with id " + id + " not found");
-        }
+        newsService.delete(id);
     }
 
-    @GetMapping("/api/v1/news")
+    @GetMapping(value = "/api/v1/news")
     public String getAllNews() {
         return "GreedoBank completed Migration to Cloud!";
     }
