@@ -1,6 +1,5 @@
 package com.greedobank.reports.controller;
 
-import com.greedobank.reports.dao.NewsDAO;
 import com.greedobank.reports.dto.ContentRequestDTO;
 import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsRequestDTO;
@@ -8,28 +7,20 @@ import com.greedobank.reports.dto.NewsResponseDTO;
 import com.greedobank.reports.exception.NotFoundException;
 import com.greedobank.reports.service.NewsService;
 import lombok.val;
-import org.aspectj.lang.annotation.Before;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.OffsetDateTime;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.willDoNothing;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -206,7 +197,8 @@ class NewsControllerTest {
                 }
                 """;
 
-        Mockito.doThrow(new NewsNoFoundException("News with id 2 not found")).when(newsService).patch(2L, request);
+        Mockito.doThrow(new NotFoundException("News with id 2 not found")).when(newsService).patch(2L, request);
+
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 2L)
                         .content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -440,6 +432,7 @@ class NewsControllerTest {
                   ]
                 }
                 """;
+
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)

@@ -41,7 +41,6 @@ public class NewsService {
     public void delete(Long id) {
         newsDAO
                 .findById(id)
-                .map(newsMapper::toNewsResponseDTO)
                 .orElseThrow(() -> new NotFoundException("News with id " + id + " not found"));
         newsDAO.deleteById(id);
     }
@@ -49,7 +48,7 @@ public class NewsService {
     public void patch(Long id, NewsRequestDTO request) {
         News news = newsDAO
                 .findById(id)
-                .orElseThrow(() -> new NewsNoFoundException("News with id " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("News with id " + id + " not found"));
         if (request.displayOnSite() != null) {
             news.setDisplayOnSite(request.displayOnSite());
         }

@@ -12,12 +12,14 @@ import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 import java.time.OffsetDateTime;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -114,24 +116,14 @@ class NewsServiceTest {
     public void getNewsReturnError() {
         String error = "News with id 1 not found";
 
-        NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> newsService.get(1L));
+        when(newsDAO.findById(1L)).thenThrow(new NotFoundException("News with id 1 not found"));
 
+        NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> newsService.get(1L));
         assertEquals(error, notFoundException.getMessage());
     }
 
     @Test
     public void deleteNewsByIdSuccess() {
-        val response = new NewsResponseDTO(
-                1,
-                true,
-                true,
-                new ContentResponseDTO(
-                        "title",
-                        "some text"),
-                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
-                true,
-                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
-                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
         val news = new News(
                 1,
                 true,
@@ -144,7 +136,6 @@ class NewsServiceTest {
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
 
         when(newsDAO.findById(1L)).thenReturn(Optional.of(news));
-        when(mapper.toNewsResponseDTO(news)).thenReturn(response);
         doNothing().when(newsDAO).deleteById(1L);
 
         newsService.delete(1L);
@@ -156,15 +147,17 @@ class NewsServiceTest {
     public void deleteNewsByIdReturnError() {
         String error = "News with id 1 not found";
 
-        NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> newsService.delete(1L));
 
+        when(newsDAO.findById(1L)).thenThrow(new NotFoundException("News with id 1 not found"));
+
+        NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> newsService.delete(1L));
         assertEquals(error, notFoundException.getMessage());
         verify(newsDAO, times(1)).findById(1L);
         verify(newsDAO, times(0)).deleteById(1L);
     }
 
     @Test
-    public void postNewsSuccessRequestWithAllFields() {
+    public void postNewsByIdSuccessRequestWithAllFields() {
         val news = new News(
                 1,
                 true,
@@ -183,14 +176,16 @@ class NewsServiceTest {
                         "some text"),
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
                 true);
+
         when(newsDAO.findById(1L)).thenReturn(Optional.of(news));
         newsService.patch(1L, request);
+
         verify(newsDAO, times(1)).findById(1L);
         verify(newsDAO, times(1)).save(news);
     }
 
     @Test
-    public void postNewsSuccessRequestWithNullFields() {
+    public void patchNewsSuccessRequestWithNullFields() {
         val news = new News(
                 1,
                 true,
@@ -209,9 +204,31 @@ class NewsServiceTest {
                         "some text"),
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
                 true);
+
         when(newsDAO.findById(1L)).thenReturn(Optional.of(news));
         newsService.patch(1L, request);
+
         verify(newsDAO, times(1)).findById(1L);
         verify(newsDAO, times(1)).save(news);
+    }
+
+    @Test
+    public void patchNewsByIdReturnError() {
+        String error = "News with id 1 not found";
+        NewsRequestDTO request = new NewsRequestDTO(
+                true,
+                null,
+                new ContentRequestDTO(
+                        null,
+                        "some text"),
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                true);
+
+        when(newsDAO.findById(1L)).thenThrow(new NotFoundException("News with id 1 not found"));
+
+        NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> newsService.patch(1L, request));
+        assertEquals(error, notFoundException.getMessage());
+        verify(newsDAO, times(1)).findById(1L);
+        verify(newsDAO, times(0)).save(Mockito.any(News.class));
     }
 }
