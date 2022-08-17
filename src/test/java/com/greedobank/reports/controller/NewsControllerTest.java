@@ -202,8 +202,6 @@ class NewsControllerTest {
 
     @Test
     public void shouldReturn204WhenDeleteNewsById() throws Exception {
-        willDoNothing().given(newsService).delete(1L);
-
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON))
