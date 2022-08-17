@@ -32,15 +32,13 @@ public class NewsService {
     }
 
     public NewsResponseDTO get(Long id) {
-        return newsDAO
-                .findById(id)
+        return newsDAO.findById(id)
                 .map(newsMapper::toNewsResponseDTO)
                 .orElseThrow(() -> new NotFoundException("News with id " + id + " not found"));
     }
 
     public void delete(Long id) {
-        newsDAO
-                .findById(id)
+        newsDAO.findById(id)
                 .map(newsMapper::toNewsResponseDTO)
                 .orElseThrow(() -> new NotFoundException("News with id " + id + " not found"));
         newsDAO.deleteById(id);
