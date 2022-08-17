@@ -21,6 +21,7 @@ import java.time.OffsetDateTime;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -150,7 +151,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturn200WhenUpdateNews() throws Exception {
+    public void shouldReturn204WhenUpdateNews() throws Exception {
         String updateRequest = """
                 {
                   "displayOnSite": true,
@@ -166,7 +167,7 @@ class NewsControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(updateRequest))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test  //fix test after Demo
@@ -196,14 +197,14 @@ class NewsControllerTest {
                   "reason": "News with id 2 not found"
                 }
                 """;
-
+       // when(newsService.get(2L)).thenThrow(new NotFoundException("News with id 2 not found"));
         Mockito.doThrow(new NotFoundException("News with id 2 not found")).when(newsService).patch(2L, request);
 
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 2L)
                         .content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
         //fix test after Demo
     }
 
@@ -214,7 +215,7 @@ class NewsControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test

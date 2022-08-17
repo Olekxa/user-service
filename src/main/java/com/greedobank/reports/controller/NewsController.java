@@ -46,7 +46,7 @@ public class NewsController {
     }
 
     @PatchMapping(value = "/api/v1/news/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Update news", description = "update news by id if present")
     public void patch(
             @PathVariable(value = "id") long id,
@@ -55,7 +55,7 @@ public class NewsController {
     }
 
     @DeleteMapping(value = "/api/v1/news/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete news", description = "delete news by id")
     public void delete(@PathVariable long id) {
         newsService.delete(id);
