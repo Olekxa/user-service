@@ -38,7 +38,7 @@ class NewsServiceTest {
     }
 
     @Test
-    public void createNewsReturnResponse() {
+    public void returnResponseWhenCreateNews() {
         NewsRequestDTO request = new NewsRequestDTO(
                 true,
                 true,
@@ -78,7 +78,7 @@ class NewsServiceTest {
     }
 
     @Test
-    public void getNewsReturnResponse() {
+    public void returnResponseWhenGetNews() {
         val response = new NewsResponseDTO(
                 1,
                 true,
@@ -110,7 +110,7 @@ class NewsServiceTest {
     }
 
     @Test
-    public void getNewsReturnError() {
+    public void returnErrorWhenGetNews() {
         String error = "News with id 1 not found";
 
         NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> newsService.get(1L));
