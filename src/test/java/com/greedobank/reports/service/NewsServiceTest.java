@@ -144,12 +144,11 @@ class NewsServiceTest {
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
 
         when(newsDAO.findById(1L)).thenReturn(Optional.of(news));
-        when(mapper.toNewsResponseDTO(news)).thenReturn(response);
-        doNothing().when(newsDAO).deleteById(1L);
+        doNothing().when(newsDAO).delete(news);
 
         newsService.delete(1L);
         verify(newsDAO, times(1)).findById(1L);
-        verify(newsDAO, times(1)).deleteById(1L);
+        verify(newsDAO, times(1)).delete(news);
     }
 
     @Test
