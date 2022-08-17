@@ -39,7 +39,6 @@ public class NewsService {
 
     public void delete(Long id) {
         newsDAO.findById(id)
-                .map(newsMapper::toNewsResponseDTO)
                 .orElseThrow(() -> new NotFoundException("News with id " + id + " not found"));
         newsDAO.deleteById(id);
     }
