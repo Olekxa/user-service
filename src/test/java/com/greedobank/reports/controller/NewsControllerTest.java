@@ -218,7 +218,7 @@ class NewsControllerTest {
                 }
                 """;
 
-        doThrow(new NotFoundException("News with id 2 not found")).when(newsService).delete(2L);
+        doThrow(new NotFoundException("News with id 2 was not found")).when(newsService).delete(2L);
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 2)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
