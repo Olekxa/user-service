@@ -41,7 +41,7 @@ class NewsServiceTest {
     }
 
     @Test
-    public void createNewsReturnResponse() {
+    public void shouldReturnResponseWhenCreateNews() {
         NewsRequestDTO request = new NewsRequestDTO(
                 true,
                 true,
@@ -81,7 +81,7 @@ class NewsServiceTest {
     }
 
     @Test
-    public void getNewsReturnResponse() {
+    public void shouldReturnResponseWhenGetNews() {
         val response = new NewsResponseDTO(
                 1,
                 true,
@@ -113,8 +113,8 @@ class NewsServiceTest {
     }
 
     @Test
-    public void getNewsReturnError() {
-        String error = "News with id 1 not found";
+    public void shouldReturnErrorWhenGetNews() {
+        String error = "News with id 1 was not found";
 
         when(newsDAO.findById(1L)).thenThrow(new NotFoundException("News with id 1 not found"));
 

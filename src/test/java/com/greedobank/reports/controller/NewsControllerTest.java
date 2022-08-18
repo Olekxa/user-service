@@ -45,7 +45,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturn200WhenSendingNewNews() throws Exception {
+    public void shouldReturn200AndResponseWhenSendingNewNews() throws Exception {
         String request = """
                 {
                     "displayOnSite":true,
@@ -98,7 +98,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturn200AndNewsById() throws Exception {
+    public void shouldReturn200AndNewsWhenGetById() throws Exception {
         String response = """
                 {
                   "id": 1,
@@ -194,7 +194,7 @@ class NewsControllerTest {
                 """;
         String error = """
                 {
-                  "reason": "News with id 2 not found"
+                  "reason": "News with id 2 was not found"
                 }
                 """;
        // when(newsService.get(2L)).thenThrow(new NotFoundException("News with id 2 not found"));
@@ -222,7 +222,7 @@ class NewsControllerTest {
     public void shouldReturn404WhenDeleteNewsNotFoundById() throws Exception {
         String error = """
                 {
-                  "reason": "News with id 2 not found"
+                  "reason": "News with id 2 was not found"
                 }
                 """;
 
@@ -236,7 +236,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturn400whenPostRequestWithInvalidFieldDisplayOnSite() throws Exception {
+    public void shouldReturn400WhenPostRequestWithInvalidFieldDisplayOnSite() throws Exception {
         String request = """
                 {
                   "sendByEmail": true,
@@ -266,7 +266,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturn400whenPostRequestWithInvalidFieldSendByEmail() throws Exception {
+    public void shouldReturn400WhenPostRequestWithInvalidFieldSendByEmail() throws Exception {
         String request = """
                 {
                   "displayOnSite": true,
@@ -296,7 +296,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturn400whenPostRequestWithInvalidContent() throws Exception {
+    public void shouldReturn400WhenPostRequestWithInvalidContent() throws Exception {
         String request = """
                 {
                   "displayOnSite": true,
@@ -323,7 +323,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturn400whenPostRequestWithInvalidTitle() throws Exception {
+    public void shouldReturn400WhenPostRequestWithInvalidTitle() throws Exception {
         String request = """
                 {
                   "displayOnSite": true,
@@ -353,7 +353,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturn400whenPostRequestWithInvalidDescription() throws Exception {
+    public void shouldReturn400WhenPostRequestWithInvalidDescription() throws Exception {
         String request = """
                 {
                   "displayOnSite": true,
@@ -383,7 +383,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturn400whenPostRequestWithInvalidPublicationDate() throws Exception {
+    public void shouldReturn400WhenPostRequestWithInvalidPublicationDate() throws Exception {
         String request = """
                 {
                   "displayOnSite": true,
@@ -413,7 +413,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturn400whenPostRequestWithInvalidActive() throws Exception {
+    public void shouldReturn400WhenPostRequestWithInvalidActive() throws Exception {
         String request = """
                 {
                   "displayOnSite": true,
@@ -443,7 +443,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturn400whenPostRequestWithAllEmptyLines() throws Exception {
+    public void shouldReturn400WhenPostRequestWithAllEmptyLines() throws Exception {
         String request = """
                 {
                                 
@@ -470,7 +470,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturn404whenSendIncorrectPath() throws Exception {
+    public void shouldReturn404WhenSendIncorrectPath() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news/get/path")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
