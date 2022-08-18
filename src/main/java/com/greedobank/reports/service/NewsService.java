@@ -39,7 +39,7 @@ public class NewsService {
 
     public void delete(Long id) {
         News news = newsDAO.findById(id)
-                .orElseThrow(() -> new NotFoundException("News with id " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException("News with id " + id + " was not found"));
         newsDAO.delete(news);
     }
 

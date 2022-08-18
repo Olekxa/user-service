@@ -201,8 +201,7 @@ class NewsServiceTest {
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
                 true);
 
-        when(newsDAO.findById(1L)).thenThrow(new NotFoundException("News with id 1 not found"));
-
+        NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> newsService.patch(1L, request));
         assertEquals(error, notFoundException.getMessage());
         verify(newsDAO, times(1)).findById(1L);
         verify(newsDAO, times(0)).deleteById(1L);
