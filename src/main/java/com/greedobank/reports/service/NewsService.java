@@ -31,10 +31,10 @@ public class NewsService {
         return newsMapper.toNewsResponseDTO(news);
     }
 
-    public NewsResponseDTO get(Long id) {
+    public NewsResponseDTO get(long id) {
         return newsDAO.findById(id)
                 .map(newsMapper::toNewsResponseDTO)
-                .orElseThrow(() -> new NotFoundException("News with id " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException(String.format("News with id %d was not found", id)));
     }
 
     public void delete(Long id) {
