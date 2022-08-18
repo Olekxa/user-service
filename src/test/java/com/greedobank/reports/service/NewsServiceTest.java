@@ -39,7 +39,7 @@ class NewsServiceTest {
     }
 
     @Test
-    public void returnResponseWhenCreateNews() {
+    public void shouldReturnResponseWhenCreateNews() {
         NewsRequestDTO request = new NewsRequestDTO(
                 true,
                 true,
@@ -79,7 +79,7 @@ class NewsServiceTest {
     }
 
     @Test
-    public void returnResponseWhenGetNews() {
+    public void shouldReturnResponseWhenGetNews() {
         val response = new NewsResponseDTO(
                 1,
                 true,
@@ -111,7 +111,7 @@ class NewsServiceTest {
     }
 
     @Test
-    public void returnErrorWhenGetNews() {
+    public void shouldReturnErrorWhenGetNews() {
         String error = "News with id 1 not found";
 
         NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> newsService.get(1L));
@@ -120,7 +120,7 @@ class NewsServiceTest {
     }
 
     @Test
-    public void deleteNewsByIdSuccess() {
+    public void shouldDeleteNewsByIdSuccess() {
         val response = new NewsResponseDTO(
                 1,
                 true,
@@ -152,7 +152,7 @@ class NewsServiceTest {
     }
 
     @Test
-    public void deleteNewsByIdReturnError() {
+    public void shouldDeleteNewsByIdReturnError() {
         String error = "News with id 1 not found";
 
         NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> newsService.delete(1L));
