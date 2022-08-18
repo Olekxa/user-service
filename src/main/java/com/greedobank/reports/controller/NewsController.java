@@ -31,7 +31,6 @@ public class NewsController {
     }
 
     @PostMapping("/api/v1/news")
-    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     @Operation(summary = "Create news", description = "Create news")
     public NewsResponseDTO create(@Valid @RequestBody NewsRequestDTO request) {
@@ -39,7 +38,6 @@ public class NewsController {
     }
 
     @GetMapping(value = "/api/v1/news/{id}")
-    @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     @Operation(summary = "Getting news", description = "get news by id")
     public NewsResponseDTO get(@PathVariable long id) {
