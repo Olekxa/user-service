@@ -114,22 +114,22 @@ class NewsServiceTest {
 
     @Test
     public void shouldReturnErrorWhenGetNews() {
-        String error = "News with id 1 was not found";
-
-        when(newsDAO.findById(1L)).thenThrow(new NotFoundException("News with id 1 not found"));
+        String error = "News with id 1 not found";
 
         NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> newsService.get(1L));
+
         assertEquals(error, notFoundException.getMessage());
     }
 
     @Test
-    public void deleteNewsByIdSuccess() {
-        val news = new News(
+    public void shouldDeleteNewsByIdSuccess() {
+        val response = new NewsResponseDTO(
                 1,
                 true,
                 true,
-                "title",
-                "some text",
+                new ContentResponseDTO(
+                        "title",
+                        "some text"),
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
                 true,
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
@@ -225,9 +225,8 @@ class NewsServiceTest {
 
         when(newsDAO.findById(1L)).thenThrow(new NotFoundException("News with id 1 not found"));
 
-        NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> newsService.patch(1L, request));
         assertEquals(error, notFoundException.getMessage());
         verify(newsDAO, times(1)).findById(1L);
-        verify(newsDAO, times(0)).save(Mockito.any(News.class));
+        verify(newsDAO, times(0)).deleteById(1L);
     }
 }
