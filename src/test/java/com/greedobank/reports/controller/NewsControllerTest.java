@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.time.OffsetDateTime;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -85,7 +86,7 @@ class NewsControllerTest {
                 }
                                """;
 
-        Mockito.when(newsService.create(Mockito.any(NewsRequestDTO.class))).thenReturn(responseDTO);
+        Mockito.when(newsService.create(any(NewsRequestDTO.class))).thenReturn(responseDTO);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
@@ -168,16 +169,8 @@ class NewsControllerTest {
                 .andExpect(status().isNoContent());
     }
 
-    @Test  //fix test after Demo
+    @Test
     public void shouldReturn404WhenUpdateNewsNotFoundById() throws Exception {
-        NewsRequestDTO request = new NewsRequestDTO(
-                true,
-                true,
-                new ContentRequestDTO(
-                        "title",
-                        "description"),
-                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
-                true);
         String requestJson = """
                 {
                     "displayOnSite":true,
@@ -195,15 +188,17 @@ class NewsControllerTest {
                   "reason": "News with id 2 was not found"
                 }
                 """;
-       // when(newsService.get(2L)).thenThrow(new NotFoundException("News with id 2 not found"));
-        Mockito.doThrow(new NotFoundException("News with id 2 not found")).when(newsService).patch(2L, request);
+
+        Mockito.doThrow(new NotFoundException("News with id 2 was not found"))
+                .when(newsService)
+                .patch(any(Long.class), any(NewsRequestDTO.class));
 
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 2L)
                         .content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNotFound());
-        //fix test after Demo
+                .andExpect(status().isNotFound())
+                .andExpect(content().json(error));
     }
 
     @Test
