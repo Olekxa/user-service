@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-import static com.greedobank.reports.service.NewsService.NOT_FOUND;
-
 @RestController
 @Validated
 public class NewsController {
@@ -53,7 +51,7 @@ public class NewsController {
             @PathVariable(value = "id") long id,
             @RequestBody NewsRequestDTO updateDTO) {
         if (id != 1) {
-            throw new NotFoundException(String.format(NOT_FOUND, id));
+            throw new NotFoundException(String.format("News with id %d was not found", id));
         }
     }
 
