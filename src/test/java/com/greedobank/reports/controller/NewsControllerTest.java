@@ -202,7 +202,7 @@ class NewsControllerTest {
                         .content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isNotFound());
         //fix test after Demo
     }
 

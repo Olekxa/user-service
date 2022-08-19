@@ -37,13 +37,13 @@ public class NewsService {
                 .orElseThrow(() -> new NotFoundException(String.format("News with id %d was not found", id)));
     }
 
-    public void delete(Long id) {
+    public void delete(long id) {
         News news = newsDAO.findById(id)
                 .orElseThrow(() -> new NotFoundException("News with id " + id + " was not found"));
         newsDAO.delete(news);
     }
 
-    public void patch(Long id, NewsRequestDTO request) {
+    public void patch(long id, NewsRequestDTO request) {
         News news = newsDAO
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException("News with id " + id + " not found"));
