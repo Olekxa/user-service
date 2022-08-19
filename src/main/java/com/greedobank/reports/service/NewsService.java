@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
 public class NewsService {
     private final NewsDAO newsDAO;
     private final NewsMapper newsMapper;
-    public static final String NOT_FOUND = "News with id %d was not found";
+    private static final String NOT_FOUND_ERROR_MESSAGE_TEMPLATE = "News with id %d was not found";
 
     @Autowired
     public NewsService(NewsDAO newsDAO, NewsMapper newsMapper) {
@@ -35,12 +35,12 @@ public class NewsService {
     public NewsResponseDTO get(long id) {
         return newsDAO.findById(id)
                 .map(newsMapper::toNewsResponseDTO)
-                .orElseThrow(() -> new NotFoundException(String.format(NOT_FOUND, id)));
+                .orElseThrow(() -> new NotFoundException(String.format(NOT_FOUND_ERROR_MESSAGE_TEMPLATE, id)));
     }
 
     public void delete(long id) {
         News news = newsDAO.findById(id)
-                .orElseThrow(() -> new NotFoundException(String.format(NOT_FOUND, id)));
+                .orElseThrow(() -> new NotFoundException(String.format(NOT_FOUND_ERROR_MESSAGE_TEMPLATE, id)));
         newsDAO.delete(news);
     }
 
