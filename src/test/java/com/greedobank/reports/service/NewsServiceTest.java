@@ -162,8 +162,36 @@ class NewsServiceTest {
         verify(newsDAO, times(1)).findById(1L);
         verify(newsDAO, times(0)).deleteById(1L);
     }
+
     @Test
-    public void patchNewsSuccessRequestWithNullFields() {
+    public void  shouldChangeNewsWhenPatchNews() {
+        val news = new News(
+                1,
+                true,
+                true,
+                "first news",
+                "some text",
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                true,
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
+                OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
+        NewsRequestDTO request = new NewsRequestDTO(
+                false,
+                false,
+                new ContentRequestDTO(
+                        "new title",
+                        "changed news"),
+                OffsetDateTime.parse("2023-12-04T21:58:30+00:00"),
+                false);
+
+        when(newsDAO.findById(1L)).thenReturn(Optional.of(news));
+        newsService.patch(1L, request);
+
+        verify(newsDAO, times(1)).findById(1L);
+        verify(newsDAO, times(1)).save(news);
+    }
+    @Test
+    public void  shouldChangeNewsWhenPatchWithNullFields() {
         val news = new News(
                 1,
                 true,
