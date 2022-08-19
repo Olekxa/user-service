@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
+import static com.greedobank.reports.service.NewsService.NOT_FOUND;
+
 @RestController
 @Validated
 public class NewsController {
