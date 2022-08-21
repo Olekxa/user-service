@@ -185,7 +185,7 @@ class NewsServiceTest {
                 false);
 
         when(newsDAO.findById(1L)).thenReturn(Optional.of(news));
-        newsService.patch(1L, request);
+        newsService.update(1L, request);
 
         verify(newsDAO, times(1)).findById(1L);
         verify(newsDAO, times(1)).save(news);
@@ -212,7 +212,7 @@ class NewsServiceTest {
                 true);
 
         when(newsDAO.findById(1L)).thenReturn(Optional.of(news));
-        newsService.patch(1L, request);
+        newsService.update(1L, request);
 
         verify(newsDAO, times(1)).findById(1L);
         verify(newsDAO, times(1)).save(news);
@@ -229,7 +229,7 @@ class NewsServiceTest {
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
                 true);
 
-        NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> newsService.patch(1L, request));
+        NotFoundException notFoundException = assertThrows(NotFoundException.class, () -> newsService.update(1L, request));
         assertEquals(error, notFoundException.getMessage());
         verify(newsDAO, times(1)).findById(1L);
         verify(newsDAO, times(0)).deleteById(1L);

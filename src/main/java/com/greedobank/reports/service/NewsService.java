@@ -44,7 +44,7 @@ public class NewsService {
         newsDAO.delete(news);
     }
 
-    public void patch(long id, NewsRequestDTO request) {
+    public void update(long id, NewsRequestDTO request) {
         News news = newsDAO
                 .findById(id)
                 .orElseThrow(() -> new NotFoundException("News with id " + id + " not found"));

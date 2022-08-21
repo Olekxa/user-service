@@ -1,6 +1,5 @@
 package com.greedobank.reports.controller;
 
-import com.greedobank.reports.dto.ContentRequestDTO;
 import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
@@ -191,7 +190,7 @@ class NewsControllerTest {
 
         Mockito.doThrow(new NotFoundException("News with id 2 was not found"))
                 .when(newsService)
-                .patch(any(Long.class), any(NewsRequestDTO.class));
+                .update(any(Long.class), any(NewsRequestDTO.class));
 
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 2L)
                         .content(requestJson)
