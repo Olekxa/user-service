@@ -3,6 +3,7 @@ package com.greedobank.reports.controller;
 import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
+import com.greedobank.reports.dto.NewsUpdateDTO;
 import com.greedobank.reports.exception.NotFoundException;
 import com.greedobank.reports.service.NewsService;
 import lombok.val;
@@ -20,6 +21,8 @@ import java.time.OffsetDateTime;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -166,6 +169,7 @@ class NewsControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(updateRequest))
                 .andExpect(status().isNoContent());
+        verify(newsService, times(1)).update(any(Long.class), any(NewsUpdateDTO.class));
     }
 
     @Test
@@ -190,7 +194,7 @@ class NewsControllerTest {
 
         Mockito.doThrow(new NotFoundException("News with id 2 was not found"))
                 .when(newsService)
-                .update(any(Long.class), any(NewsRequestDTO.class));
+                .update(any(Long.class), any(NewsUpdateDTO.class));
 
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 2L)
                         .content(requestJson)
@@ -198,6 +202,7 @@ class NewsControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(error));
+        verify(newsService, times(1)).update(any(Long.class), any(NewsUpdateDTO.class));
     }
 
     @Test

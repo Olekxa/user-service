@@ -2,6 +2,7 @@ package com.greedobank.reports.controller;
 
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
+import com.greedobank.reports.dto.NewsUpdateDTO;
 import com.greedobank.reports.exception.NotFoundException;
 import com.greedobank.reports.service.NewsService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,10 +50,8 @@ public class NewsController {
     @Operation(summary = "Update news", description = "update news by id if present")
     public void patch(
             @PathVariable(value = "id") long id,
-            @RequestBody NewsRequestDTO updateDTO) {
-        if (id != 1) {
-            throw new NotFoundException(String.format("News with id %d was not found", id));
-        }
+            @RequestBody NewsUpdateDTO updateDTO) {
+        newsService.update(id, updateDTO);
     }
 
     @DeleteMapping(value = "/api/v1/news/{id}")

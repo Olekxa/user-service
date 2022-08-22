@@ -3,6 +3,7 @@ package com.greedobank.reports.service;
 import com.greedobank.reports.dao.NewsDAO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
+import com.greedobank.reports.dto.NewsUpdateDTO;
 import com.greedobank.reports.exception.NotFoundException;
 import com.greedobank.reports.mapper.NewsMapper;
 import com.greedobank.reports.model.News;
@@ -44,21 +45,21 @@ public class NewsService {
         newsDAO.delete(news);
     }
 
-    public void update(long id, NewsRequestDTO request) {
+    public void update(long id, NewsUpdateDTO request) {
         News news = newsDAO
                 .findById(id)
-                .orElseThrow(() -> new NotFoundException("News with id " + id + " not found"));
+                .orElseThrow(() -> new NotFoundException(String.format(NOT_FOUND_ERROR_MESSAGE_TEMPLATE, id)));
         if (request.displayOnSite() != null) {
             news.setDisplayOnSite(request.displayOnSite());
         }
         if (request.sendByEmail() != null) {
             news.setSendByEmail(request.sendByEmail());
         }
-        if (request.content().title() != null) {
-            news.setTitle(request.content().title());
+        if (request.title() != null) {
+            news.setTitle(request.title());
         }
-        if (request.content().description() != null) {
-            news.setDescription(request.content().description());
+        if (request.description() != null) {
+            news.setDescription(request.description());
         }
         if (request.active() != null) {
             news.setActive(request.active());

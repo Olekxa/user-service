@@ -5,6 +5,7 @@ import com.greedobank.reports.dto.ContentRequestDTO;
 import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
+import com.greedobank.reports.dto.NewsUpdateDTO;
 import com.greedobank.reports.exception.NotFoundException;
 import com.greedobank.reports.mapper.NewsMapper;
 import com.greedobank.reports.model.News;
@@ -164,7 +165,7 @@ class NewsServiceTest {
     }
 
     @Test
-    public void  shouldChangeNewsWhenPatchNews() {
+    public void shouldChangeNewsWhenUpdateNews() {
         val news = new News(
                 1,
                 true,
@@ -175,12 +176,11 @@ class NewsServiceTest {
                 true,
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
-        NewsRequestDTO request = new NewsRequestDTO(
+        NewsUpdateDTO request = new NewsUpdateDTO(
                 false,
                 false,
-                new ContentRequestDTO(
-                        "new title",
-                        "changed news"),
+                "new title",
+                "changed news",
                 OffsetDateTime.parse("2023-12-04T21:58:30+00:00"),
                 false);
 
@@ -190,8 +190,9 @@ class NewsServiceTest {
         verify(newsDAO, times(1)).findById(1L);
         verify(newsDAO, times(1)).save(news);
     }
+
     @Test
-    public void  shouldChangeNewsWhenPatchWithNullFields() {
+    public void shouldChangeNewsWhenUpdateWithNullFields() {
         val news = new News(
                 1,
                 true,
@@ -202,12 +203,11 @@ class NewsServiceTest {
                 true,
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"));
-        NewsRequestDTO request = new NewsRequestDTO(
+        NewsUpdateDTO request = new NewsUpdateDTO(
                 true,
                 null,
-                new ContentRequestDTO(
-                        null,
-                        "some text"),
+                null,
+                "some text",
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
                 true);
 
@@ -217,15 +217,15 @@ class NewsServiceTest {
         verify(newsDAO, times(1)).findById(1L);
         verify(newsDAO, times(1)).save(news);
     }
+
     @Test
-    public void shouldReturnErrorWhenPatchNewsById() {
-        String error = "News with id 1 not found";
-        NewsRequestDTO request = new NewsRequestDTO(
+    public void shouldReturnErrorWhenUpdateNewsById() {
+        String error = "News with id 1 was not found";
+        NewsUpdateDTO request = new NewsUpdateDTO(
                 true,
                 null,
-                new ContentRequestDTO(
-                        null,
-                        "some text"),
+                null,
+                "some text",
                 OffsetDateTime.parse("2022-07-04T21:58:44+03:00"),
                 true);
 
