@@ -20,6 +20,7 @@ import java.time.OffsetDateTime;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -202,11 +203,11 @@ class NewsControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(error));
-        verify(newsService, times(1)).update(any(Long.class), any(NewsUpdateDTO.class));
+        verify(newsService, times(1)).update(eq(2L), any(NewsUpdateDTO.class));
     }
 
     @Test
-    public void shouldReturn200WhenDeleteNewsById() throws Exception {
+    public void shouldReturn204WhenDeleteNewsById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON))
