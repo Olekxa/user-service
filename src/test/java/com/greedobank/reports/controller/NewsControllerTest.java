@@ -3,6 +3,7 @@ package com.greedobank.reports.controller;
 import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
+import com.greedobank.reports.dto.NewsUpdateDTO;
 import com.greedobank.reports.exception.NotFoundException;
 import com.greedobank.reports.service.NewsService;
 import lombok.val;
@@ -18,12 +19,15 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.time.OffsetDateTime;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @WebMvcTest(NewsController.class)
 class NewsControllerTest {
@@ -85,7 +89,7 @@ class NewsControllerTest {
                 }
                                """;
 
-        Mockito.when(newsService.create(Mockito.any(NewsRequestDTO.class))).thenReturn(responseDTO);
+        Mockito.when(newsService.create(any(NewsRequestDTO.class))).thenReturn(responseDTO);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
@@ -149,7 +153,7 @@ class NewsControllerTest {
     }
 
     @Test
-    public void shouldReturn200WhenUpdateNews() throws Exception {
+    public void shouldReturn204WhenUpdateNews() throws Exception {
         String updateRequest = """
                 {
                   "displayOnSite": true,
@@ -166,17 +170,18 @@ class NewsControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .content(updateRequest))
                 .andExpect(status().isNoContent());
+        verify(newsService, times(1)).update(any(Long.class), any(NewsUpdateDTO.class));
     }
 
     @Test
     public void shouldReturn404WhenUpdateNewsNotFoundById() throws Exception {
-        String request = """
+        String requestJson = """
                 {
                     "displayOnSite":true,
                     "sendByEmail":true,
                     "content":{
                         "title":"title",
-                        "description":"last after fail"
+                        "description":"description"
                     },
                     "active":true,
                     "publicationDate":"2022-07-04T21:58:44+03:00"
@@ -188,13 +193,17 @@ class NewsControllerTest {
                 }
                 """;
 
+        Mockito.doThrow(new NotFoundException("News with id 2 was not found"))
+                .when(newsService)
+                .update(any(Long.class), any(NewsUpdateDTO.class));
 
-        mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 2)
-                        .content(request)
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 2L)
+                        .content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(error));
+        verify(newsService, times(1)).update(eq(2L), any(NewsUpdateDTO.class));
     }
 
     @Test
