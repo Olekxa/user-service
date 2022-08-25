@@ -1,6 +1,5 @@
 package com.greedobank.reports.model;
 
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -10,9 +9,12 @@ import java.util.Collection;
 import java.util.List;
 
 @EqualsAndHashCode
-@AllArgsConstructor
 public class UserWrapper implements UserDetails {
     private User user;
+
+    public UserWrapper(User user) {
+        this.user = user;
+    }
 
     public long getId() {
         return user.getId();
@@ -24,13 +26,17 @@ public class UserWrapper implements UserDetails {
                 new SimpleGrantedAuthority(user.getRole().getTitle().name()));
     }
 
-    @Override
-    public String getPassword() {
-        return null;
+    public String getEmail(){
+        return user.getEmail();
     }
 
     @Override
     public String getUsername() {
+        return String.valueOf(user.getId());
+    }
+
+    @Override
+    public String getPassword() {
         return null;
     }
 

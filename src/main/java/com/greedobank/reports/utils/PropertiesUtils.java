@@ -10,15 +10,15 @@ import java.util.Properties;
 
 public class PropertiesUtils {
     private static final String FILE_NAME = "application.properties";
-    private static Properties properties = new Properties();
-    private static Logger logger = LoggerFactory.getLogger(PropertiesUtils.class.getName());
+    private static final Properties properties = new Properties();
 
     static {
         URL url = PropertiesUtils.class.getClassLoader().getResource(FILE_NAME);
         try {
+            assert url != null;
             properties.load(new FileInputStream(url.getPath()));
         } catch (IOException | NullPointerException e) {
-            logger.error(e.getMessage(), e);
+            System.out.println(e.getMessage());
         }
     }
 

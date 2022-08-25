@@ -13,6 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -29,6 +33,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ContextConfiguration
 @WebMvcTest(NewsController.class)
 class NewsControllerTest {
 
@@ -39,6 +44,7 @@ class NewsControllerTest {
     private NewsService newsService;
 
     @Test
+    @WithMockUser(value = "john", roles = "VIEWER")
     public void shouldReturn200WhenSendingRequestToController() throws Exception {
         mockMvc.perform(get("/api/v1/news"))
                 .andDo(print())
@@ -47,6 +53,7 @@ class NewsControllerTest {
     }
 
     @Test
+    @WithMockUser(value = "john", roles = "ADMIN")
     public void shouldReturn200AndResponseWhenSendingNewNews() throws Exception {
         String request = """
                 {
@@ -100,6 +107,7 @@ class NewsControllerTest {
     }
 
     @Test
+    @WithMockUser(value = "john", roles = "VIEWER")
     public void shouldReturn200AndNewsWhenGetById() throws Exception {
         String response = """
                 {
@@ -137,6 +145,7 @@ class NewsControllerTest {
     }
 
     @Test
+    @WithMockUser(value = "john", roles = "VIEWER")
     public void shouldReturn404WhenNewsNotFoundById() throws Exception {
         String response = """
                 {

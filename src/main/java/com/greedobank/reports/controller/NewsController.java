@@ -42,7 +42,7 @@ public class NewsController {
     @GetMapping(value = "/api/v1/news/{id}")
     @ResponseBody
     @Operation(summary = "Getting news", description = "get news by id")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("isAuthenticated()")
     public NewsResponseDTO get(@PathVariable long id) {
         return newsService.get(id);
     }
@@ -66,6 +66,7 @@ public class NewsController {
     }
 
     @GetMapping(value = "/api/v1/news")
+    @PreAuthorize("isAuthenticated()")
     public String getAllNews() {
         return "GreedoBank completed Migration to Cloud!";
     }
