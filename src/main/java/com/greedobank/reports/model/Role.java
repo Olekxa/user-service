@@ -9,6 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Role {
     private int id;
-
     private RoleTitle title;
 }

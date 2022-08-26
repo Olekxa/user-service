@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -44,7 +42,7 @@ class NewsControllerTest {
     private NewsService newsService;
 
     @Test
-    @WithMockUser(value = "john", roles = "VIEWER")
+    @WithMockUser
     public void shouldReturn200WhenSendingRequestToController() throws Exception {
         mockMvc.perform(get("/api/v1/news"))
                 .andDo(print())
@@ -53,7 +51,7 @@ class NewsControllerTest {
     }
 
     @Test
-    @WithMockUser(value = "john", roles = "ADMIN")
+    @WithMockUser
     public void shouldReturn200AndResponseWhenSendingNewNews() throws Exception {
         String request = """
                 {
@@ -107,7 +105,7 @@ class NewsControllerTest {
     }
 
     @Test
-    @WithMockUser(value = "john", roles = "VIEWER")
+    @WithMockUser
     public void shouldReturn200AndNewsWhenGetById() throws Exception {
         String response = """
                 {
@@ -145,7 +143,7 @@ class NewsControllerTest {
     }
 
     @Test
-    @WithMockUser(value = "john", roles = "VIEWER")
+    @WithMockUser
     public void shouldReturn404WhenNewsNotFoundById() throws Exception {
         String response = """
                 {
@@ -162,6 +160,7 @@ class NewsControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "john", roles = { "ADMIN" })
     public void shouldReturn204WhenUpdateNews() throws Exception {
         String updateRequest = """
                 {
@@ -183,6 +182,7 @@ class NewsControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "john", roles = { "ADMIN" })
     public void shouldReturn404WhenUpdateNewsNotFoundById() throws Exception {
         String requestJson = """
                 {
@@ -216,6 +216,7 @@ class NewsControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "john", roles = { "ADMIN" })
     public void shouldReturn204WhenDeleteNewsById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -224,6 +225,7 @@ class NewsControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "john", roles = { "ADMIN" })
     public void shouldReturn404WhenDeleteNewsNotFoundById() throws Exception {
         String error = """
                 {
@@ -241,6 +243,7 @@ class NewsControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "john", roles = { "ADMIN" })
     public void shouldReturn400WhenPostRequestWithInvalidFieldDisplayOnSite() throws Exception {
         String request = """
                 {
@@ -271,6 +274,7 @@ class NewsControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "john", roles = { "ADMIN" })
     public void shouldReturn400WhenPostRequestWithInvalidFieldSendByEmail() throws Exception {
         String request = """
                 {
@@ -301,6 +305,7 @@ class NewsControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "john", roles = { "ADMIN" })
     public void shouldReturn400WhenPostRequestWithInvalidContent() throws Exception {
         String request = """
                 {
@@ -328,6 +333,7 @@ class NewsControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "john", roles = { "ADMIN" })
     public void shouldReturn400WhenPostRequestWithInvalidTitle() throws Exception {
         String request = """
                 {
@@ -358,6 +364,7 @@ class NewsControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "john", roles = { "ADMIN" })
     public void shouldReturn400WhenPostRequestWithInvalidDescription() throws Exception {
         String request = """
                 {
@@ -388,6 +395,7 @@ class NewsControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "john", roles = { "ADMIN" })
     public void shouldReturn400WhenPostRequestWithInvalidPublicationDate() throws Exception {
         String request = """
                 {
@@ -418,6 +426,7 @@ class NewsControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "john", roles = { "ADMIN" })
     public void shouldReturn400WhenPostRequestWithInvalidActive() throws Exception {
         String request = """
                 {
