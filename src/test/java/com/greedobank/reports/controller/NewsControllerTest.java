@@ -30,6 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @ContextConfiguration
 @WebMvcTest(NewsController.class)
@@ -51,7 +52,7 @@ class NewsControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "dzhmur@griddynamics.com", roles = "ADMIN")
     public void shouldReturn200AndResponseWhenSendingNewNews() throws Exception {
         String request = """
                 {
@@ -99,13 +100,14 @@ class NewsControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(content().json(response));
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "dzhmur@griddynamics.com", roles = "ADMIN")
     public void shouldReturn200AndNewsWhenGetById() throws Exception {
         String response = """
                 {
@@ -137,13 +139,14 @@ class NewsControllerTest {
         Mockito.when(newsService.get(1L)).thenReturn(news);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/news/{id}", 1)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(content().json(response));
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "dzhmur@griddynamics.com", roles = "ADMIN")
     public void shouldReturn404WhenNewsNotFoundById() throws Exception {
         String response = """
                 {
@@ -160,7 +163,7 @@ class NewsControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "john", roles = { "ADMIN" })
+    @WithMockUser(username = "okukurik@griddynamics.com", roles = "ADMIN")
     public void shouldReturn204WhenUpdateNews() throws Exception {
         String updateRequest = """
                 {
@@ -176,13 +179,14 @@ class NewsControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 1, updateRequest)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(updateRequest))
+                        .content(updateRequest)
+                        .with(csrf()))
                 .andExpect(status().isNoContent());
         verify(newsService, times(1)).update(any(Long.class), any(NewsUpdateDTO.class));
     }
 
     @Test
-    @WithMockUser(username = "john", roles = { "ADMIN" })
+    @WithMockUser(username = "okukurik@griddynamics.com", roles = "ADMIN")
     public void shouldReturn404WhenUpdateNewsNotFoundById() throws Exception {
         String requestJson = """
                 {
@@ -209,23 +213,25 @@ class NewsControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 2L)
                         .content(requestJson)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(error));
         verify(newsService, times(1)).update(eq(2L), any(NewsUpdateDTO.class));
     }
 
     @Test
-    @WithMockUser(username = "john", roles = { "ADMIN" })
+    @WithMockUser(username = "okukurik@griddynamics.com", roles = "ADMIN")
     public void shouldReturn204WhenDeleteNewsById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 1)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
                 .andExpect(status().isNoContent());
     }
 
     @Test
-    @WithMockUser(username = "john", roles = { "ADMIN" })
+    @WithMockUser(username = "john", roles = {"ADMIN"})
     public void shouldReturn404WhenDeleteNewsNotFoundById() throws Exception {
         String error = """
                 {
@@ -237,13 +243,14 @@ class NewsControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 2)
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
                 .andExpect(status().isNotFound())
                 .andExpect(content().json(error));
     }
 
     @Test
-    @WithMockUser(username = "john", roles = { "ADMIN" })
+    @WithMockUser(username = "john", roles = {"ADMIN"})
     public void shouldReturn400WhenPostRequestWithInvalidFieldDisplayOnSite() throws Exception {
         String request = """
                 {
@@ -268,13 +275,14 @@ class NewsControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().json(error));
     }
 
     @Test
-    @WithMockUser(username = "john", roles = { "ADMIN" })
+    @WithMockUser(username = "john", roles = {"ADMIN"})
     public void shouldReturn400WhenPostRequestWithInvalidFieldSendByEmail() throws Exception {
         String request = """
                 {
@@ -299,13 +307,14 @@ class NewsControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().json(error));
     }
 
     @Test
-    @WithMockUser(username = "john", roles = { "ADMIN" })
+    @WithMockUser(username = "john", roles = {"ADMIN"})
     public void shouldReturn400WhenPostRequestWithInvalidContent() throws Exception {
         String request = """
                 {
@@ -327,13 +336,14 @@ class NewsControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON).
+                        with(csrf()))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().json(error));
     }
 
     @Test
-    @WithMockUser(username = "john", roles = { "ADMIN" })
+    @WithMockUser(username = "john", roles = {"ADMIN"})
     public void shouldReturn400WhenPostRequestWithInvalidTitle() throws Exception {
         String request = """
                 {
@@ -358,13 +368,14 @@ class NewsControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().json(error));
     }
 
     @Test
-    @WithMockUser(username = "john", roles = { "ADMIN" })
+    @WithMockUser(username = "john", roles = {"ADMIN"})
     public void shouldReturn400WhenPostRequestWithInvalidDescription() throws Exception {
         String request = """
                 {
@@ -389,13 +400,14 @@ class NewsControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().json(error));
     }
 
     @Test
-    @WithMockUser(username = "john", roles = { "ADMIN" })
+    @WithMockUser(username = "john", roles = {"ADMIN"})
     public void shouldReturn400WhenPostRequestWithInvalidPublicationDate() throws Exception {
         String request = """
                 {
@@ -420,13 +432,14 @@ class NewsControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().json(error));
     }
 
     @Test
-    @WithMockUser(username = "john", roles = { "ADMIN" })
+    @WithMockUser(username = "john", roles = {"ADMIN"})
     public void shouldReturn400WhenPostRequestWithInvalidActive() throws Exception {
         String request = """
                 {
@@ -451,12 +464,14 @@ class NewsControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().json(error));
     }
 
     @Test
+    @WithMockUser(username = "john", roles = {"ADMIN"})
     public void shouldReturn400WhenPostRequestWithAllEmptyLines() throws Exception {
         String request = """
                 {
@@ -478,16 +493,19 @@ class NewsControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
                         .content(request).contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().json(error));
     }
 
     @Test
+    @WithMockUser(username = "john", roles = {"ADMIN"})
     public void shouldReturn404WhenSendIncorrectPath() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news/get/path")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
                 .andExpect(status().isNotFound());
     }
 }

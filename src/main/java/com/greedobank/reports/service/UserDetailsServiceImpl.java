@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = new User(1, "okukurik@griddynamics.com", new Role(1, RoleTitle.ROLE_USER));
+        User user = new User(1, "okukurik@griddynamics.com", new Role(1, RoleTitle.ROLE_ADMIN));
         return new UserWrapper(user);
     }
 }

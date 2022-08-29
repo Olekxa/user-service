@@ -10,7 +10,7 @@ import java.util.List;
 
 @EqualsAndHashCode
 public class UserWrapper implements UserDetails {
-    private User user;
+    private final User user;
 
     public UserWrapper(User user) {
         this.user = user;
@@ -26,13 +26,9 @@ public class UserWrapper implements UserDetails {
                 new SimpleGrantedAuthority(user.getRole().getTitle().name()));
     }
 
-    public String getEmail(){
-        return user.getEmail();
-    }
-
     @Override
     public String getUsername() {
-        return String.valueOf(user.getId());
+        return user.getEmail();
     }
 
     @Override

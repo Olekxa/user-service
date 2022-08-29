@@ -29,12 +29,12 @@ public class GlobalExceptionHandler {
         return new ErrorResponse("Incorrect request", error);
     }
 
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    @ResponseBody
-    public ErrorResponse handleServiceFall(Exception ex) {
-        return new ErrorResponse("There was an error. Please try again later.");
-    }
+//    @ExceptionHandler(Exception.class)
+//    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+//    @ResponseBody
+//    public ErrorResponse handleServiceFall(Exception ex) {
+//        return new ErrorResponse("There was an error. Please try again later.");
+//    }
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
