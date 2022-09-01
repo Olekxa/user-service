@@ -4,7 +4,9 @@ import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
 import com.greedobank.reports.dto.NewsUpdateDTO;
 import com.greedobank.reports.service.NewsService;
+import com.greedobank.reports.service.ReportService;
 import io.swagger.v3.oas.annotations.Operation;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -24,10 +26,12 @@ import javax.validation.Valid;
 @Validated
 public class NewsController {
     private final NewsService newsService;
+    private final ReportService reportService;
 
     @Autowired
-    public NewsController(NewsService newsService) {
+    public NewsController(NewsService newsService, ReportService reportService) {
         this.newsService = newsService;
+        this.reportService = reportService;
     }
 
     @PostMapping("/api/v1/news")
@@ -64,5 +68,13 @@ public class NewsController {
     public String getAllNews() {
         return "GreedoBank completed Migration to Cloud!";
     }
+
+    @PostMapping("/api/v1/report")
+    @ResponseBody
+    @Operation(summary = "Create report", description = "Create report")
+    public Workbook createReport(){
+        return reportService.generateXlsxReport();
+    }
+
 }
 
