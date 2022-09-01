@@ -1,4 +1,4 @@
-package com.utils;
+package com.greedobank.reports.utils;
 
 import com.greedobank.reports.model.CustomCellStyle;
 import lombok.val;

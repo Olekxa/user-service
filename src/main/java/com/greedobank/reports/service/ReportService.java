@@ -1,7 +1,7 @@
 package com.greedobank.reports.service;
 
 import com.greedobank.reports.model.CustomCellStyle;
-import com.utils.StylesGenerator;
+import com.greedobank.reports.utils.StylesGenerator;
 import lombok.val;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
@@ -45,7 +45,7 @@ public class ReportService {
     private void setColumnsWidth(Sheet sheet) {
         sheet.setColumnWidth(0, 256 * 20);
 
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i < 5; i++) {
             sheet.setColumnWidth(i, 256 * 15);
         }
     }
@@ -53,10 +53,10 @@ public class ReportService {
     private void createHeaderRow(Sheet sheet, Map<CustomCellStyle, CellStyle> styles) {
         var row = sheet.createRow(0);
 
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i < 5; i++) {
             val cell = row.createCell(i);
 
-            cell.setCellValue("Column $columnNumber");
+            cell.setCellValue("Column " +i);
             cell.setCellStyle(styles.get(CustomCellStyle.GREY_CENTERED_BOLD_ARIAL_WITH_BORDER));
         }
     }
@@ -71,10 +71,10 @@ public class ReportService {
         var row = sheet.createRow(1);
         createRowLabelCell(row, styles, "Strings row");
 
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i < 5; i++) {
             val cell = row.createCell(i);
 
-            cell.setCellValue("String $columnNumber");
+            cell.setCellValue("String " +i);
             cell.setCellStyle(styles.get(CustomCellStyle.RIGHT_ALIGNED));
         }
     }
@@ -83,10 +83,10 @@ public class ReportService {
         val row = sheet.createRow(2);
         createRowLabelCell(row, styles, "Doubles row");
 
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i < 5; i++) {
             val cell = row.createCell(i);
 
-            cell.setCellValue(new BigDecimal("${columnNumber}.99").doubleValue());
+            cell.setCellValue(new BigDecimal("1.99").doubleValue());
             cell.setCellStyle(styles.get(CustomCellStyle.RIGHT_ALIGNED));
         }
     }
@@ -95,7 +95,7 @@ public class ReportService {
         var row = sheet.createRow(3);
         createRowLabelCell(row, styles, "Dates row");
 
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i < 5; i++) {
             val cell = row.createCell(i);
 
             cell.setCellValue((LocalDate.now()));

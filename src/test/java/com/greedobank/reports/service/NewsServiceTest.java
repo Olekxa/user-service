@@ -9,7 +9,6 @@ import com.greedobank.reports.dto.NewsUpdateDTO;
 import com.greedobank.reports.exception.NotFoundException;
 import com.greedobank.reports.mapper.NewsMapper;
 import com.greedobank.reports.model.News;
-import com.utils.StylesGenerator;
 import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

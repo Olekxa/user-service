@@ -6,6 +6,7 @@ import com.greedobank.reports.dto.NewsUpdateDTO;
 import com.greedobank.reports.service.NewsService;
 import com.greedobank.reports.service.ReportService;
 import io.swagger.v3.oas.annotations.Operation;
+import org.apache.commons.io.IOUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 @RestController
 @Validated
@@ -69,12 +74,24 @@ public class NewsController {
         return "GreedoBank completed Migration to Cloud!";
     }
 
-    @PostMapping("/api/v1/report")
+    @GetMapping("/api/v1/report")
     @ResponseBody
     @Operation(summary = "Create report", description = "Create report")
-    public Workbook createReport(){
-        return reportService.generateXlsxReport();
-    }
+    public byte[] serveFile() throws IOException {
 
+//        Workbook wb = reportService.generateXlsxReport();
+//        try (OutputStream fileOut = new FileOutputStream("workBookWithData.xls")) {
+//            wb.write(fileOut);
+//        }
+//        InputStream inputStream = new FileInputStream((File) wb);
+//        inputStream.read();
+        Workbook wb = reportService.generateXlsxReport();
+        try (OutputStream fileOut = new FileOutputStream("workBookWithData.xls")) {
+           wb.write(fileOut);
+        } InputStream in = getClass()
+                .getResourceAsStream("/Users/okukurik/IdeaProjects/report/workBookWithData.xls");
+      return IOUtils.toByteArray(in);
+    }
 }
+
 
