@@ -11,6 +11,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Map;
@@ -24,9 +26,13 @@ public class ReportService {
         this.stylesGenerator = stylesGenerator;
     }
 
-    public Workbook generateXlsxReport() {
+    public byte[] generateXlsxReport() throws IOException {
         var wb = new XSSFWorkbook();
-        return generateReport(wb);
+        generateReport(wb);
+        try (var out = new ByteArrayOutputStream()) {
+            wb.write(out);
+            return out.toByteArray();
+        }
     }
 
     private Workbook generateReport(XSSFWorkbook wb) {
@@ -56,7 +62,7 @@ public class ReportService {
         for (int i = 1; i < 5; i++) {
             val cell = row.createCell(i);
 
-            cell.setCellValue("Column " +i);
+            cell.setCellValue("Column " + i);
             cell.setCellStyle(styles.get(CustomCellStyle.GREY_CENTERED_BOLD_ARIAL_WITH_BORDER));
         }
     }
@@ -74,7 +80,7 @@ public class ReportService {
         for (int i = 1; i < 5; i++) {
             val cell = row.createCell(i);
 
-            cell.setCellValue("String " +i);
+            cell.setCellValue("String " + i);
             cell.setCellStyle(styles.get(CustomCellStyle.RIGHT_ALIGNED));
         }
     }
