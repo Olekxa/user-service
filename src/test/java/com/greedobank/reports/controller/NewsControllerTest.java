@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.OffsetDateTime;
@@ -505,5 +506,36 @@ class NewsControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .with(csrf()))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void shouldReturn401WhenUnauthorizedUserUseGet() throws Exception {
+        mockMvc.perform(get("/api/v1/news/{id}", 1)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser
+    public void shouldReturn403UserSendingNewNewsWithMissingPrivilege() throws Exception {
+        String request = """
+                {
+                    "displayOnSite":true,
+                    "sendByEmail":true,
+                    "content":{
+                        "title":"title",
+                        "description":"last after fail"
+                    },
+                    "active":true,
+                    "publicationDate":"2022-07-04T21:58:44+03:00"
+                }
+                """;
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/news")
+                        .content(request)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isForbidden());
     }
 }
