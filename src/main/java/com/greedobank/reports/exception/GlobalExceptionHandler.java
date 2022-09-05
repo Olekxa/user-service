@@ -2,6 +2,7 @@ package com.greedobank.reports.exception;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -48,5 +49,12 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ErrorResponse requestHandlingNoHandlerFound() {
         return new ErrorResponse("Incorrect request");
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public ErrorResponse handleAuthenticationException(AccessDeniedException ex) {
+        return new ErrorResponse("Authentication failed at controller advice");
     }
 }

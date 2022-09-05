@@ -163,16 +163,16 @@ class NewsControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "okukurik@griddynamics.com", roles = "ADMIN")
+    @WithMockUser(username = "john", roles = {"ADMIN"})
     public void shouldReturn204WhenUpdateNews() throws Exception {
         String updateRequest = """
                 {
                   "displayOnSite": true,
-                  "sendByEmail": false,
-                  "content": {
-                    "title": "new title",
-                    "description": "new description"
-                  }
+                  "sendByEmail": true,
+                  "title": "change first",
+                  "description": "string",
+                  "publicationDate": "2022-09-05T10:27:59.758Z",
+                  "active": true
                 }
                 """;
 
@@ -186,19 +186,17 @@ class NewsControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "okukurik@griddynamics.com", roles = "ADMIN")
+    @WithMockUser(username = "john", roles = {"ADMIN"})
     public void shouldReturn404WhenUpdateNewsNotFoundById() throws Exception {
         String requestJson = """
                 {
-                    "displayOnSite":true,
-                    "sendByEmail":true,
-                    "content":{
-                        "title":"title",
-                        "description":"description"
-                    },
-                    "active":true,
-                    "publicationDate":"2022-07-04T21:58:44+03:00"
-                }
+                   "displayOnSite": true,
+                   "sendByEmail": true,
+                   "title": "change first",
+                   "description": "string",
+                   "publicationDate": "2022-09-05T10:27:59.758Z",
+                   "active": true
+                 }
                 """;
         String error = """
                 {
