@@ -25,11 +25,6 @@ public class SecurityConfiguration {
     private UnsuitableRoleHandler accessDeniedHandler;
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     public AuthTokenFilter authTokenFilter() {
         return new AuthTokenFilter();
     }
