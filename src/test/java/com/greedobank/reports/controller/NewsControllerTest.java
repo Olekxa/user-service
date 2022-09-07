@@ -1,5 +1,6 @@
 package com.greedobank.reports.controller;
 
+import com.RestControllerTestConfig;
 import com.greedobank.reports.dto.ContentResponseDTO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
@@ -12,11 +13,11 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.OffsetDateTime;
@@ -27,14 +28,15 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
 @ContextConfiguration
 @WebMvcTest(NewsController.class)
+@Import(RestControllerTestConfig.class)
 class NewsControllerTest {
 
     @Autowired
@@ -108,7 +110,7 @@ class NewsControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "dzhmur@griddynamics.com", roles = "ADMIN")
+    @WithMockUser(username = "dzhmur@griddynamics.com", roles = "USER")
     public void shouldReturn200AndNewsWhenGetById() throws Exception {
         String response = """
                 {
@@ -517,7 +519,7 @@ class NewsControllerTest {
     }
 
     @Test
-    @WithMockUser
+    @WithMockUser(username = "okukurik@griddynamics.com", roles = "USER")
     public void shouldReturn403UserSendingNewNewsWithMissingPrivilege() throws Exception {
         String request = """
                 {
@@ -538,4 +540,36 @@ class NewsControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
     }
+    @Test
+    @WithMockUser(username = "okukurik@griddynamics.com", roles = "USER")
+    public void shouldReturn403WhenDeleteNewsByIdWithMissingPrivilege() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/news/{id}", 1)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username = "okukurik@griddynamics.com", roles = "USER")
+    public void shouldReturn403WhenUpdateNewsWithMissingPrivilege() throws Exception {
+        String updateRequest = """
+                {
+                  "displayOnSite": true,
+                  "sendByEmail": true,
+                  "title": "change first",
+                  "description": "string",
+                  "publicationDate": "2022-09-05T10:27:59.758Z",
+                  "active": true
+                }
+                """;
+
+        mockMvc.perform(MockMvcRequestBuilders.patch("/api/v1/news/{id}", 1, updateRequest)
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(updateRequest)
+                        .with(csrf()))
+                .andExpect(status().isForbidden());
+    }
+
 }
