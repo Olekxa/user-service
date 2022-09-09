@@ -12,15 +12,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class UnsuitableRoleHandler  implements AccessDeniedHandler {
+public class UnsuitableRoleHandler implements AccessDeniedHandler {
     @Autowired
     private ObjectMapper mapper;
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        JsonResponse<String> accessDeniedResponse =
-                new JsonResponse<>(accessDeniedException.getMessage());
+        ErrorResponse accessDeniedResponse =
+                new ErrorResponse(accessDeniedException.getMessage());
         mapper.writeValue(response.getOutputStream(), accessDeniedResponse);
     }
 }
