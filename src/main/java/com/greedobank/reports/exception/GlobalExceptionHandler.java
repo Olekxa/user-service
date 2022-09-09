@@ -3,7 +3,6 @@ package com.greedobank.reports.exception;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.access.AuthorizationServiceException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import javax.naming.AuthenticationException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -36,7 +34,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public ErrorResponse handleServiceFall(Exception ex) {
-        return new ErrorResponse("There was an error. Please try again later.");
+        return new ErrorResponse("There was an error. Please try again later." + ex.getClass());
     }
 
     @ExceptionHandler(NotFoundException.class)
@@ -56,7 +54,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
     @ResponseBody
-    public ErrorResponse handleAAccessDeniedException(AccessDeniedException ex) {
+    public ErrorResponse handleAccessDeniedException(AccessDeniedException ex) {
         return new ErrorResponse("Access denied");
     }
 }

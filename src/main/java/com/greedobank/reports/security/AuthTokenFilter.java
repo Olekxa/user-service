@@ -2,6 +2,9 @@ package com.greedobank.reports.security;
 
 import com.greedobank.reports.model.UserWrapper;
 import com.greedobank.reports.utils.JwtUtils;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,13 +23,14 @@ import java.io.IOException;
 public class AuthTokenFilter extends OncePerRequestFilter {
     public static final String AUTH_HEADER_NAME = "Authorization";
     public static final String AUTH_HEADER_PREFIX = "Bearer ";
+    private static final String TOKEN_HEADER_NAME = "Token-Validity";
     @Autowired
     private UserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = getToken(request);
-        if(token != null) {
+        if (token != null) {
             try {
 
                 UserWrapper userDetails = (UserWrapper) userDetailsService.loadUserByUsername(token);
@@ -37,6 +41,10 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            } catch (SignatureException | MalformedJwtException e) {
+                response.setHeader(TOKEN_HEADER_NAME, "Token is wrong");
+            } catch (ExpiredJwtException e) {
+                response.setHeader(TOKEN_HEADER_NAME, "Token has expired");
             } catch (UsernameNotFoundException | IllegalArgumentException e) {
                 logger.error(e.getMessage(), e);
             }
@@ -48,7 +56,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     private String getToken(HttpServletRequest request) {
         String authHeader = request.getHeader(AUTH_HEADER_NAME);
 
-        if(StringUtils.hasText(authHeader) && authHeader.startsWith(AUTH_HEADER_PREFIX))
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith(AUTH_HEADER_PREFIX))
             return authHeader.substring(7);
         return null;
     }
