@@ -61,7 +61,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader(AUTH_HEADER_NAME);
 
         if (StringUtils.hasText(authHeader) && authHeader.startsWith(AUTH_HEADER_PREFIX))
-            return authHeader.substring(7);
+            return authHeader.substring(AUTH_HEADER_PREFIX.length());
         return null;
     }
 }
