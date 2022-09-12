@@ -24,15 +24,18 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     public static final String AUTH_HEADER_NAME = "Authorization";
     public static final String AUTH_HEADER_PREFIX = "Bearer ";
     private static final String TOKEN_HEADER_NAME = "Token-Validity";
+
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private JwtUtils jwtUtils;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = getToken(request);
         if (token != null) {
             try {
-                String email = JwtUtils.getEmail(token);
+                String email = jwtUtils.getEmail(token);
 
                 UserWrapper userDetails = (UserWrapper) userDetailsService.loadUserByUsername(email);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

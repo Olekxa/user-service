@@ -1,21 +1,24 @@
 package com.greedobank.reports.utils;
 
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
-import static com.greedobank.reports.utils.PropertiesUtils.getProperty;
-
-
 @Component
 public class JwtUtils {
-    private static final SecretKey SECRET
-            = generateSecretKey(getProperty("secret.keyword"));
+    private final SecretKey SECRET;
 
-    public static String getEmail(String token) {
+    @Autowired
+    private JwtUtils(@Value("${secret.keyword}") String SECRET) {
+        this.SECRET = generateSecretKey(SECRET);
+    }
+
+    public String getEmail(String token) {
         return Jwts.parser()
                 .setSigningKey(SECRET)
                 .parseClaimsJws(token)
