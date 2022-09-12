@@ -11,16 +11,16 @@ import java.util.Base64;
 
 @Component
 public class JwtUtils {
-    private final SecretKey SECRET;
+    private final SecretKey secret;
 
     @Autowired
-    private JwtUtils(@Value("${secret.keyword}") String SECRET) {
-        this.SECRET = generateSecretKey(SECRET);
+    private JwtUtils(@Value("${secret.keyword}") String secret) {
+        this.secret = generateSecretKey(secret);
     }
 
     public String getEmail(String token) {
         return Jwts.parser()
-                .setSigningKey(SECRET)
+                .setSigningKey(secret)
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
