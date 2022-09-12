@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -41,6 +42,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                         .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
             } catch (SignatureException | MalformedJwtException e) {
                 response.setHeader(TOKEN_HEADER_NAME, "Token is wrong");
             } catch (ExpiredJwtException e) {

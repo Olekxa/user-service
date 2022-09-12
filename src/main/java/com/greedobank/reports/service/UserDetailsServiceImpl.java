@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,6 +19,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final RestTemplate restTemplate;
@@ -28,27 +31,37 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.restTemplate = restTemplate;
     }
 
-
-
     @Override
     public UserDetails loadUserByUsername(String token) throws UsernameNotFoundException {
         String email = JwtUtils.getEmail(token);
-        String tokenWith = "Bearer ".concat(token);
-        String request = url.concat("?email=").concat(email);
+        //String tokenWith = "Bearer ".concat(token);
+       // String request = url.concat("?email=").concat(email);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
-        headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-        headers.set("Authorization", tokenWith);
+//
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
+//        headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
+//        headers.set("Authorization", tokenWith);
+//
+//
+//        HttpEntity<String> jwtEntity = new HttpEntity<>(headers);
+//        ResponseEntity<User[]> entity = restTemplate.exchange(request, HttpMethod.GET, jwtEntity,
+//                User[].class);
 
+        String url = "http://localhost:8081/api/v1/users?email=" + email;
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+//        HttpEntity<String> entity = new HttpEntity<>(headers);
+//
+//        ResponseEntity<User[]> response = restTemplate.exchange(
+//                url,
+//                HttpMethod.GET,
+//                entity,
+//                User[].class);
 
-        HttpEntity<String> jwtEntity = new HttpEntity<>(headers);
-        ResponseEntity<User[]> entity = restTemplate.exchange(request, HttpMethod.GET, jwtEntity,
-                User[].class);
+        //ResponseEntity<User[]> entity = restTemplate.exchange(request, HttpMethod.GET, bodyOfToken, User[].class);
 
-        // ResponseEntity<User[]> entity = restTemplate.exchange(request, HttpMethod.GET, bodyOfToken, User[].class);
-
-        // ResponseEntity<User[]> entity = restTemplate.getForEntity(request, User[].class);
+        ResponseEntity<User[]> entity = restTemplate.getForEntity(url, User[].class);
 
         User[] users = entity.getBody();
 

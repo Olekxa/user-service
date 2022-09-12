@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.List;
@@ -34,7 +35,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public ErrorResponse handleServiceFall(Exception ex) {
-        return new ErrorResponse("There was an error. Please try again later." + ex.getClass());
+        return new ErrorResponse("There was an error. Please try again later.");
     }
 
     @ExceptionHandler(NotFoundException.class)
