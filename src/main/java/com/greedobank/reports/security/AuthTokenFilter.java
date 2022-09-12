@@ -25,8 +25,11 @@ public class AuthTokenFilter extends OncePerRequestFilter {
     public static final String AUTH_HEADER_NAME = "Authorization";
     public static final String AUTH_HEADER_PREFIX = "Bearer ";
     private static final String TOKEN_HEADER_NAME = "Token-Validity";
+
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private JwtUtils jwtUtils;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -59,7 +62,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         String authHeader = request.getHeader(AUTH_HEADER_NAME);
 
         if (StringUtils.hasText(authHeader) && authHeader.startsWith(AUTH_HEADER_PREFIX))
-            return authHeader.substring(7);
+            return authHeader.substring(AUTH_HEADER_PREFIX.length());
         return null;
     }
 }
