@@ -5,9 +5,6 @@ import com.greedobank.reports.model.UserWrapper;
 import com.greedobank.reports.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -23,47 +20,32 @@ import java.util.List;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
+    private final String url;
     private final RestTemplate restTemplate;
-    private final String url = "http://localhost:8081/api/v1/users/";
+    private final JwtUtils jwtUtils;
 
     @Autowired
-    public UserDetailsServiceImpl(RestTemplate restTemplate) {
+    public UserDetailsServiceImpl(
+            @Value("${userService.url}") String url,
+            RestTemplate restTemplate,
+            JwtUtils jwtUtils) {
+        this.url = url;
         this.restTemplate = restTemplate;
+        this.jwtUtils = jwtUtils;
     }
 
     @Override
     public UserDetails loadUserByUsername(String token) throws UsernameNotFoundException {
-        String email = JwtUtils.getEmail(token);
-        //String tokenWith = "Bearer ".concat(token);
-       // String request = url.concat("?email=").concat(email);
+        String email = jwtUtils.getEmail(token);
+        String request = url.concat(email);
 
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.set("Content-Type", MediaType.APPLICATION_JSON_VALUE);
-//        headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-//        headers.set("Authorization", tokenWith);
-//
-//
-//        HttpEntity<String> jwtEntity = new HttpEntity<>(headers);
-//        ResponseEntity<User[]> entity = restTemplate.exchange(request, HttpMethod.GET, jwtEntity,
-//                User[].class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
+        HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        String url = "http://localhost:8081/api/v1/users?email=" + email;
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setAccept(List.of(MediaType.APPLICATION_JSON));
-//        HttpEntity<String> entity = new HttpEntity<>(headers);
-//
-//        ResponseEntity<User[]> response = restTemplate.exchange(
-//                url,
-//                HttpMethod.GET,
-//                entity,
-//                User[].class);
+        ResponseEntity<User[]> response = restTemplate.exchange(request, HttpMethod.GET, entity, User[].class);
 
-        //ResponseEntity<User[]> entity = restTemplate.exchange(request, HttpMethod.GET, bodyOfToken, User[].class);
-
-        ResponseEntity<User[]> entity = restTemplate.getForEntity(url, User[].class);
-
-        User[] users = entity.getBody();
+        User[] users = response.getBody();
 
         if (users == null || users.length == 0) {
             throw new UsernameNotFoundException("User not found with such email");
