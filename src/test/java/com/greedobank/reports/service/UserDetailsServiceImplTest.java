@@ -3,9 +3,7 @@ package com.greedobank.reports.service;
 import com.greedobank.reports.model.Role;
 import com.greedobank.reports.model.RoleTitle;
 import com.greedobank.reports.model.User;
-import com.greedobank.reports.model.UserWrapper;
 import com.greedobank.reports.utils.JwtUtils;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -22,7 +20,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
