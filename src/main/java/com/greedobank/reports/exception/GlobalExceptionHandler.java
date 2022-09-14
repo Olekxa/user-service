@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -54,7 +55,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(value = HttpStatus.FORBIDDEN)
     @ResponseBody
-    public ErrorResponse handleAccessDeniedException(AccessDeniedException ex) {
-        return new ErrorResponse("Access denied");
+    public ErrorResponse handleAccessDeniedException(AccessDeniedException ex, HttpServletResponse response) {
+        return new ErrorResponse("Access denied: " + response.getHeader("Token-Validity"));
     }
 }
