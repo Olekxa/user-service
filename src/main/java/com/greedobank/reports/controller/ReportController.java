@@ -16,7 +16,6 @@ import java.io.IOException;
 @RestController
 @Validated
 public class ReportController {
-
     private final ReportService reportService;
 
     @Autowired
