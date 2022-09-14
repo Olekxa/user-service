@@ -7,6 +7,7 @@ import com.greedobank.reports.service.NewsService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,7 @@ public class NewsController {
     @PostMapping("/api/v1/news")
     @ResponseBody
     @Operation(summary = "Create news", description = "Create news")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public NewsResponseDTO create(@Valid @RequestBody NewsRequestDTO request) {
         return newsService.create(request);
     }
@@ -40,6 +42,7 @@ public class NewsController {
     @GetMapping(value = "/api/v1/news/{id}")
     @ResponseBody
     @Operation(summary = "Getting news", description = "get news by id")
+    @PreAuthorize("isAuthenticated()")
     public NewsResponseDTO get(@PathVariable long id) {
         return newsService.get(id);
     }
@@ -47,6 +50,7 @@ public class NewsController {
     @PatchMapping(value = "/api/v1/news/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Update news", description = "update news by id if present")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void patch(
             @PathVariable(value = "id") long id,
             @RequestBody NewsUpdateDTO updateDTO) {
@@ -56,11 +60,13 @@ public class NewsController {
     @DeleteMapping(value = "/api/v1/news/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete news", description = "delete news by id")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void delete(@PathVariable long id) {
         newsService.delete(id);
     }
 
     @GetMapping(value = "/api/v1/news")
+    @PreAuthorize("isAuthenticated()")
     public String getAllNews() {
         return "GreedoBank completed Migration to Cloud!";
     }
