@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface NewsDAO extends JpaRepository<News, Long> {
 
-    @Query("select * from  news where publication_date > ?1")
+    @Query(value = "select * from  news where publication_date > ?1", nativeQuery = true)
     List<NewsResponseDTO> findAllExpectedNews(OffsetDateTime date);
 }

@@ -49,6 +49,7 @@ public class ReportService {
         List<NewsResponseDTO> expectedNews = getExpectedNews();
 
         createHeaderRow(sheet, styles);
+        setColumnsWidth(sheet);
 //        createStringsRow(sheet, styles, expectedNews);
 //        createDoublesRow(sheet, styles, expectedNews);
 //        createDatesRow(sheet, styles, expectedNews);
@@ -72,9 +73,9 @@ public class ReportService {
         var row = sheet.createRow(0);
         Field[] declaredFields = NewsResponseDTO.class.getDeclaredFields();
 
-        for (int i = 0; i <= size; i++) {
+        for (int i = 0; i < size; i++) {
             val cell = row.createCell(i);
-            cell.setCellValue(declaredFields[i].getName());
+            cell.setCellValue(" " + declaredFields[i].getName() + " ");
             cell.setCellStyle(styles.get(CustomCellStyle.GREY_CENTERED_BOLD_ARIAL_WITH_BORDER));
         }
     }
@@ -82,7 +83,7 @@ public class ReportService {
     private void writeNews(Sheet sheet, List<NewsResponseDTO> expectedNews) {
         if (expectedNews.size() > 0) {
             var row = sheet.createRow(1);
-            for (int i = 0; i <= size; i++) {
+            for (int i = 0; i < size; i++) {
                 for (int j = 0; j < getExpectedNews().size(); j++) {
                     val cell = row.createCell(i);
                     cell.setCellValue(expectedNews.get(j).id());
