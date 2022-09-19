@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -30,7 +29,6 @@ public class ReportService {
     private final StylesGenerator stylesGenerator;
     private final NewsDAO newsDAO;
     private final NewsMapper newsMapper;
-    private final Field[] fields;
     private final int descriptionIndex = 4;
 
     @Autowired
@@ -38,7 +36,6 @@ public class ReportService {
         this.stylesGenerator = stylesGenerator;
         this.newsDAO = newsDAO;
         this.newsMapper = mapper;
-        fields = News.class.getDeclaredFields();
     }
 
     public byte[] generateXlsxReport() throws IOException {
@@ -58,9 +55,9 @@ public class ReportService {
 
         createHeaderRow(sheet, styles);
 
-        writeNews(sheet, expectedNews, styles);
+        writeNews(sheet, expectedNews);
 
-        setColumnsAutoSize(sheet, styles);
+        setColumnsAutoSize(sheet);
         setWarpOfDescriptionField(styles, sheet);
         formatCellToUp(sheet, styles);
         return wb;
@@ -93,8 +90,8 @@ public class ReportService {
                 .collect(Collectors.toList());
     }
 
-    private void setColumnsAutoSize(Sheet sheet, Map<CustomCellStyle, CellStyle> styles) {
-        for (int i = 0; i < fields.length; i++) {
+    private void setColumnsAutoSize(Sheet sheet) {
+        for (int i = 0; i < sheet.getRow(0).getLastCellNum(); i++) {
             if (i != descriptionIndex) {
                 sheet.autoSizeColumn(i);
             } else {
@@ -105,15 +102,14 @@ public class ReportService {
 
     private void createHeaderRow(Sheet sheet, Map<CustomCellStyle, CellStyle> styles) {
         var row = sheet.createRow(0);
-
-        for (int i = 0; i < fields.length; i++) {
+        for (int i = 0; i < News.class.getDeclaredFields().length; i++) {
             var cell = row.createCell(i);
-            cell.setCellValue(" " + fields[i].getName() + " ");
+            cell.setCellValue(" " + News.class.getDeclaredFields()[i].getName() + " ");
             cell.setCellStyle(styles.get(CustomCellStyle.GREY_CENTERED_BOLD_ARIAL_WITH_BORDER));
         }
     }
 
-    private void writeNews(Sheet sheet, List<NewsResponseDTO> expectedNews, Map<CustomCellStyle, CellStyle> styles) {
+    private void writeNews(Sheet sheet, List<NewsResponseDTO> expectedNews) {
         if (expectedNews.size() > 0) {
             for (int i = 0; i < getExpectedNews().size(); i++) {
                 var row = sheet.createRow(i + 1);
