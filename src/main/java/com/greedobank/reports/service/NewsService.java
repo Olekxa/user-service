@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
+import java.util.Optional;
 
 @Service
 public class NewsService {
@@ -34,6 +35,7 @@ public class NewsService {
     }
 
     public NewsResponseDTO get(long id) {
+        Optional<News> byId = newsDAO.findById(id);
         return newsDAO.findById(id)
                 .map(newsMapper::toNewsResponseDTO)
                 .orElseThrow(() -> new NotFoundException(String.format(NOT_FOUND_ERROR_MESSAGE_TEMPLATE, id)));

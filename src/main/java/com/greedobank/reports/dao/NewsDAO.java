@@ -1,6 +1,5 @@
 package com.greedobank.reports.dao;
 
-import com.greedobank.reports.dto.NewsResponseDTO;
 import com.greedobank.reports.model.News;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,5 +12,5 @@ import java.util.List;
 public interface NewsDAO extends JpaRepository<News, Long> {
 
     @Query(value = "select * from  news where publication_date > ?1", nativeQuery = true)
-    List<NewsResponseDTO> findAllExpectedNews(OffsetDateTime date);
+    List<News> findAllExpectedNews(OffsetDateTime date);
 }

@@ -1,13 +1,13 @@
 package com.greedobank.reports.utils;
 
 import com.greedobank.reports.model.CustomCellStyle;
-import lombok.val;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Component;
 
@@ -21,16 +21,18 @@ public class StylesGenerator {
 
         var boldArial = createBoldArialFont(wb);
         var redBoldArial = createRedBoldArialFont(wb);
-        var rightAlignedStyle = createRightAlignedStyle(wb);
+        var topAlignedStyle = createTopAlignedStyle(wb);
         var greyCenteredBoldArialWithBorderStyle = createGreyCenteredBoldArialWithBorderStyle(wb, boldArial);
         var redBoldArialWithBorderStyle = createRedBoldArialWithBorderStyle(wb, redBoldArial);
         var rightAlignedDateFormatStyle = createRightAlignedDateFormatStyle(wb);
+        var warpText = createWarp(wb);
 
         Map<CustomCellStyle, CellStyle> mapStyles = new HashMap<>();
-        mapStyles.put(CustomCellStyle.RIGHT_ALIGNED, rightAlignedStyle);
+        mapStyles.put(CustomCellStyle.TOP_ALIGNED, topAlignedStyle);
         mapStyles.put(CustomCellStyle.GREY_CENTERED_BOLD_ARIAL_WITH_BORDER, greyCenteredBoldArialWithBorderStyle);
         mapStyles.put(CustomCellStyle.RED_BOLD_ARIAL_WITH_BORDER, redBoldArialWithBorderStyle);
         mapStyles.put(CustomCellStyle.RIGHT_ALIGNED_DATE_FORMAT, rightAlignedDateFormatStyle);
+        mapStyles.put(CustomCellStyle.WARP_TEXT_TEST, warpText);
         return mapStyles;
     }
 
@@ -49,9 +51,9 @@ public class StylesGenerator {
         return font;
     }
 
-    private CellStyle createRightAlignedStyle(Workbook wb) {
+    private CellStyle createTopAlignedStyle(Workbook wb) {
         var style = wb.createCellStyle();
-        style.setAlignment(HorizontalAlignment.RIGHT);
+        style.setVerticalAlignment(VerticalAlignment.TOP);
         return style;
     }
 
@@ -80,15 +82,20 @@ public class StylesGenerator {
     }
 
     private CellStyle createRedBoldArialWithBorderStyle(Workbook wb, Font redBoldArial) {
-        val style = createBorderedStyle(wb);
+        var style = createBorderedStyle(wb);
         style.setFont(redBoldArial);
         return style;
     }
 
     private CellStyle createRightAlignedDateFormatStyle(Workbook wb) {
         var style = wb.createCellStyle();
-        style.setAlignment(HorizontalAlignment.RIGHT);
-        style.setDataFormat((short) 14);
+        style.setVerticalAlignment(VerticalAlignment.TOP);
+        return style;
+    }
+
+    private CellStyle createWarp(Workbook wb) {
+        var style = wb.createCellStyle();
+        style.setWrapText(true);
         return style;
     }
 }
