@@ -1,17 +1,23 @@
 package com.greedobank.reports.dto;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 
 public record NewsRequestDTO(
-        @NotNull
+        @NotNull(message = "DisplayOnSite can't be null")
         Boolean displayOnSite,
-        @NotNull
+
+        @NotNull(message = "SendByEmail can't be null")
         Boolean sendByEmail,
-        @NotNull
+
+        @NotNull(message = "Content can't be null")
+        @Valid
         ContentRequestDTO content,
-        @NotNull
+
+        @NotNull(message = "PublicationDate can't be null")
         OffsetDateTime publicationDate,
-        @NotNull
+
+        @NotNull(message = "Active can't be null")
         Boolean active) {
 }
