@@ -35,6 +35,8 @@ Add links to external resources for this project, such as CI server, bug tracker
 It's available within http://localhost:8080/swagger-ui/index.html
 
 ## Environment variables
-
-DB_PASSWORD=password; DB_USER=login; DB_URL=jdbc:postgresql://localhost:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
-
+```
+DB_USER=login; 
+DB_PASSWORD=password; 
+DB_URL=jdbc:postgresql://localhost:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+```
