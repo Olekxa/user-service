@@ -5,11 +5,11 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
-@Configuration
-public class Configurable {
+@org.springframework.context.annotation.Configuration
+public class Configuration {
+    public static final String URL_USER = "http://localhost:8082/api/v1/users?email=";
 
     @Bean
     public ObjectMapper mapper() {

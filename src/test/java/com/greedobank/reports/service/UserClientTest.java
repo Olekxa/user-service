@@ -1,13 +1,17 @@
 package com.greedobank.reports.service;
 
+import com.greedobank.reports.client.UserClient;
 import com.greedobank.reports.model.Role;
 import com.greedobank.reports.model.RoleTitle;
 import com.greedobank.reports.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -16,6 +20,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.util.List;
 
 import static org.mockito.Mockito.times;
@@ -23,15 +29,14 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class UserClientTest {
+    @InjectMocks
     private UserClient userClient;
-
     @Mock
     private RestTemplate restTemplate;
 
     @BeforeEach
     private void setUp() {
         MockitoAnnotations.openMocks(this);
-        userClient = new UserClient(restTemplate);
     }
 
     @Test
@@ -52,7 +57,8 @@ class UserClientTest {
                 ArgumentMatchers.<Class<User[]>>any()))
                 .thenReturn(responseEntity);
 
-        restTemplate.exchange(request, HttpMethod.GET, entity, User[].class);
+        ResponseEntity<User[]> exchange = restTemplate.exchange(request, HttpMethod.GET, entity, User[].class);
         verify(restTemplate, times(1)).exchange(request, HttpMethod.GET, entity, User[].class);
+        assertEquals(responseEntity, exchange);
     }
 }

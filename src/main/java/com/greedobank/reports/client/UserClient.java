@@ -1,5 +1,6 @@
-package com.greedobank.reports.service;
+package com.greedobank.reports.client;
 
+import com.greedobank.reports.config.Configuration;
 import com.greedobank.reports.model.User;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,9 +20,9 @@ public class UserClient {
         this.restTemplate = restTemplate;
     }
 
-    public User[] buildRequest(String email) {
-        String url = "http://localhost:8082/api/v1/users?email=";
-        String request = url.concat(email);
+    public User[] getUserByEmail(String email) {
+
+        String request = Configuration.URL_USER.concat(email);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));

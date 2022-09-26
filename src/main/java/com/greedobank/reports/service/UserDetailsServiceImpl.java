@@ -1,5 +1,6 @@
 package com.greedobank.reports.service;
 
+import com.greedobank.reports.client.UserClient;
 import com.greedobank.reports.model.User;
 import com.greedobank.reports.model.UserWrapper;
 import com.greedobank.reports.utils.JwtUtils;
@@ -15,9 +16,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final JwtUtils jwtUtils;
 
     @Autowired
-    public UserDetailsServiceImpl(
-            UserClient userClient,
-            JwtUtils jwtUtils) {
+    public UserDetailsServiceImpl(UserClient userClient, JwtUtils jwtUtils) {
         this.userClient = userClient;
         this.jwtUtils = jwtUtils;
     }
@@ -26,7 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String token) throws UsernameNotFoundException {
         String email = jwtUtils.getEmail(token);
 
-        User[] users = userClient.buildRequest(email);
+        User[] users = userClient.getUserByEmail(email);
 
         if (users == null || users.length == 0) {
             throw new UsernameNotFoundException("User not found with such email");

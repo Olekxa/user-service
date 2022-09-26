@@ -1,5 +1,6 @@
 package com.greedobank.reports.service;
 
+import com.greedobank.reports.client.UserClient;
 import com.greedobank.reports.model.Role;
 import com.greedobank.reports.model.RoleTitle;
 import com.greedobank.reports.model.User;
@@ -43,11 +44,11 @@ class UserDetailsServiceImplTest {
         User[] array = {user};
 
         when(jwtUtils.getEmail(token)).thenReturn(mail);
-        when(userClient.buildRequest(mail)).thenReturn(array);
+        when(userClient.getUserByEmail(mail)).thenReturn(array);
 
         UserDetails userDetails = service.loadUserByUsername(token);
         verify(jwtUtils, times(1)).getEmail(token);
-        verify(userClient, times(1)).buildRequest(mail);
+        verify(userClient, times(1)).getUserByEmail(mail);
         assertEquals(new UserWrapper(user), userDetails);
     }
 
@@ -57,7 +58,7 @@ class UserDetailsServiceImplTest {
         String mail = "dzhmur@griddynamics.com";
 
         when(jwtUtils.getEmail(token)).thenReturn(mail);
-        when(userClient.buildRequest(mail)).thenThrow(new UsernameNotFoundException("User not found with such email"));
+        when(userClient.getUserByEmail(mail)).thenThrow(new UsernameNotFoundException("User not found with such email"));
 
         assertThrows(UsernameNotFoundException.class, () -> service.loadUserByUsername(token));
     }
