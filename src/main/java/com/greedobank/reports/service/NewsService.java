@@ -1,6 +1,6 @@
 package com.greedobank.reports.service;
 
-import com.greedobank.reports.dao.NewsDao;
+import com.greedobank.reports.dao.NewsDAO;
 import com.greedobank.reports.dto.NewsRequestDTO;
 import com.greedobank.reports.dto.NewsResponseDTO;
 import com.greedobank.reports.dto.NewsUpdateDTO;
@@ -14,12 +14,12 @@ import java.time.OffsetDateTime;
 
 @Service
 public class NewsService {
-    private final NewsDao newsDAO;
+    private final NewsDAO newsDAO;
     private final NewsMapper newsMapper;
     private static final String NOT_FOUND_ERROR_MESSAGE_TEMPLATE = "News with id %d was not found";
 
     @Autowired
-    public NewsService(NewsDao newsDAO, NewsMapper newsMapper) {
+    public NewsService(NewsDAO newsDAO, NewsMapper newsMapper) {
         this.newsDAO = newsDAO;
         this.newsMapper = newsMapper;
     }
