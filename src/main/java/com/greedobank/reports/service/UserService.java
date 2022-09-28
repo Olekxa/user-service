@@ -11,12 +11,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UserService implements UserDetailsService {
     private final UserClient userClient;
     private final JwtUtils jwtUtils;
 
     @Autowired
-    public UserDetailsServiceImpl(UserClient userClient, JwtUtils jwtUtils) {
+    public UserService(UserClient userClient, JwtUtils jwtUtils) {
         this.userClient = userClient;
         this.jwtUtils = jwtUtils;
     }
@@ -28,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User[] users = userClient.getUserByEmail(email);
 
         if (users == null || users.length == 0) {
-            throw new UsernameNotFoundException("User not found with such email");
+            throw new UsernameNotFoundException("User was not found by email " + email);
         }
         return new UserWrapper(users[0]);
     }

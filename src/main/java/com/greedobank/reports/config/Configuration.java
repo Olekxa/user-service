@@ -9,7 +9,6 @@ import org.springframework.web.client.RestTemplate;
 
 @org.springframework.context.annotation.Configuration
 public class Configuration {
-    public static final String URL_USER = "http://localhost:8082/api/v1/users?email=";
 
     @Bean
     public ObjectMapper mapper() {
@@ -21,7 +20,7 @@ public class Configuration {
     }
 
     @Bean
-    public RestTemplate restTemplate() {
+    public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
         return new RestTemplateBuilder().build();
     }
 }

@@ -20,9 +20,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class UserDetailsServiceImplTest {
+class UserServiceTest {
     @InjectMocks
-    private UserDetailsServiceImpl service;
+    private UserService service;
 
     @Mock
     private UserClient userClient;

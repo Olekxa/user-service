@@ -16,6 +16,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -31,9 +32,11 @@ class UserClientTest {
     @Mock
     private RestTemplate restTemplate;
 
+
     @BeforeEach
     private void setUp() {
         MockitoAnnotations.openMocks(this);
+        ReflectionTestUtils.setField(userClient, "url", "http://localhost:8082/api/v1/users?email=");
     }
 
     @Test
@@ -54,8 +57,8 @@ class UserClientTest {
                 ArgumentMatchers.<Class<User[]>>any()))
                 .thenReturn(responseEntity);
 
-        ResponseEntity<User[]> exchange = restTemplate.exchange(request, HttpMethod.GET, entity, User[].class);
+        User[] userByEmail = userClient.getUserByEmail(mail);
         verify(restTemplate, times(1)).exchange(request, HttpMethod.GET, entity, User[].class);
-        assertEquals(responseEntity, exchange);
+        assertEquals(array, userByEmail);
     }
 }

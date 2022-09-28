@@ -1,7 +1,7 @@
 package com.greedobank.reports.client;
 
-import com.greedobank.reports.config.Configuration;
 import com.greedobank.reports.model.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,14 +15,17 @@ import java.util.List;
 @Component
 public class UserClient {
     private final RestTemplate restTemplate;
+    String url;
 
-    public UserClient(RestTemplate restTemplate) {
+
+    public UserClient(RestTemplate restTemplate, @Value("${userService.url}") String url) {
         this.restTemplate = restTemplate;
+        this.url = url;
     }
 
     public User[] getUserByEmail(String email) {
 
-        String request = Configuration.URL_USER.concat(email);
+        String request = url.concat(email);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
