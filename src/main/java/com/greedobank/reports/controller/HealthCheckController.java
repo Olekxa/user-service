@@ -13,7 +13,7 @@ public class HealthCheckController {
 
     @GetMapping("/active-profiles")
     @ResponseBody
-    public String[] healthCheck() {
+    public String[] getActiveProfiles() {
         return environment.getActiveProfiles();
     }
 }
