@@ -15,8 +15,8 @@ import java.util.List;
 @Component
 public class UserClient {
     private final RestTemplate restTemplate;
-    String url;
-
+    private final String url;
+    private final static String QUERY_EMAIL = "email=%s";
 
     public UserClient(RestTemplate restTemplate, @Value("${userService.url}") String url) {
         this.restTemplate = restTemplate;
@@ -25,7 +25,7 @@ public class UserClient {
 
     public User[] getUserByEmail(String email) {
 
-        String request = url.concat(email);
+        String request = url.concat("?").concat(String.format(QUERY_EMAIL, email));
 
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));
