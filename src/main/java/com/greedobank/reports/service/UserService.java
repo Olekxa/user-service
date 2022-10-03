@@ -1,5 +1,6 @@
 package com.greedobank.reports.service;
 
+import com.greedobank.reports.client.UserClient;
 import com.greedobank.reports.model.User;
 import com.greedobank.reports.model.UserWrapper;
 import com.greedobank.reports.utils.JwtUtils;
@@ -10,14 +11,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class UserService implements UserDetailsService {
     private final UserClient userClient;
     private final JwtUtils jwtUtils;
 
     @Autowired
-    public UserDetailsServiceImpl(
-            UserClient userClient,
-            JwtUtils jwtUtils) {
+    public UserService(UserClient userClient, JwtUtils jwtUtils) {
         this.userClient = userClient;
         this.jwtUtils = jwtUtils;
     }
@@ -26,10 +25,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String token) throws UsernameNotFoundException {
         String email = jwtUtils.getEmail(token);
 
-        User[] users = userClient.buildRequest(email);
+        User[] users = userClient.getUserByEmail(email);
 
         if (users == null || users.length == 0) {
-            throw new UsernameNotFoundException("User not found with such email");
+            throw new UsernameNotFoundException("User was not found by email " + email);
         }
         return new UserWrapper(users[0]);
     }
