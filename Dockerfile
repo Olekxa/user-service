@@ -1,8 +1,6 @@
-FROM openjdk:18-jdk-alpine
+FROM eclipse-temurin:18-jdk-focal
 
-ARG JAR_FILE=target/*.jar
-
-WORKDIR /report
+WORKDIR /app
 
 COPY ${JAR_FILE} app.jar
 
