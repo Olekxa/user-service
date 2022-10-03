@@ -18,7 +18,7 @@ public class UnsuitableRoleHandler  implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException{
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-  ErrorResponse accessDeniedResponse = new ErrorResponse(accessDeniedException.getMessage());
+        ErrorResponse accessDeniedResponse = new ErrorResponse(accessDeniedException.getMessage());
         mapper.writeValue(response.getOutputStream(), accessDeniedResponse);
     }
 }
