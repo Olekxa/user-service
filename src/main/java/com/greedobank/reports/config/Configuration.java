@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.web.client.RestTemplate;
 
 @org.springframework.context.annotation.Configuration
@@ -22,5 +24,11 @@ public class Configuration {
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
         return new RestTemplateBuilder().build();
+    }
+    @Bean
+    public JavaMailSender getJavaMailSender(){
+        JavaMailSender javaMailSender = new JavaMailSenderImpl();
+
+        return javaMailSender;
     }
 }
