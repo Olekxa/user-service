@@ -70,7 +70,6 @@ public class NewsController {
     public String getAllNews() {
         return "GreedoBank completed Migration to Cloud!";
     }
-
 }
 
 
