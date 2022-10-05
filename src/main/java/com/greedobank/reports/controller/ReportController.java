@@ -43,8 +43,8 @@ public class ReportController {
     @GetMapping("/api/v1/sendReport")
     @ResponseBody
     @Operation(summary = "Create report", description = "Create report")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void sendReport() throws IOException, MessagingException {
-        var report = reportService.generateXlsxReport();
-        mailService.sendEmailWithAttachment("azelionni@gmail.com", report);
+        mailService.sendEmailWithAttachment("azelionni@gmail.com", reportService.generateXlsxReport());
     }
 }
