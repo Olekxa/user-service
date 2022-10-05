@@ -79,9 +79,7 @@ public class ReportService {
     }
 
     private List<News> getExpectedNews() {
-        OffsetDateTime now = OffsetDateTime.now();
-        return new ArrayList<>(newsDAO
-                .findAllExpectedNews(now));
+        return new ArrayList<>(newsDAO.findAllExpectedNews(OffsetDateTime.now()));
     }
 
     private void setColumnsAutoSize(Sheet sheet) {
