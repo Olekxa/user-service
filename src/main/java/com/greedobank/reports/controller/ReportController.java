@@ -45,6 +45,6 @@ public class ReportController {
     @Operation(summary = "Create report", description = "Create report")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void sendReport() throws IOException, MessagingException {
-        mailService.sendEmailWithAttachment("azelionni@gmail.com", reportService.generateXlsxReport());
+        mailService.sendEmailWithAttachment(reportService.generateXlsxReport());
     }
 }
