@@ -27,6 +27,8 @@ public class ReportService {
     private final StylesGenerator stylesGenerator;
     private final NewsDAO newsDAO;
     private final int descriptionIndex = 4;
+    private final int numbersOfColumns = 9;
+
 
     @Autowired
     public ReportService(StylesGenerator stylesGenerator, NewsDAO newsDAO) {
@@ -94,7 +96,7 @@ public class ReportService {
 
     private void createHeaderRow(Sheet sheet, Map<CustomCellStyle, CellStyle> styles) {
         var row = sheet.createRow(0);
-        for (int i = 0; i < News.class.getDeclaredFields().length; i++) {
+        for (int i = 0; i < numbersOfColumns; i++) {
             var cell = row.createCell(i);
             cell.setCellValue(" " + News.class.getDeclaredFields()[i].getName() + " ");
             cell.setCellStyle(styles.get(CustomCellStyle.GREY_CENTERED_BOLD_ARIAL_WITH_BORDER));
@@ -106,15 +108,16 @@ public class ReportService {
             for (int i = 0; i < getExpectedNews().size(); i++) {
                 var row = sheet.createRow(i + 1);
                 News responseDTO = expectedNews.get(i);
-                row.createCell(0).setCellValue(responseDTO.getId());
-                row.createCell(1).setCellValue(responseDTO.isDisplayOnSite());
-                row.createCell(2).setCellValue(responseDTO.isSendByEmail());
-                row.createCell(3).setCellValue(responseDTO.getTitle());
-                row.createCell(4).setCellValue(responseDTO.getDescription());
-                row.createCell(5).setCellValue(responseDTO.getPublicationDate().truncatedTo(ChronoUnit.MINUTES).toString());
-                row.createCell(6).setCellValue(responseDTO.isActive());
-                row.createCell(7).setCellValue(responseDTO.getCreatedAt().truncatedTo(ChronoUnit.MINUTES).toString());
-                row.createCell(8).setCellValue(responseDTO.getUpdatedAt().truncatedTo(ChronoUnit.MINUTES).toString());
+                int index = 0;
+                row.createCell(index++).setCellValue(responseDTO.getId());
+                row.createCell(index++).setCellValue(responseDTO.isDisplayOnSite());
+                row.createCell(index++).setCellValue(responseDTO.isSendByEmail());
+                row.createCell(index++).setCellValue(responseDTO.getTitle());
+                row.createCell(index++).setCellValue(responseDTO.getDescription());
+                row.createCell(index++).setCellValue(responseDTO.getPublicationDate().truncatedTo(ChronoUnit.MINUTES).toString());
+                row.createCell(index++).setCellValue(responseDTO.isActive());
+                row.createCell(index++).setCellValue(responseDTO.getCreatedAt().truncatedTo(ChronoUnit.MINUTES).toString());
+                row.createCell(index).setCellValue(responseDTO.getUpdatedAt().truncatedTo(ChronoUnit.MINUTES).toString());
             }
         }
     }
