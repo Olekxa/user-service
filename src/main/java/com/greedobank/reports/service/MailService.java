@@ -5,8 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -22,17 +20,19 @@ public class MailService {
     private final String messageHeader = "Email with attached report";
     private final String messageText = "<h1>Following your request, a report was generated on news that has not been published</h1>";
 
-    public void sendEmailWithAttachment( byte[] bytes) throws MessagingException, IOException {
+    public void sendEmailWithAttachment(byte[] bytes) throws MessagingException, IOException {
 
         MimeMessage msg = javaMailSender.createMimeMessage();
 
         MimeMessageHelper helper = new MimeMessageHelper(msg, true);
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        SecurityContextHolder.getContext().getAuthentication();
 
-        System.out.println(authentication.getName());
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        helper.setTo("azelionni@gmail.com");
+        System.out.println(name);
+
+        helper.setTo(name);
 
         helper.setSubject(messageHeader);
 
