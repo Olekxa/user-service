@@ -14,7 +14,7 @@ INSERT INTO user(firstname, lastname, email, password) VALUES
  'Yevheniia', 'Komiahina', 'ykomiahina@griddynamics.com', '$2a$10$LBzEJKnHOhvAkutOPYUhC.WC08FY0ZUkvVqLxINVfB8cRsnwpdjpy'
 ),
 (
- 'Oleksandr', 'Kukurik', 'okukurik@girddynamics.com', '$2a$10$nsZC3u1olcAv2Fr07xBBQeXHnthWGVZWsW6ZOe4cT7stc8obNF8Ny'
+ 'Oleksandr', 'Kukurik', 'okukurik@griddynamics.com', '$2a$10$nsZC3u1olcAv2Fr07xBBQeXHnthWGVZWsW6ZOe4cT7stc8obNF8Ny'
 ),
 (
  'Iryna', 'Subota', 'isubota@griddynamics.com', '$2a$10$1maZO7sFXsgfMizZ5SQdEuZghbbVEhBPo2EgHV9LFK0m8qQTUVs0K'
