@@ -81,7 +81,7 @@ public class ReportService {
     }
 
     private List<News> getExpectedNews() {
-        return new ArrayList<>(newsDAO.findAllExpectedNews(OffsetDateTime.now()));
+        return newsDAO.findAllExpectedNews(OffsetDateTime.now());
     }
 
     private void setColumnsAutoSize(Sheet sheet) {
@@ -96,11 +96,25 @@ public class ReportService {
 
     private void createHeaderRow(Sheet sheet, Map<CustomCellStyle, CellStyle> styles) {
         var row = sheet.createRow(0);
+        String[] headersOfReport = createHeadersOfReport();
         for (int i = 0; i < numbersOfColumns; i++) {
             var cell = row.createCell(i);
-            cell.setCellValue(" " + News.class.getDeclaredFields()[i].getName() + " ");
+            cell.setCellValue(" " + headersOfReport[i] + " ");
             cell.setCellStyle(styles.get(CustomCellStyle.GREY_CENTERED_BOLD_ARIAL_WITH_BORDER));
         }
+    }
+
+    private String[] createHeadersOfReport() {
+        return new String[]{
+                "news_id",
+                "display_on_site",
+                "send_by_email",
+                "title",
+                "description",
+                "publication_date",
+                "active",
+                "created_at",
+                "updated_at"};
     }
 
     private void writeNews(Sheet sheet, List<News> expectedNews) {
@@ -117,7 +131,7 @@ public class ReportService {
                 row.createCell(index++).setCellValue(responseDTO.getPublicationDate().truncatedTo(ChronoUnit.MINUTES).toString());
                 row.createCell(index++).setCellValue(responseDTO.isActive());
                 row.createCell(index++).setCellValue(responseDTO.getCreatedAt().truncatedTo(ChronoUnit.MINUTES).toString());
-                row.createCell(index).setCellValue(responseDTO.getUpdatedAt().truncatedTo(ChronoUnit.MINUTES).toString());
+                row.createCell(index++).setCellValue(responseDTO.getUpdatedAt().truncatedTo(ChronoUnit.MINUTES).toString());
             }
         }
     }
