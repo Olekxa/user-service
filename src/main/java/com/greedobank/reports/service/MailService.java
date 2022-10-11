@@ -30,8 +30,6 @@ public class MailService {
 
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        System.out.println(name);
-
         helper.setTo(name);
 
         helper.setSubject(messageHeader);
