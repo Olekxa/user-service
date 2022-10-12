@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+  report:
+    build: .
+    profiles: ["dev"]
+    restart: always
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - greedobank_report-db
+
+  greedobank_report-db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      LC_ALL: C.UTF-8
+      POSTGRES_DB: greedobank
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+

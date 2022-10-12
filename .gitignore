@@ -3,7 +3,6 @@
 *.log
 **/logs
 /target/
-docker-compose.yml
 
 src/main/resources/application-dev.properties
 **/.DS_Store
