@@ -44,7 +44,7 @@ DB_URL=jdbc:postgresql://localhost:5432/greedobank?createDatabaseIfNotExist=true
 * mac_os:
 ```
 $ docker run -d -p 8080:8080\ 
--e "SPRING_PROFILES_ACTIVE=profile_name"\
+--env "SPRING_PROFILES_ACTIVE=profile_name"\
 --env DB_USER="login"\
 --env DB_PASSWORD="pasword"\
 --env DB_URL="dbc:postgresql://docker.for.mac.localhost:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"\
@@ -53,7 +53,7 @@ $ docker run -d -p 8080:8080\
 * windows_os:
 ```
 $ docker run -d -p 8080:8080\ 
--e "SPRING_PROFILES_ACTIVE=profile_name"\
+--env "SPRING_PROFILES_ACTIVE=profile_name"\
 --env DB_USER="login"\
 --env DB_PASSWORD="pasword"\
 --env DB_URL="dbc:postgresql://host.docker.internal:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"\
