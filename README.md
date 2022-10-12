@@ -43,28 +43,28 @@ DB_URL=jdbc:postgresql://localhost:5432/greedobank?createDatabaseIfNotExist=true
 ## Docker build command
 * mac_os:
 ```
-$ docker run -d -p 8080:8080 
--e "SPRING_PROFILES_ACTIVE=profile_name" 
---env DB_USER="login"
---env DB_PASSWORD="pasword"
---env DB_URL="dbc:postgresql://docker.for.mac.localhost:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"
-image_name
+$ docker run -d -p 8080:8080\ 
+-e "SPRING_PROFILES_ACTIVE=profile_name"\
+--env DB_USER="login"\
+--env DB_PASSWORD="pasword"\
+--env DB_URL="dbc:postgresql://docker.for.mac.localhost:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"\
+{image_name}
 ```
 * windows_os:
 ```
-$ docker run -d -p 8080:8080 
--e "SPRING_PROFILES_ACTIVE=profile_name" 
---env DB_USER="login"
---env DB_PASSWORD="pasword"
---env DB_URL="dbc:postgresql://host.docker.internal:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"
-image_name
+$ docker run -d -p 8080:8080\ 
+-e "SPRING_PROFILES_ACTIVE=profile_name"\
+--env DB_USER="login"\
+--env DB_PASSWORD="pasword"\
+--env DB_URL="dbc:postgresql://host.docker.internal:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"\
+{image_name}
 ```
 ## Docker compose up command
 ```
-$ DB_URL="jdbc:postgresql://docker.for.mac.localhost:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true" 
-DB_USER="user" 
-DB_PASSWORD="password" 
-docker-compose 
+$ DB_URL="jdbc:postgresql://docker.for.mac.localhost:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"\
+DB_USER="user"\
+DB_PASSWORD="password"\ 
+docker-compose\
 --profile dev up
 ```
 
