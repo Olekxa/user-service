@@ -25,8 +25,8 @@ import java.util.Map;
 public class ReportService {
     private final StylesGenerator stylesGenerator;
     private final NewsDAO newsDAO;
-    private final int descriptionIndex = 4;
-    private final int numbersOfColumns = 9;
+    private final static int DESCRIPTION_INDEX = 4;
+    private final static int NUMBERS_OF_COLUMNS = 9;
 
 
     @Autowired
@@ -65,7 +65,7 @@ public class ReportService {
         for (int i = 1; i <= sheet.getLastRowNum(); i++) {
             Row row = sheet.getRow(i);
             for (int j = 0; j < row.getLastCellNum(); j++) {
-                if (j != descriptionIndex) {
+                if (j != DESCRIPTION_INDEX) {
                     row.getCell(j).setCellStyle(styles.get(CustomCellStyle.TOP_ALIGNED));
                 }
             }
@@ -74,7 +74,7 @@ public class ReportService {
 
     private void setWarpOfDescriptionField(Map<CustomCellStyle, CellStyle> styles, XSSFSheet sheet) {
         for (int i = 1; i <= sheet.getLastRowNum(); i++) {
-            Cell cell = sheet.getRow(i).getCell(descriptionIndex);
+            Cell cell = sheet.getRow(i).getCell(DESCRIPTION_INDEX);
             cell.setCellStyle(styles.get(CustomCellStyle.WARP_TEXT_TEST));
         }
     }
@@ -85,7 +85,7 @@ public class ReportService {
 
     private void setColumnsAutoSize(Sheet sheet) {
         for (int i = 0; i < sheet.getRow(0).getLastCellNum(); i++) {
-            if (i != descriptionIndex) {
+            if (i != DESCRIPTION_INDEX) {
                 sheet.autoSizeColumn(i);
             } else {
                 sheet.setColumnWidth(i, 10000);
@@ -96,7 +96,7 @@ public class ReportService {
     private void createHeaderRow(Sheet sheet, Map<CustomCellStyle, CellStyle> styles) {
         var row = sheet.createRow(0);
         String[] headersOfReport = createHeadersOfReport();
-        for (int i = 0; i < numbersOfColumns; i++) {
+        for (int i = 0; i < NUMBERS_OF_COLUMNS; i++) {
             var cell = row.createCell(i);
             cell.setCellValue(" " + headersOfReport[i] + " ");
             cell.setCellStyle(styles.get(CustomCellStyle.GREY_CENTERED_BOLD_ARIAL_WITH_BORDER));
