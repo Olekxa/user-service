@@ -2,6 +2,7 @@ package com.greedobank.reports.controller;
 
 import com.RestControllerTestConfig;
 import com.greedobank.reports.service.MailService;
+import com.greedobank.reports.service.ReportService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -30,6 +31,8 @@ class ReportControllerTest {
 
     @MockBean
     private MailService mailService;
+    @MockBean
+    private ReportService reportService;
 
     @Test
     @WithMockUser(username = "dzhmur@griddynamics.com", roles = "ADMIN")
@@ -40,7 +43,7 @@ class ReportControllerTest {
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(csrf()))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
 
         verify(mailService, times(1)).sendEmailWithAttachment(Mockito.any());
     }
