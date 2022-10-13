@@ -1,53 +1,61 @@
 package com.greedobank.reports.controller;
 
-import com.RestControllerTestConfig;
-import com.greedobank.reports.exception.NotFoundException;
-import com.greedobank.reports.service.NewsService;
-import com.greedobank.reports.service.ReportService;
+import com.icegreen.greenmail.configuration.GreenMailConfiguration;
+import com.icegreen.greenmail.junit5.GreenMailExtension;
+import com.icegreen.greenmail.util.GreenMailUtil;
+import com.icegreen.greenmail.util.ServerSetupTest;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import javax.mail.internet.MimeMessage;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@ContextConfiguration
-@WebMvcTest(NewsController.class)
-@Import(RestControllerTestConfig.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class ReportControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+    @RegisterExtension
+    static GreenMailExtension greenMail = new GreenMailExtension(ServerSetupTest.SMTP)
+            .withConfiguration(GreenMailConfiguration.aConfig().withUser("duke", "springboot"))
+            .withPerMethodLifecycle(false);
 
-    @MockBean
-    private ReportService reportService;
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     @Test
-    @WithMockUser(username = "dzhmur@griddynamics.com", roles = "ADMIN")
-    void serveFile() throws IOException {
-        ResponseEntity<File> body = ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"report.xlsx\"")
-                .body(new File("report.xlsx"));
-        FileInputStream fileInputStream = new FileInputStream(new File("report.xlsx"));
-
-        Mockito.when(reportService.generateXlsxReport()).thenReturn(fileInputStream.readAllBytes());
+    void verifyDeliveryToGreenMailServer() {
+        sendEmailAndVerify();
     }
 
     @Test
-    void sendReport() {
+    void verifyDeliveryToGreenMailServerSecond() {
+        sendEmailAndVerify();
+    }
+
+    private void sendEmailAndVerify() {
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setFrom("admin@spring.io");
+        mail.setSubject("A new message for you");
+        mail.setText("Hello GreenMail!");
+        mail.setTo("test@greenmail.io");
+
+        javaMailSender.send(mail);
+
+        // awaitility
+        await().atMost(2, SECONDS).untilAsserted(() -> {
+            MimeMessage[] receivedMessages = greenMail.getReceivedMessages();
+            assertEquals(1, receivedMessages.length);
+
+            MimeMessage receivedMessage = receivedMessages[0];
+            assertEquals("Hello GreenMail!", GreenMailUtil.getBody(receivedMessage));
+            assertEquals(1, receivedMessage.getAllRecipients().length);
+            assertEquals("test@greenmail.io", receivedMessage.getAllRecipients()[0].toString());
+        });
     }
 }
