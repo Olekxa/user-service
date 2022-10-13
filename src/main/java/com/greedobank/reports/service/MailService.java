@@ -15,18 +15,20 @@ import java.io.IOException;
 
 @Service
 public class MailService {
-    @Autowired
-    private JavaMailSender javaMailSender;
+    private final JavaMailSender javaMailSender;
     private final String messageHeader = "Email with attached report";
     private final String messageText = "<h1>Following your request, a report was generated on news that has not been published</h1>";
+
+    @Autowired
+    public MailService(JavaMailSender javaMailSender) {
+        this.javaMailSender = javaMailSender;
+    }
 
     public void sendEmailWithAttachment(byte[] bytes) throws MessagingException, IOException {
 
         MimeMessage msg = javaMailSender.createMimeMessage();
 
         MimeMessageHelper helper = new MimeMessageHelper(msg, true);
-
-        SecurityContextHolder.getContext().getAuthentication();
 
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
 
