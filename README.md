@@ -38,7 +38,8 @@ It's available within http://localhost:8080/swagger-ui/index.html
 ```
 DB_USER=login; 
 DB_PASSWORD=password; 
-DB_URL=jdbc:postgresql://localhost:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
+DB_URL=jdbc:postgresql://localhost:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true;
+SERVICE_URL=http://localhost:8082/api/v1/users;
 ```
 ## Docker build command
 * mac_os:
@@ -48,6 +49,7 @@ $ docker run -d -p 8080:8080\
 --env DB_USER="login"\
 --env DB_PASSWORD="pasword"\
 --env DB_URL="dbc:postgresql://docker.for.mac.localhost:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"\
+--env SERVICE_URL="http://localhost:8082/api/v1/users"\
 {image_name}
 ```
 * windows_os:
@@ -57,6 +59,7 @@ $ docker run -d -p 8080:8080\
 --env DB_USER="login"\
 --env DB_PASSWORD="pasword"\
 --env DB_URL="dbc:postgresql://host.docker.internal:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"\
+--env SERVICE_URL="http://localhost:8082/api/v1/users"\
 {image_name}
 ```
 ## Docker compose up command
