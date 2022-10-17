@@ -17,6 +17,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.io.IOException;
+
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -46,6 +48,20 @@ class ReportControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .with(csrf()))
                 .andExpect(status().isOk());
+
+        verify(mailService, times(1)).sendEmailWithAttachment(Mockito.any());
+    }
+
+    @Test
+    @WithMockUser(username = "dzhmur@griddynamics.com", roles = "ADMIN")
+    public void shouldReturn404SendingReport() throws Exception {
+       Mockito.doThrow(new IOException()).when(mailService).sendEmailWithAttachment(Mockito.any());
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/sendReport")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
+                .andExpect(status().isInternalServerError());
 
         verify(mailService, times(1)).sendEmailWithAttachment(Mockito.any());
     }
