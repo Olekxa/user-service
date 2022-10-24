@@ -20,6 +20,4 @@ services:
     environment:
       LC_ALL: C.UTF-8
       POSTGRES_DB: greedobank
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
 
