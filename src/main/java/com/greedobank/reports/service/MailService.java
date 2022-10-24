@@ -16,7 +16,7 @@ import java.io.IOException;
 @Service
 public class MailService {
     private final JavaMailSender javaMailSender;
-    private final String messageHeader = "Email with attached report";
+    private final String messageSubject = "Report with unpublished news";
     private final String messageText = "<h1>Following your request, a report was generated on news that has not been published</h1>";
 
     @Autowired
@@ -24,7 +24,7 @@ public class MailService {
         this.javaMailSender = javaMailSender;
     }
 
-    public void sendEmailWithAttachment(byte[] bytes) throws MessagingException, IOException {
+    public void sendEmailWithAttachReportWithUnpublishedNews(byte[] bytes) throws MessagingException, IOException {
 
         MimeMessage msg = javaMailSender.createMimeMessage();
 
@@ -34,7 +34,7 @@ public class MailService {
 
         helper.setTo(name);
 
-        helper.setSubject(messageHeader);
+        helper.setSubject(messageSubject);
 
         helper.setText(messageText, true);
 

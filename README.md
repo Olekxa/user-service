@@ -36,6 +36,7 @@ It's available within http://localhost:8080/swagger-ui/index.html
 
 ## Environment variables
 ```
+MAIL_HOST=smtp.gmail.com
 DB_USER=login; 
 DB_PASSWORD=password; 
 DB_URL=jdbc:postgresql://localhost:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true

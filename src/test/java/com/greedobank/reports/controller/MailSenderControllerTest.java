@@ -20,32 +20,46 @@ import java.io.IOException;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ContextConfiguration
-@WebMvcTest(ReportController.class)
+@WebMvcTest(MailSenderController.class)
 @Import(RestControllerTestConfig.class)
-class ReportControllerTest {
+class MailSenderControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
+    private MailService mailService;
+    @MockBean
     private ReportService reportService;
 
     @Test
     @WithMockUser(username = "dzhmur@griddynamics.com", roles = "ADMIN")
-    public void shouldReturnReportByRequest() throws Exception {
-        Mockito.when(reportService.generateXlsxReport()).thenReturn(new byte[0]);
+    public void shouldReturn200SendingReport() throws Exception {
+        Mockito.doNothing().when(mailService).sendEmailWithAttachReportWithUnpublishedNews(Mockito.any());
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/report")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/sendReport")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(csrf()))
-                .andExpect(status().isOk())
-                .andExpect(content().bytes(new byte[0]));
+                .andExpect(status().isOk());
 
-        verify(reportService, times(1)).generateXlsxReport();
+        verify(mailService, times(1)).sendEmailWithAttachReportWithUnpublishedNews(Mockito.any());
+    }
+
+    @Test
+    @WithMockUser(username = "dzhmur@griddynamics.com", roles = "ADMIN")
+    public void shouldReturn404SendingReport() throws Exception {
+        Mockito.doThrow(new IOException()).when(mailService).sendEmailWithAttachReportWithUnpublishedNews(Mockito.any());
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/sendReport")
+                        .contentType(MediaType.APPLICATION_JSON_VALUE)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
+                .andExpect(status().isInternalServerError());
+
+        verify(mailService, times(1)).sendEmailWithAttachReportWithUnpublishedNews(Mockito.any());
     }
 }
