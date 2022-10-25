@@ -6,8 +6,8 @@ services:
     restart: always
     environment:
       DB_URL: jdbc:postgresql://greedobank_report-db:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
+      DB_USER: okukurik
+      DB_PASSWORD: 12345
     ports:
       - "8080:8080"
     depends_on:
