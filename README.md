@@ -68,8 +68,6 @@ $ docker run -d -p 8080:8080\
 
 ## Docker compose up command
 ```
-$ DB_USER={user}\
-DB_PASSWORD={password}\
-docker-compose --profile {profile} up
+docker-compose up
 ```
 
