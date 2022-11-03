@@ -8,7 +8,7 @@ services:
        DB_URL: "jdbc:postgresql://greedobank_report-db:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"
        DB_USER: okukurik
        DB_PASSWORD: 12345
-       SERVICE_URL: "http://localhost:8082/api/v1/users"
+       SERVICE_URL: "http://docker.for.mac.localhost:8082/api/v1/users"
     ports:
       - "8080:8080"
     depends_on:
