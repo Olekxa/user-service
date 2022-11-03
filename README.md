@@ -66,8 +66,8 @@ $ docker run -d -p 8080:8080\
 {image_name}
 ```
 
-## Docker compose up command
+## Docker compose up command 
 ```
-docker-compose up
+docker-compose up --build
 ```
 

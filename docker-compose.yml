@@ -4,9 +4,11 @@ services:
     build: .
     restart: always
     environment:
-      DB_URL: jdbc:postgresql://docker.for.mac.localhost:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
-      DB_USER: okukurik
-      DB_PASSWORD: 12345
+       SPRING_PROFILES_ACTIVE: prod
+       DB_URL: "jdbc:postgresql://greedobank_report-db:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"
+       DB_USER: okukurik
+       DB_PASSWORD: 12345
+       SERVICE_URL: "http://localhost:8082/api/v1/users"
     ports:
       - "8080:8080"
     depends_on:
@@ -18,6 +20,6 @@ services:
       - "5432:5432"
     environment:
       LC_ALL: C.UTF-8
-      POSTGRES_DB: greedobank
+      POSTGRES_DB: 'greedobank'
       DB_USER: okukurik
       DB_PASSWORD: 12345
