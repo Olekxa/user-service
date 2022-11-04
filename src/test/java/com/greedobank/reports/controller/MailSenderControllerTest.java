@@ -38,7 +38,7 @@ class MailSenderControllerTest {
     @Test
     @WithMockUser(username = "dzhmur@griddynamics.com", roles = "ADMIN")
     public void shouldReturn200SendingReport() throws Exception {
-        Mockito.doNothing().when(mailService).sendEmailWithAttachReportWithUnpublishedNews(Mockito.any());
+        Mockito.doNothing().when(mailService).sendUnpublishedNewsReport(Mockito.any());
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/sendReport")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -46,13 +46,13 @@ class MailSenderControllerTest {
                         .with(csrf()))
                 .andExpect(status().isOk());
 
-        verify(mailService, times(1)).sendEmailWithAttachReportWithUnpublishedNews(Mockito.any());
+        verify(mailService, times(1)).sendUnpublishedNewsReport(Mockito.any());
     }
 
     @Test
     @WithMockUser(username = "dzhmur@griddynamics.com", roles = "ADMIN")
     public void shouldReturn404SendingReport() throws Exception {
-        Mockito.doThrow(new IOException()).when(mailService).sendEmailWithAttachReportWithUnpublishedNews(Mockito.any());
+        Mockito.doThrow(new IOException()).when(mailService).sendUnpublishedNewsReport(Mockito.any());
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/sendReport")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -60,6 +60,6 @@ class MailSenderControllerTest {
                         .with(csrf()))
                 .andExpect(status().isInternalServerError());
 
-        verify(mailService, times(1)).sendEmailWithAttachReportWithUnpublishedNews(Mockito.any());
+        verify(mailService, times(1)).sendUnpublishedNewsReport(Mockito.any());
     }
 }

@@ -30,6 +30,6 @@ public class MailSenderController {
     @Operation(summary = "Create report", description = "Create report")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void sendReport() throws IOException, MessagingException {
-        mailService.sendEmailWithAttachReportWithUnpublishedNews(reportService.generateXlsxReport());
+        mailService.sendUnpublishedNewsReport(reportService.generateXlsxReport());
     }
 }

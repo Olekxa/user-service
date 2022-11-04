@@ -24,22 +24,15 @@ public class MailService {
         this.javaMailSender = javaMailSender;
     }
 
-    public void sendEmailWithAttachReportWithUnpublishedNews(byte[] bytes) throws MessagingException, IOException {
-
+    public void sendUnpublishedNewsReport(byte[] bytes) throws MessagingException, IOException {
         MimeMessage msg = javaMailSender.createMimeMessage();
-
         MimeMessageHelper helper = new MimeMessageHelper(msg, true);
-
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
 
         helper.setTo(name);
-
         helper.setSubject(messageSubject);
-
         helper.setText(messageText, true);
-
         helper.addAttachment("report.xlsx", new ByteArrayResource(IOUtils.toByteArray(new ByteArrayInputStream(bytes))));
-
         javaMailSender.send(msg);
     }
 }
