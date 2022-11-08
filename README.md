@@ -51,20 +51,21 @@ $ docker run -d -p 8080:8080\
 --env DB_PASSWORD={pasword}\
 --env DB_URL="dbc:postgresql://docker.for.mac.localhost:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"\
 --env SERVICE_URL="http://localhost:8082/api/v1/users"\
+--env MAIL_HOST={smtp.gmail.com}\
 {image_name}
 ```
 
 * windows_os:
 
-```
+
 $ docker run -d -p 8080:8080\ 
 --env SPRING_PROFILES_ACTIVE={profile}\
 --env DB_USER={login}\
 --env DB_PASSWORD={pasword}\
 --env DB_URL="dbc:postgresql://host.docker.internal:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true"\
 --env SERVICE_URL="http://localhost:8082/api/v1/users"\
+--env MAIL_HOST={smtp.gmail.com}\
 {image_name}
-```
 
 ## Docker compose up command 
 ```
