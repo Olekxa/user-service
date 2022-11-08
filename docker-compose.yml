@@ -9,6 +9,9 @@ services:
        DB_USER: okukurik
        DB_PASSWORD: 12345
        SERVICE_URL: "http://docker.for.mac.localhost:8082/api/v1/users"
+       MAIL_HOST: "smtp.gmail.com"
+       MAIL_USER: “sendermailreportproject@gmail.com”
+       MAIL_PASSWORD: “fphkglicxokgqeeq”
     ports:
       - "8080:8080"
     depends_on:
