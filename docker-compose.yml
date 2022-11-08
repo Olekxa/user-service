@@ -13,7 +13,7 @@ services:
        MAIL_USER: “sendermailreportproject@gmail.com”
        MAIL_PASSWORD: “fphkglicxokgqeeq”
     ports:
-      - "8080:8080"
+      - "8083:8083"
     depends_on:
       - greedobank_report-db
 
