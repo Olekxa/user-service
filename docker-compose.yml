@@ -23,6 +23,6 @@ services:
       - "5432:5432"
     environment:
       LC_ALL: C.UTF-8
-      POSTGRES_DB: 'greedobank'
-      DB_USER: okukurik
-      DB_PASSWORD: 12345
+      POSTGRES_DB: greedobank
+      POSTGRES_USER: okukurik
+      POSTGRES_PASSWORD: 12345
