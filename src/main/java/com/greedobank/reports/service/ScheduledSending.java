@@ -28,13 +28,8 @@ public class ScheduledSending {
         this.userClient = userClient;
     }
 
-    // @Scheduled(cron = "0 0 9 * * *")
-    @Scheduled(cron = "1 * * * * *")
+    @Scheduled(cron = "0 0 9 * * *")
     private void scheduledSend() throws IOException, MessagingException, UsernameNotFoundException {
-        User[] users = userClient.getMailsOfUsers();
-
-        User user = new User(1, "", "", "okukurik@griddynamics.com", new Role(1, RoleTitle.ROLE_ADMIN));
-
-        mailService.sendDailyNewsReportToUsers(reportService.getExpectedNews(), new User[]{user});
+        mailService.sendDailyNewsReportToUsers(reportService.getExpectedNews(), userClient.getMailsOfUsers());
     }
 }
