@@ -1,6 +1,5 @@
 package com.greedobank.reports.service;
 
-import com.greedobank.reports.dao.NewsDAO;
 import com.greedobank.reports.model.CustomCellStyle;
 import com.greedobank.reports.model.News;
 import com.greedobank.reports.utils.StylesGenerator;
@@ -11,28 +10,20 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 
-@Service
-public class ReportService {
+public abstract class ReportServiceBase {
     private final StylesGenerator stylesGenerator;
-    private final NewsDAO newsDAO;
     private final static int DESCRIPTION_INDEX = 4;
     private final static int NUMBERS_OF_COLUMNS = 9;
 
-
-    @Autowired
-    public ReportService(StylesGenerator stylesGenerator, NewsDAO newsDAO) {
+    public ReportServiceBase(StylesGenerator stylesGenerator) {
         this.stylesGenerator = stylesGenerator;
-        this.newsDAO = newsDAO;
     }
 
     public byte[] generateXlsxReport() throws IOException {
@@ -79,9 +70,7 @@ public class ReportService {
         }
     }
 
-    private List<News> getExpectedNews() {
-        return newsDAO.findAllExpectedNews(OffsetDateTime.now());
-    }
+    public abstract List<News> getExpectedNews();
 
     private void setColumnsAutoSize(Sheet sheet) {
         for (int i = 0; i < sheet.getRow(0).getLastCellNum(); i++) {
@@ -135,4 +124,3 @@ public class ReportService {
         }
     }
 }
-

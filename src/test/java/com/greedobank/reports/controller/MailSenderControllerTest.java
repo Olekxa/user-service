@@ -2,7 +2,7 @@ package com.greedobank.reports.controller;
 
 import com.RestControllerTestConfig;
 import com.greedobank.reports.service.MailService;
-import com.greedobank.reports.service.ReportService;
+import com.greedobank.reports.service.ReportServiceUnpublished;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,14 +33,14 @@ class MailSenderControllerTest {
     @MockBean
     private MailService mailService;
     @MockBean
-    private ReportService reportService;
+    private ReportServiceUnpublished reportService;
 
     @Test
     @WithMockUser(username = "dzhmur@griddynamics.com", roles = "ADMIN")
     public void shouldReturn200SendingReport() throws Exception {
         Mockito.doNothing().when(mailService).sendUnpublishedNewsReport(Mockito.any());
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/sendReport")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/expected-reports")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(csrf()))
@@ -54,7 +54,7 @@ class MailSenderControllerTest {
     public void shouldReturn404SendingReport() throws Exception {
         Mockito.doThrow(new IOException()).when(mailService).sendUnpublishedNewsReport(Mockito.any());
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/sendReport")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/expected-reports")
                         .contentType(MediaType.APPLICATION_JSON_VALUE)
                         .accept(MediaType.APPLICATION_JSON)
                         .with(csrf()))

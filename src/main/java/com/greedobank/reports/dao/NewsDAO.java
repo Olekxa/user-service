@@ -13,4 +13,7 @@ public interface NewsDAO extends JpaRepository<News, Long> {
 
     @Query(value = "select * from  news where publication_date > ?1", nativeQuery = true)
     List<News> findAllExpectedNews(OffsetDateTime date);
+
+    @Query(value = "select * from  news where publication_date > ?1 and publication_date <= ?2 and send_by_email = true", nativeQuery = true)
+    List<News> findAllNotSendNewsIntendedForSending(OffsetDateTime dateFrom, OffsetDateTime dateTo);
 }

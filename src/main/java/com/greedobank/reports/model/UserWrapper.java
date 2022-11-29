@@ -55,4 +55,5 @@ public class UserWrapper implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

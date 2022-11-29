@@ -3,6 +3,7 @@ package com.greedobank.reports.exception;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -57,5 +58,12 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ErrorResponse handleAccessDeniedException(AccessDeniedException ex, HttpServletResponse response) {
         return new ErrorResponse("Access denied: " + response.getHeader("Token-Validity"));
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    @ResponseBody
+    public ErrorResponse handleUserNotFoundException(UsernameNotFoundException ex, HttpServletResponse response) {
+        return new ErrorResponse(ex.getMessage());
     }
 }

@@ -1,9 +1,12 @@
 package com.greedobank.reports.controller;
 
 import com.greedobank.reports.service.MailService;
-import com.greedobank.reports.service.ReportService;
+import com.greedobank.reports.service.ReportServiceBase;
+import com.greedobank.reports.service.ReportServiceDaily;
+import com.greedobank.reports.service.ReportServiceUnpublished;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,12 +18,13 @@ import java.io.IOException;
 
 @RestController
 @Validated
+@EnableScheduling
 public class MailSenderController {
-    private final ReportService reportService;
+    private final ReportServiceBase reportService;
     private final MailService mailService;
 
     @Autowired
-    public MailSenderController(ReportService reportService, MailService mailService) {
+    public MailSenderController(ReportServiceUnpublished reportService, MailService mailService) {
         this.reportService = reportService;
         this.mailService = mailService;
     }

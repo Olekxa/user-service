@@ -1,8 +1,8 @@
 package com.greedobank.reports.controller;
 
 import com.RestControllerTestConfig;
-import com.greedobank.reports.service.MailService;
-import com.greedobank.reports.service.ReportService;
+import com.greedobank.reports.service.ReportServiceDaily;
+import com.greedobank.reports.service.ReportServiceUnpublished;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import java.io.IOException;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -32,7 +30,7 @@ class ReportControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private ReportService reportService;
+    private ReportServiceUnpublished reportService;
 
     @Test
     @WithMockUser(username = "dzhmur@griddynamics.com", roles = "ADMIN")

@@ -1,6 +1,8 @@
 package com.greedobank.reports.controller;
 
-import com.greedobank.reports.service.ReportService;
+import com.greedobank.reports.service.ReportServiceBase;
+import com.greedobank.reports.service.ReportServiceDaily;
+import com.greedobank.reports.service.ReportServiceUnpublished;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -17,10 +19,10 @@ import java.io.IOException;
 @RestController
 @Validated
 public class ReportController {
-    private final ReportService reportService;
+    private final ReportServiceBase reportService;
 
     @Autowired
-    public ReportController(ReportService reportService) {
+    public ReportController(ReportServiceUnpublished reportService) {
         this.reportService = reportService;
     }
 

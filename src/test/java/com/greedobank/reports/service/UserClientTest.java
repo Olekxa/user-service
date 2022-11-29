@@ -36,13 +36,14 @@ class UserClientTest {
     @BeforeEach
     private void setUp() {
         MockitoAnnotations.openMocks(this);
-        ReflectionTestUtils.setField(userClient, "url", "http://localhost:8082/api/v1/users?email=");
+        ReflectionTestUtils.setField(userClient, "url", "http://localhost:8082/api/v1/users");
     }
 
     @Test
     public void shouldReturnUser() {
         String mail = "dzhmur@griddynamics.com";
         String request = "http://localhost:8082/api/v1/users?email=dzhmur@griddynamics.com";
+        String token = "";
         User user = new User(1, "", "", mail, new Role(1, RoleTitle.ROLE_ADMIN));
         User[] array = {user};
         ResponseEntity<User[]> responseEntity = new ResponseEntity<>(array, HttpStatus.ACCEPTED);
