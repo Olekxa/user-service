@@ -38,6 +38,12 @@ DB_USER={login};
 DB_PASSWORD={password}; 
 DB_URL=jdbc:postgresql://localhost:5432/greedobank?createDatabaseIfNotExist=true&autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true;
 SERVICE_URL=http://localhost:8082/api/v1/users;
+SERVICE_ADMIN={login_service};
+SERVICE_PASSWORD={password_service};
+SERVICE_URL_AUTH=http://localhost:8082/api/v1/signin;
+MAIL_USER={login_mail};
+MAIL_PASSWORD={password_mail};
+spring.mail.host=smtp.gmail.com
 ```
 
 ## Docker build command
@@ -53,7 +59,10 @@ $ docker run -d -p 8080:8080\
 --env SERVICE_URL="http://localhost:8082/api/v1/users"\
 --env MAIL_HOST={smtp.gmail.com}\
 --env MAIL_USER={login}\
---env MAIL_PASSWOR={pasword}|
+--env MAIL_PASSWOR={pasword}\
+--env SERVICE_URL_AUTH=http://localhost:8082/api/v1/signin\
+--env SERVICE_ADMIN={login}\
+--env SERVICE_PASSWORD={pasword}\
 {image_name}
 ```
 
@@ -69,6 +78,9 @@ $ docker run -d -p 8080:8080\
 --env MAIL_HOST={smtp.gmail.com}\
 --env MAIL_USER={login}\
 --env MAIL_PASSWOR={pasword}|
+--env SERVICE_URL_AUTH=http://localhost:8082/api/v1/signin\
+--env SERVICE_ADMIN={login}\
+--env SERVICE_PASSWORD={pasword}\
 {image_name}
 
 ## Docker compose up command 

@@ -12,6 +12,9 @@ services:
        MAIL_HOST: smtp.gmail.com
        MAIL_USER: sendermailreportproject@gmail.com
        MAIL_PASSWORD: fphkglicxokgqeeq
+       SERVICE_ADMIN: okukurik@griddynamics.com
+       SERVICE_PASSWORD: password3
+       SERVICE_URL_AUTH: http://localhost:8082/api/v1/signin
     ports:
       - "8080:8080"
     depends_on:
